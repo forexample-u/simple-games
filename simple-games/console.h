@@ -31,6 +31,10 @@ public:
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ((bg_bit % 16) * 16) + (font_bit % 16));
 	}
 
+	void color_reset() const {
+		color_font(7);
+	}
+
 	int get_height() const {
 		CONSOLE_SCREEN_BUFFER_INFO screen;
 		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &screen);

@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="console.h" />
     <ClInclude Include="move.h" />
+    <ClInclude Include="move_test.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

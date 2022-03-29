@@ -6,11 +6,11 @@
 //detect keyboard
 class Keyboard {
 public:
-	int _getch() {
+	int getch_() {
 		return _getch();
 	}
 
-	int _kbhit() {
+	int kbhit_() {
 		return _kbhit();
 	}
 };
@@ -37,6 +37,11 @@ private:
 		bool get_escape() const {
 			return escape;
 		}
+
+		unsigned char get_button() const {
+			return button;
+		}
+
 	private:
 		friend Move;
 		int dir_x = 0;
@@ -44,6 +49,7 @@ private:
 		bool space = false;
 		bool enter = false;
 		bool escape = false;
+		unsigned char button = 0;
 	};
 
 	enum Dir {
@@ -63,9 +69,10 @@ public:
 		now.space = 0;
 		now.enter = 0;
 		now.escape = 0;
+		now.button = 0;
 
-		if (key._kbhit()) {
-			unsigned char button = toupper(key._getch());
+		if (key.kbhit_()) {
+			unsigned char button = toupper(key.getch_());
 			if (button == 'W') {
 				now.dir_y = Dir::up;
 			}
@@ -87,6 +94,7 @@ public:
 			if (button == 27) {
 				now.escape = true;
 			}
+			now.button = button;
 		}
 	}
 };
