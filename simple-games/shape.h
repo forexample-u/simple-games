@@ -21,26 +21,55 @@ private:
 //static print plane
 class Plane {
 public:
-    Plane() {
-        width_console = cmd.get_width();
-        height_console = cmd.get_height();
-    }
-
+    //set
     void set_pos(int new_x, int new_y) {
         pos_x = new_x;
         pos_y = new_y;
     }
 
+    void add_pos(int add_x, int add_y) {
+        pos_x += add_x;
+        pos_y += add_y;
+    }
+    
     void set_size(int new_size_x, int new_size_y) {
         size_x = new_size_x;
         size_y = new_size_y;
     }
 
+    void set_border_padding(int new_padding_x, int new_padding_y) {
+        border_padding_x = new_padding_x;
+        border_padding_y = new_padding_y;
+    }
+
+    void set_color_plane(Color color) {
+        color_plane = color;
+    }
+
+    void set_color_bg(Color color) {
+        color_bg = color;
+    }
+
+    void set_color_border(Color color) {
+        color_border = color;
+    }
+
+    void set_symbol_plane(char ch) {
+        char_plane = ch;
+    }
+
+    void set_symbol_border(char ch) {
+        char_border = ch;
+    }
+
+    //print
     void print_plane() const {
-        std::string row_plane(size_x - 2, char_plane);
+        int padding_x = border_padding_x;
+        int padding_y = border_padding_y;
+        std::string row_plane(size_x - padding_x * 2, char_plane);
         cmd.color(color_plane.get_font(), color_plane.get_bg());
-        for (int y = 0; y < size_y - 2; y++) {
-            cmd.gotoxy(pos_x + 1, y + pos_y + 1);
+        for (int y = 0; y < size_y - padding_y * 2; y++) {
+            cmd.gotoxy(pos_x + padding_x, pos_y + padding_y + y);
             std::cout << row_plane;
         }
         cmd.color(color_bg.get_font(), color_bg.get_bg());
@@ -48,11 +77,20 @@ public:
 
     void print_bg(bool visulize_debug_info = false) const {
         cmd.color(color_bg.get_font(), color_bg.get_bg());
+        int width_console = cmd.get_width();
+        int height_console = cmd.get_height();
         std::string full(width_console - 1, char_bg);
-        std::string left(pos_x, char_bg);
         std::string right;
-        if ((width_console - (size_x + pos_x) - 1) > 0) {
-            right.assign(width_console - (size_x + pos_x) - 1, char_bg);
+        std::string left;
+
+        int left_size = pos_x;
+        if (left_size > 0) {
+            left.assign(left_size, char_bg);
+        }
+
+        int right_size = (width_console - (size_x + pos_x) - 1);
+        if (right_size > 0) {
+            right.assign(right_size, char_bg);
         }
 
         //left
@@ -119,6 +157,7 @@ public:
         cmd.color(color_bg.get_font(), color_bg.get_bg());
     }
 
+    //get
     int get_offset_x() const {
         return pos_x;
     }
@@ -134,34 +173,14 @@ public:
     int get_size_y() const {
         return size_y;
     }
-
-    void set_color_plane(Color color) {
-        color_plane = color;
-    }
-
-    void set_color_bg(Color color) {
-        color_bg = color;
-    }
-
-    void set_color_border(Color color) {
-        color_border = color;
-    }
-
-    void set_symbol_plane(char ch) {
-        char_plane = ch;
-    }
-
-    void set_symbol_border(char ch) {
-        char_border = ch;
-    }
-
 private:
-    int width_console;
-    int height_console;
     int pos_x = 0;
     int pos_y = 0;
     int size_x = 60;
     int size_y = 18;
+    int border_padding_x = 1;
+    int border_padding_y = 1;
+
     Color color_plane;
     Color color_bg;
     Color color_border;
