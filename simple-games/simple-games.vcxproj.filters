@@ -23,5 +23,8 @@
     <ClInclude Include="console.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="shape.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,29 +1,27 @@
 #include <iostream>
 #include <string>
 #include "console.h"
-
-class Plane {
-public:
-    void set_size(int width, int height) {
-        this->width = width;
-        this->height = height;
-    }
-
-    void print() {
-        std::string row;
-        row.assign(width, 'a');
-        for (int i = 0; i < height; i++) {
-            std::cout << row << '\n';
-        }
-    }
-
-private:
-    int width;
-    int height;
-};
+#include "shape.h"
 
 int main(){
-    Plane plane;
-    plane.set_size(10, 5);
-    plane.print();
+	Console cmd;
+	Plane plane;
+	plane.set_size(40, 10);
+	plane.set_pos(50, 2);
+
+	plane.set_color_bg(Color(10, 10));
+	plane.set_color_plane(Color(11, 11));
+	plane.set_color_border(Color(15, 15));
+
+	plane.set_symbol_plane('.');
+	plane.set_symbol_border('.');
+	for (int i = 1; i <= 50; i++) {
+		cmd.sleep(100);
+		plane.set_pos(50 - i, 2);
+		plane.print_bg(true);
+		plane.print_plane();
+		plane.print_border();
+	}
+
+	cmd.pause();
 }
