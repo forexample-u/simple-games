@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="simple-games.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="console.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
