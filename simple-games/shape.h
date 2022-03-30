@@ -1,22 +1,6 @@
 #pragma once
-
-//color
-struct Color {
-    Color() {}
-    Color(int font, int bg) {
-        this->font = font;
-        this->bg = bg;
-    }
-    int get_font() const {
-        return font;
-    }
-    int get_bg() const {
-        return bg;
-    }
-private:
-    int font = 7;
-    int bg = 0;
-};
+#include <iostream>
+#include "core.h"
 
 //static print plane
 class Plane {
