@@ -2,7 +2,7 @@
 #include <iostream>
 #include "core.h"
 
-//static print plane
+//static print block
 class Plane {
 public:
     //set
@@ -13,7 +13,7 @@ public:
     void add_pos(Coord add) {
         pos += add;
     }
-    
+
     void set_size(Size new_size) {
         size = new_size;
     }
@@ -105,7 +105,7 @@ public:
             cmd.gotoxy(0, y);
             std::cout << '.';
         }
-        
+
         for (int y = 0; y < console.height - (pos.y + size.height); y++) {
             cmd.gotoxy(0, y + pos.y + size.height);
             std::cout << '.';
@@ -118,20 +118,24 @@ public:
     }
 
     void print_border() {
+        Coord padding = { border_padding.width, border_padding.height };
         std::string line(size.width, char_border);
+        std::string collum(padding.x, char_border);
         cmd.color(color_border);
 
         for (int y = 0; y < size.height; y++) {
             cmd.gotoxy(pos.x, y + pos.y);
-            std::cout << char_border;
-            cmd.gotoxy(size.width + pos.x - 1, y + pos.y);
-            std::cout << char_border;
+            std::cout << collum;
+            cmd.gotoxy(size.width + pos.x - padding.x, y + pos.y);
+            std::cout << collum;
         }
 
-        cmd.gotoxy(pos.x, pos.y);
-        std::cout << line;
-        cmd.gotoxy(pos.x, pos.y + size.height - 1);
-        std::cout << line;
+        for (int i = 0; i < padding.y; i++) {
+            cmd.gotoxy(pos.x, pos.y + i);
+            std::cout << line;
+            cmd.gotoxy(pos.x, pos.y + size.height - 1 - i);
+            std::cout << line;
+        }
         cmd.color(color_bg);
     }
 
@@ -156,7 +160,7 @@ public:
         return color_border;
     }
 
-private:
+protected:
     Coord pos = { 0, 0 };
     Size size = { 60, 18 };
     Size border_padding = { 1, 1 };

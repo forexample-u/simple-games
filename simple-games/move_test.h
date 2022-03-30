@@ -12,7 +12,7 @@ namespace test {
 		Move move;
 		plane.set_size(Size(40, 10));
 		plane.set_pos(Coord(30, 10));
-		plane.set_border_padding(Size(0, 0));
+		plane.set_border_padding(Size(2, 1));
 		plane.set_color_bg(Color(3, 3));
 		plane.set_color_plane(Color(12, 12));
 		plane.set_color_border(Color(15, 15));
@@ -46,6 +46,7 @@ namespace test {
 
 			//print
 			if (move.now.get_button() != false) {
+				plane.print_border();
 				plane.print_plane();
 				plane.print_bg();
 			}
