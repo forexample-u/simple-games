@@ -143,9 +143,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="console.h" />
+    <ClInclude Include="core.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="move_test.h" />
     <ClInclude Include="shape.h" />
+    <ClInclude Include="Snake.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

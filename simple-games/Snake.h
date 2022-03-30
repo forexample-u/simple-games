@@ -1,10 +1,10 @@
 #pragma once
 #include <iostream>
 #include <deque>
-
 #include "console.h"
 #include "move.h"
 #include "shape.h"
+#include "core.h"
 
 //apple
 class Apple;
@@ -14,15 +14,15 @@ class Snake {
 private:
     bool detect_damage(Plane& plane) {
         //wall
-        if (pos_x < plane.get_offset_x() + 1) { return true; }
-        if (pos_y < plane.get_offset_y() + 1) { return true; }
-        if (pos_x > (plane.get_offset_x() - 1 + plane.get_size_x() - 1)) { return true; }
-        if (pos_y > (plane.get_offset_y() - 1 + plane.get_size_y() - 1)) { return true; }
+        if (pos.x < plane.get_offset().x + 1) { return true; }
+        if (pos.y < plane.get_offset().y + 1) { return true; }
+        if (pos.x > (plane.get_offset().x - 1 + plane.get_size().width - 1)) { return true; }
+        if (pos.y > (plane.get_offset().y - 1 + plane.get_size().height - 1)) { return true; }
 
         //snake self
         if (!(dir_x == 0 && dir_y == 0)) {
             for (int i = 0; i < get_size_array() - 1; i++) {
-                if (pos_x_vec[i] == pos_x && pos_y_vec[i] == pos_y) {
+                if (pos_vec[i] == pos) {
                     return true;
                 }
             }
@@ -32,12 +32,10 @@ private:
 
     void die_condition(Plane& plane) {
         if (detect_damage(plane)) {
-            die_pos_x = pos_x_vec.back();
-            die_pos_y = pos_y_vec.back();
-            pos_x -= dir_x;
-            pos_y -= dir_y;
-            pos_x_vec.pop_back();
-            pos_y_vec.pop_back();
+            die_pos = pos_vec.back();
+            pos.x -= dir_x;
+            pos.y -= dir_y;
+            pos_vec.pop_back();
             count_bounce += 1;
         }
         else {
@@ -50,13 +48,12 @@ private:
     }
 
     void win_condition(Plane& plane) {
-        int win_size = plane.get_size_x() * plane.get_offset_y();
+        int win_size = plane.get_size().width * plane.get_offset().y;
         win = size_snake > win_size;
     }
 public:
     Snake() {
-        pos_x_vec.push_back(pos_x);
-        pos_y_vec.push_back(pos_y);
+        pos_vec.push_back(pos);
     }
 
     void move(Move& move) {
@@ -67,10 +64,9 @@ public:
             dir_x = move_dir_x;
             dir_y = move_dir_y;
         }
-        pos_x += dir_x;
-        pos_y -= dir_y;
-        pos_x_vec.push_back(pos_x);
-        pos_y_vec.push_back(pos_y);
+        pos.x += dir_x;
+        pos.y -= dir_y;
+        pos_vec.push_back(pos);
     }
 
     void eat(Apple& apple);
@@ -81,49 +77,34 @@ public:
         win_condition(plane);
 
         //backround
-        Color plane_color = plane.get_color_plane();
-        cmd.color(plane_color.get_font(), plane_color.get_bg());
-        if (size_snake < static_cast<int>(pos_x_vec.size())) {
-            cmd.gotoxy(pos_x_vec[0], pos_y_vec[0]);
+        cmd.color(plane.get_color_plane());
+        if (size_snake < static_cast<int>(pos_vec.size())) {
+            cmd.gotoxy(pos_vec[0]);
             std::cout << ' ';
-            pos_x_vec.pop_front();
-            pos_y_vec.pop_front();
+            pos_vec.pop_front();
         }
 
         //symbol color
-        cmd.color(color_snake.get_font(), color_snake.get_bg());
-        for (size_t i = 0; i < pos_x_vec.size(); i++) {
-            cmd.gotoxy(pos_x_vec[i], pos_y_vec[i]);
+        cmd.color(color_snake);
+        for (size_t i = 0; i < pos_vec.size(); i++) {
+            cmd.gotoxy(pos_vec[i]);
             std::cout << char_snake;
         }
-        Color bg_color = plane.get_color_bg();
-        cmd.color(bg_color.get_font(), bg_color.get_bg());
+        cmd.color(plane.get_color_bg());
     }
 
     void print_die_step(Color die_color = { 7, 4 }) {
         if (die == true) {
-            cmd.gotoxy(die_pos_x, die_pos_y);
-            cmd.color(die_color.get_font(), die_color.get_bg());
+            cmd.gotoxy(die_pos);
+            cmd.color(die_color);
             std::cout << char_snake;
         }
     }
 
-    //set
-    void set_start_pos(const Plane& plane) {
-        pos_x_vec.pop_back();
-        pos_y_vec.pop_back();
-        pos_x = plane.get_offset_x() + 1;
-        pos_y = plane.get_offset_y() + 1;
-        pos_x_vec.push_back(pos_x);
-        pos_y_vec.push_back(pos_y);
-    }
-
-    void set_pos_x(int new_x) {
-        pos_x = new_x;
-    }
-
-    void set_pos_y(int new_y) {
-        pos_y = new_y;
+    void set_pos(Coord new_pos) {
+        pos_vec.pop_back();
+        pos = new_pos;
+        pos_vec.push_back(pos);
     }
 
     void set_color_snake(Color new_color) {
@@ -143,12 +124,8 @@ public:
         return win;
     }
 
-    std::deque<int> get_all_pos_x() const {
-        return pos_x_vec;
-    }
-
-    std::deque<int> get_all_pos_y() const {
-        return pos_y_vec;
+    std::deque<Coord> get_all_pos() const {
+        return pos_vec;
     }
 
     int get_length_snake() const {
@@ -156,26 +133,22 @@ public:
     }
 
     int get_size_array() const {
-        return pos_x_vec.size();
+        return pos_vec.size();
     }
 
 private:
     //inside parameter coord
     int dir_x = 0;
     int dir_y = 0;
-    int pos_x = 0;
-    int pos_y = 0;
-    int last_pos_x = 0;
-    int last_pos_y = 0;
-    int die_pos_x = 0;
-    int die_pos_y = 0;
+    Coord pos;
+    Coord last_pos;
+    Coord die_pos;
 
     //inside parameter
-    int count_bounce = 0;
-    std::deque<int> pos_x_vec;
-    std::deque<int> pos_y_vec;
+    std::deque<Coord> pos_vec;
     Color color_snake;
-    char char_snake;
+    int count_bounce = 0;
+    char char_snake = ' ';
     bool die = false;
     bool win = false;
 
@@ -199,8 +172,8 @@ public:
         rand_create(plane, snake, symbol_apple, color_apple, color_backround);
     }
 
-    Apple(int pos_x, int pos_y, char symbol_apple = '$', int color_apple = 7, int color_backround = 4) {
-        create(pos_x, pos_y, symbol_apple, color_apple, color_backround);
+    Apple(Coord new_pos, char symbol_apple = '$', int color_apple = 7, int color_backround = 4) {
+        create(new_pos, symbol_apple, color_apple, color_backround);
     }
 
     ~Apple() {
@@ -211,9 +184,8 @@ public:
         return exist_apple;
     }
 
-    void create(int pos_x, int pos_y, char symbol_apple = '$', int color_apple = 7, int color_backround = 4) {
-        this->pos_x = pos_x;
-        this->pos_y = pos_y;
+    void create(Coord new_pos, char symbol_apple = '$', int color_apple = 7, int color_backround = 4) {
+        this->pos = pos;
         this->symbol_apple = symbol_apple;
         this->color_apple = Color(color_apple, color_backround);
         this->exist_apple = true;
@@ -221,24 +193,24 @@ public:
     }
 
     void rand_create(Plane& plane, Snake& snake, char symbol_apple = '$', int color_apple = 7, int color_backround = 4) {
-        pos_x = (rand() % (plane.get_size_x() - 2)) + plane.get_offset_x() + 1;
-        pos_y = (rand() % (plane.get_size_y() - 2)) + plane.get_offset_y() + 1;
+        pos.x = (rand() % (plane.get_size().width - 2)) + plane.get_offset().x + 1;
+        pos.y = (rand() % (plane.get_size().height - 2)) + plane.get_offset().y + 1;
         for (int i = 0; i < snake.get_size_array(); i++) {
-            if (pos_x == snake.get_all_pos_x()[i]) {
-                if (pos_y == snake.get_all_pos_y()[i]) {
-                    pos_x = (rand() % (plane.get_size_x() - 2)) + plane.get_offset_x() + 1;
-                    pos_y = (rand() % (plane.get_size_y() - 2)) + plane.get_offset_y() + 1;
+            if (pos.x == snake.get_all_pos()[i].x) {
+                if (pos.y == snake.get_all_pos()[i].y) {
+                    pos.x = (rand() % (plane.get_size().width - 2)) + plane.get_offset().x + 1;
+                    pos.y = (rand() % (plane.get_size().height - 2)) + plane.get_offset().y + 1;
                     i = 0;
                     continue;
                 }
             }
         }
-        create(pos_x, pos_y, symbol_apple, color_apple, color_backround);
+        create(pos, symbol_apple, color_apple, color_backround);
     }
 
     void print() {
-        cmd.color(color_apple.get_font(), color_apple.get_bg());
-        cmd.gotoxy(pos_x, pos_y);
+        cmd.color(color_apple);
+        cmd.gotoxy(pos);
         std::cout << symbol_apple;
         cmd.color_reset();
     }
@@ -247,18 +219,14 @@ public:
         if (!is_create()) {
             return;
         }
-        cmd.gotoxy(pos_x, pos_y);
+        cmd.gotoxy(pos);
         std::cout << ' ';
         exist_apple = false;
         cmd.color_reset();
     }
 
-    int get_pos_x() const {
-        return pos_x;
-    }
-
-    int get_pos_y() const {
-        return pos_y;
+    Coord get_pos() const {
+        return pos;
     }
 
 private:
@@ -266,16 +234,14 @@ private:
     char symbol_apple;
     Color color_apple;
 
-    int pos_x;
-    int pos_y;
+    Coord pos;
     Console cmd;
 };
 
 //metod snake
 void Snake::eat(Apple& apple) {
-    int pos_x_apple = apple.get_pos_x();
-    int pos_y_apple = apple.get_pos_y();
-    if ((pos_x == pos_x_apple) && (pos_y == pos_y_apple)) {
+    Coord pos_apple = apple.get_pos();
+    if (pos == pos_apple) {
         apple.destroy();
         size_snake += add_size;
     }
@@ -289,7 +255,7 @@ void start_snake() {
     int border_color = 4;
     int plane_color = 0;
 
-    plane.set_pos(7, 4);
+    plane.set_pos(Coord(7, 4));
     plane.set_color_bg(Color(bg_color, bg_color));
     plane.set_color_plane(Color(plane_color, plane_color));
     plane.set_color_border(Color(border_color, border_color));
@@ -303,7 +269,8 @@ void start_snake() {
     Move move;
     Snake snake;
     Apple apple;
-    snake.set_start_pos(plane);
+    Coord start_pos = plane.get_offset(); //TODO: Coord + 1
+    snake.set_pos(Coord(start_pos.x + 1, start_pos.y + 1));
     snake.set_color_snake(Color(15, 15));
     snake.set_symbol_snake('.');
 
@@ -333,6 +300,6 @@ void start_snake() {
             break;
         }
     }
-    cmd.color(15, 15);
+    cmd.color(Color(15, 15));
     cmd.pause();
 }

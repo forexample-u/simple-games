@@ -10,41 +10,38 @@ namespace test {
 		Console cmd;
 		Plane plane;
 		Move move;
-		plane.set_size(40, 10);
-		plane.set_pos(30, 10);
+		plane.set_size(Size(40, 10));
+		plane.set_pos(Coord(30, 10));
+		plane.set_border_padding(Size(0, 0));
 		plane.set_color_bg(Color(3, 3));
 		plane.set_color_plane(Color(12, 12));
 		plane.set_color_border(Color(15, 15));
 		plane.set_symbol_plane(' ');
 		plane.set_symbol_border('.');
-		plane.set_border_padding(0, 0);
 		std::cout << "Press any key...";
 		while (true) {
 			move.move();
 			int dir_x = move.now.get_dir_x() * 2;
 			int dir_y = -move.now.get_dir_y();
-			plane.add_pos(dir_x, dir_y);
+			plane.add_pos(Coord(dir_x, dir_y));
 
 			//get info
-			int plane_pos_x = plane.get_offset_x();
-			int plane_pos_y = plane.get_offset_y();
-			int plane_size_x = plane.get_size_x();
-			int plane_size_y = plane.get_size_y();
-			int width_screen = cmd.get_width();
-			int height_screen = cmd.get_height();
+			Coord plane_pos = plane.get_offset();
+			Size plane_size = plane.get_size();
+			Size screen_size = cmd.get_size_screen();
 
 			//border collision
-			if (plane_pos_x < 0) {
-				plane.set_pos(0, plane_pos_y);
+			if (plane_pos.x < 0) {
+				plane.set_pos(Coord(0, plane_pos.y));
 			}
-			if (plane_pos_y < 0) {
-				plane.set_pos(plane_pos_x, 0);
+			if (plane_pos.y < 0) {
+				plane.set_pos(Coord(plane_pos.x, 0));
 			}
-			if ((plane_pos_x + plane_size_x) > width_screen-1) {
-				plane.set_pos(width_screen - plane_size_x - 2, plane_pos_y);
+			if ((plane_pos.x + plane_size.width) > screen_size.width-1) {
+				plane.set_pos(Coord(screen_size.width - plane_size.width - 2, plane_pos.y));
 			}
-			if ((plane_pos_y + plane_size_y) > height_screen-1) {
-				plane.set_pos(plane_pos_x, height_screen - plane_size_y - 1);
+			if ((plane_pos.y + plane_size.height) > screen_size.height-1) {
+				plane.set_pos(Coord(plane_pos.x, screen_size.height - plane_size.height - 1));
 			}
 
 			//print

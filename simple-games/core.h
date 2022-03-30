@@ -25,6 +25,17 @@ struct Coord {
         this->x = new_x;
         this->y = new_y;
     }
+
+    Coord operator+=(const Coord& other) {
+        this->x += other.x;
+        this->y += other.y;
+        return *this;
+    }
+
+    bool operator==(const Coord& other) {
+        return ((x == other.x) && (y == other.y));
+    }
+
     int x = 0;
     int y = 0;
 };

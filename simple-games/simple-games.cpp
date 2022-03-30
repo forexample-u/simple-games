@@ -1,10 +1,9 @@
 #include <iostream>
 #include <string>
-#include "move.h"
-#include "console.h"
-#include "shape.h"
 #include "move_test.h"
+#include "Snake.h"
 
 int main(){
 	test::move_player();
+	start_snake();
 }

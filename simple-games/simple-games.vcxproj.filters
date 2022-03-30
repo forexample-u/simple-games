@@ -35,5 +35,11 @@
     <ClInclude Include="move_test.h">
       <Filter>Source Files\tests</Filter>
     </ClInclude>
+    <ClInclude Include="Snake.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
