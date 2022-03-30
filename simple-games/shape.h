@@ -173,6 +173,19 @@ public:
     int get_size_y() const {
         return size_y;
     }
+
+    Color get_color_plane() const {
+        return color_plane;
+    }
+
+    Color get_color_bg() const {
+        return color_bg;
+    }
+
+    Color get_color_border() const {
+        return color_border;
+    }
+
 private:
     int pos_x = 0;
     int pos_y = 0;
