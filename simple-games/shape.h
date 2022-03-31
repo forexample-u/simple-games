@@ -42,6 +42,10 @@ public:
         char_border = ch;
     }
 
+    void set_symbol_bg(char ch) {
+        char_bg = ch;
+    }
+
     //print
     void print_plane() const {
         Coord padding = { border_padding.width, border_padding.height };
@@ -57,18 +61,18 @@ public:
     void print_bg(bool visulize_debug_info = false) const {
         cmd.color(color_bg);
         Size console = cmd.get_size_screen();
-        std::string full(console.width - 1, char_bg);
+        std::string full(console.width - 1, ' ');
         std::string right;
         std::string left;
 
         int left_size = pos.x;
         if (left_size > 0) {
-            left.assign(left_size, char_bg);
+            left.assign(left_size, ' ');
         }
 
         int right_size = (console.width - (size.width + pos.x) - 1);
         if (right_size > 0) {
-            right.assign(right_size, char_bg);
+            right.assign(right_size, ' ');
         }
 
         //left
@@ -103,17 +107,17 @@ public:
 
         for (int y = 0; y < pos.y; y++) {
             cmd.gotoxy(0, y);
-            std::cout << '.';
+            std::cout << char_bg;
         }
 
         for (int y = 0; y < console.height - (pos.y + size.height); y++) {
             cmd.gotoxy(0, y + pos.y + size.height);
-            std::cout << '.';
+            std::cout << char_bg;
         }
 
         for (int y = 0; y < size.height; y++) {
             cmd.gotoxy(pos.x + size.width, y + pos.y);
-            std::cout << '.';
+            std::cout << char_bg;
         }
     }
 
@@ -169,7 +173,7 @@ protected:
     Color color_bg;
     Color color_border;
     char char_plane = ' ';
-    char char_bg = ' ';
+    char char_bg = '.';
     char char_border = ' ';
     Console cmd;
 };

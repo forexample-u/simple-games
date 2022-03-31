@@ -20,6 +20,13 @@ public:
 		gotoxy(pos.x, pos.y);
 	}
 
+	void resize_screen(Size size) const {
+		std::string str_w = std::to_string(size.width);
+		std::string str_h = std::to_string(size.height);
+		std::string command = "mode " + str_w + "," + str_h;
+		system(command.c_str());
+	}
+
 	void pause() const {
 		system("pause > nul");
 	}
