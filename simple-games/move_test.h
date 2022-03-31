@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include <string>
+#include <ctime>
 #include "move.h"
 #include "console.h"
 #include "shape.h"
@@ -10,17 +12,33 @@
 class Ball: public Collider {
 public:
 	//print
-	void print() {
-		cmd.gotoxy(pos);
-		cmd.color(color_bg);
-		std::cout << ' ';
+	void print(bool draw_trail = false) {
+		std::string row(size.width, ' ');
+
+		if (draw_trail == true) {
+			std::string trail(size.width, '.');
+			cmd.color(Color(15, color_bg.get_bg()));
+			for (int y = 0; y < size.height; y++) {
+				cmd.gotoxy(pos.x, pos.y + y);
+				std::cout << trail;
+			}
+		}
+		else {
+			cmd.color(color_bg);
+			for (int y = 0; y < size.height; y++) {
+				cmd.gotoxy(pos.x, pos.y + y);
+				std::cout << row;
+			}
+		}
 
 		pos.x += dir.x;
 		pos.y += dir.y;
 
-		cmd.gotoxy(pos);
 		cmd.color(color_ball);
-		std::cout << ' ';
+		for (int y = 0; y < size.height; y++) {
+			cmd.gotoxy(pos.x, pos.y + y);
+			std::cout << row;
+		}
 	}
 
 	//set
@@ -40,6 +58,10 @@ public:
 		pos = new_pos;
 	}
 
+	void set_size(Size new_size) {
+		size = new_size;
+	}
+
 	//get
 	Dir get_dir() const {
 		return dir;
@@ -49,10 +71,15 @@ public:
 		return pos;
 	}
 
+	Size get_size() const {
+		return size;
+	}
+
 private:
 	Color color_ball;
 	Color color_bg;
 	Coord pos;
+	Size size = {1, 1};
 	Dir dir = {1, 1};
 	Console cmd;
 };
@@ -117,18 +144,19 @@ namespace test {
 		Move move;
 		Ball ball;
 		ball.set_color_ball(Color(11, 11));
-		ball.set_pos(Coord(7, 3));
+		srand(time(0));
+		if (rand() % 2) { 
+			ball.set_dir(Dir(-1,-1));
+		}
+		
+		ball.set_pos(Coord(1 + rand() % 50, 2 + rand() % 6));
+		ball.set_size(Size(1 + rand()%10, 1 + rand()%3));
 
 		std::vector<Plane> planes;
 		Plane plane;
-		plane.set_color_border(Color(15, 15));
-		plane.set_size(Size(118, 29));
-		plane.print_border();
-		planes.push_back(plane);
-
 		plane.set_color_border(Color(12, 12));
 		plane.set_size(Size(30, 10));
-		plane.set_pos(Coord(15, 5));
+		plane.set_pos(Coord(15, 11));
 		plane.print_border();
 		planes.push_back(plane);
 
@@ -144,21 +172,21 @@ namespace test {
 		plane.print_border();
 		planes.push_back(plane);
 
+		plane.set_color_border(Color(15, 15));
+		plane.set_size(Size(118, 29));
+		plane.set_pos(Coord(0, 0));
+		plane.print_border();
+		planes.push_back(plane);
+
 		while (1) {
-			ball.print();
+			ball.print(true);
 			for (const auto& plane_ : planes){
-				ball.collide.create(plane_.get_size(), plane_.get_offset(), { 0, 0 }, ball.get_pos());
-				if (ball.collide.border().y == -1) {
-					ball.set_dir({ ball.get_dir().x, -1 });
+				ball.collide.create(plane_.get_size(), plane_.get_offset(), ball.get_size(), ball.get_pos());
+				if (ball.collide.bounce().y != 0) {
+					ball.set_dir({ ball.get_dir().x, ball.collide.bounce().y });
 				}
-				if (ball.collide.border().y == 1) {
-					ball.set_dir({ ball.get_dir().x, 1 });
-				}
-				if (ball.collide.border().x == -1) {
-					ball.set_dir({ -1, ball.get_dir().y });
-				}
-				if (ball.collide.border().x == 1) {
-					ball.set_dir({ 1, ball.get_dir().y });
+				if (ball.collide.bounce().x != 0) {
+					ball.set_dir({ ball.collide.bounce().x, ball.get_dir().y });
 				}
 			}
 			cmd.sleep(60);

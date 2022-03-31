@@ -58,6 +58,6 @@ struct Dir {
         x = dir_x;
         y = dir_y;
     }
-    int x;
-    int y;
+    int x = 0;
+    int y = 0;
 };
