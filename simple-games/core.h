@@ -50,3 +50,14 @@ struct Size {
     int width = 0;
     int height = 0;
 };
+
+//dir
+struct Dir {
+    Dir() {}
+    Dir(int dir_x, int dir_y) {
+        x = dir_x;
+        y = dir_y;
+    }
+    int x;
+    int y;
+};
