@@ -34,7 +34,6 @@ public:
 
 		pos.x += dir.x;
 		pos.y += dir.y;
-
 		cmd.color(color_ball);
 		for (int y = 0; y < size.height; y++) {
 			cmd.gotoxy(pos.x, pos.y + y);
@@ -90,6 +89,7 @@ namespace test {
 		Console cmd;
 		Plane plane;
 		Move move;
+		cmd.resize_screen(Size(120, 30));
 		plane.set_size(Size(40, 10));
 		plane.set_pos(Coord(30, 10));
 		plane.set_border_padding(Size(2, 1));
@@ -106,7 +106,7 @@ namespace test {
 			plane.add_pos(Coord(dir_x, dir_y));
 
 			//get info
-			Coord plane_pos = plane.get_offset();
+			Coord plane_pos = plane.get_pos();
 			Size plane_size = plane.get_size();
 			Size screen_size = cmd.get_size_screen();
 
@@ -144,6 +144,7 @@ namespace test {
 		Console cmd;
 		Move move;
 		Ball ball;
+		cmd.resize_screen(Size(120, 30));
 		ball.set_color_ball(Color(11, 11));
 		srand(time(0));
 		if (rand() % 2) { 
@@ -182,7 +183,7 @@ namespace test {
 		while (1) {
 			ball.print(false);
 			for (const auto& plane_ : planes){
-				ball.collide.create(plane_.get_size(), plane_.get_offset(), ball.get_size(), ball.get_pos());
+				ball.collide.create(plane_.get_size(), plane_.get_pos(), ball.get_size(), ball.get_pos());
 				if (ball.collide.bounce().y != 0) {
 					ball.set_dir({ ball.get_dir().x, ball.collide.bounce().y });
 				}
@@ -210,6 +211,7 @@ namespace test {
 		Size screen_buf = Size(screen.width - 10, screen.height);
 		Color color_bg = Color(13, 13);
 		Color color_button = Color(0, 14);
+		cmd.resize_screen(Size(120, 30));
 		button.set_color_bg(color_bg);
 		std::string row_screen(screen.width, ' ');
 		cmd.color(color_bg);
@@ -259,6 +261,56 @@ namespace test {
 				break;
 			}
 		}
+		cmd.color_reset();
+		cmd.clear();
+		std::cout << "Test completed! Press any key...";
+		cmd.pause();
+	}
+
+	void menu_test() {
+		Console cmd;
+		Button button;
+		Menu menu;
+		Move move;
+		cmd.resize_screen(Size(50, 25));
+		button.set_size(Size(20, 3));
+		std::vector<std::string> menu_list{
+			"Start",
+			"Settings",
+			"Test",
+			"Quit"
+		};
+
+		button.set_pos(Coord(15, 0));
+		for (const auto& text : menu_list) {
+			button.add_pos(Coord(0, button.get_size().height + 1));
+			button.set_color_button(Color(0, 13));
+			button.set_text(text);
+			menu.push_button(button);
+		}
+
+		menu.set_selected_color(Color(0, 15));
+
+		while (1) {
+			menu.move(move);
+			menu.print();
+			if (move.now.get_space() || move.now.get_enter()) {
+				break;
+			}
+			if (move.now.get_escape()) {
+				break;
+			}
+			cmd.gotoxy(0, 0);
+			std::cout << std::string(40, ' ');
+			int index = menu.get_selected_index();
+			cmd.gotoxy(0, 0);
+			cmd.color(Color(13, 0));
+			std::cout << "Your choice: ";
+			cmd.color(Color(7, 0));
+			std::cout << menu_list[index];
+			cmd.sleep(100);
+		}
+
 		cmd.color_reset();
 		cmd.clear();
 		std::cout << "Test completed! Press any key...";
