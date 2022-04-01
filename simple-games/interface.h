@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 #include "core.h"
 #include "move.h"
 #include "shape.h"
@@ -10,6 +11,10 @@ public:
 	//set
 	void set_pos(Coord new_pos) {
 		pos = new_pos;
+	}
+
+	void add_pos(Coord add_pos) {
+		pos += add_pos;
 	}
 
 	void set_size(Size new_size) {
@@ -97,12 +102,59 @@ public:
 
 private:
 	Size border_padding;
-	Size size;
-	Coord pos;
-	Color color_button;
-	Color color_bg;
+	Coord pos = Coord(0, 0);
+	Size size = Size(20, 3);
+	Color color_button = Color(0, 15);
+	Color color_bg = Color(0, 0);
 	Color color_border;
 	char char_bg = '.';
 	std::string text;
+	Console cmd;
+};
+
+//list buttons with selected 1x3
+class Menu {
+public:
+	void move(Move& move) {
+		move.move();
+		int size = static_cast<int>(buttons.size());
+		selected_index -= move.now.get_dir_y();
+		selected_index %= size;
+		if (selected_index < 0) {
+			selected_index = size - 1;
+		}
+	}
+
+	void push_button(const Button& button) {
+		buttons.push_back(button);
+	}
+
+	void set_selected_color(Color color_button) {
+		selected_color_button = color_button;
+	}
+
+	void print() const {
+		Button button_selected = buttons[selected_index];
+		button_selected.set_color_button(selected_color_button);
+		for (size_t index = 0; index < buttons.size(); index++) {
+			if (selected_index != index) {
+				buttons[index].print();
+			}
+		}
+		button_selected.print();
+	}
+
+	int get_selected_index() const {
+		return selected_index;
+	}
+
+	Button operator[](int index) const {
+		return buttons[index];
+	}
+
+private:
+	Color selected_color_button = Color(0, 8);
+	std::vector<Button> buttons;
+	int selected_index = 0;
 	Console cmd;
 };
