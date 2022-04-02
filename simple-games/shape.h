@@ -130,7 +130,7 @@ public:
         }
     }
 
-    void print_border() {
+    void print_border() const {
         Coord padding = Coord(border_padding.width, border_padding.height);
         std::string line(size.width, char_border);
         std::string collum(padding.x, char_border);
@@ -152,7 +152,7 @@ public:
         cmd.color(color_bg);
     }
 
-    void print(bool background = true) {
+    void print(bool background = true) const {
         if (background) { print_bg(); }
         print_border();
         print_plane();

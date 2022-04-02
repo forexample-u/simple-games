@@ -9,80 +9,7 @@
 #include "shape.h"
 #include "collider.h"
 #include "interface.h"
-
-class Ball: public Collider {
-public:
-	//print
-	void print(bool draw_trail = false) {
-		std::string row(size.width, ' ');
-
-		if (draw_trail == true) {
-			std::string trail(size.width, '.');
-			cmd.color(Color(15, color_bg.get_bg()));
-			for (int y = 0; y < size.height; y++) {
-				cmd.gotoxy(pos.x, pos.y + y);
-				std::cout << trail;
-			}
-		}
-		else {
-			cmd.color(color_bg);
-			for (int y = 0; y < size.height; y++) {
-				cmd.gotoxy(pos.x, pos.y + y);
-				std::cout << row;
-			}
-		}
-
-		pos.x += dir.x;
-		pos.y += dir.y;
-		cmd.color(color_ball);
-		for (int y = 0; y < size.height; y++) {
-			cmd.gotoxy(pos.x, pos.y + y);
-			std::cout << row;
-		}
-	}
-
-	//set
-	void set_color_ball(Color new_color) {
-		color_ball = new_color;
-	}
-
-	void set_color_bg(Color new_color) {
-		color_bg = new_color;
-	}
-
-	void set_dir(Dir new_dir) {
-		dir = new_dir;
-	}
-
-	void set_pos(Coord new_pos) {
-		pos = new_pos;
-	}
-
-	void set_size(Size new_size) {
-		size = new_size;
-	}
-
-	//get
-	Dir get_dir() const {
-		return dir;
-	}
-
-	Coord get_pos() const {
-		return pos;
-	}
-
-	Size get_size() const {
-		return size;
-	}
-
-private:
-	Color color_ball;
-	Color color_bg;
-	Coord pos;
-	Size size = {1, 1};
-	Dir dir = {1, 1};
-	Console cmd;
-};
+#include "Breakout.h"
 
 namespace test {
 	void move_player() {
@@ -181,14 +108,14 @@ namespace test {
 		planes.push_back(plane);
 
 		while (1) {
-			ball.print(false);
+			ball.print();
 			for (const auto& plane_ : planes){
 				ball.collide.create(plane_.get_size(), plane_.get_pos(), ball.get_size(), ball.get_pos());
-				if (ball.collide.bounce().y != 0) {
-					ball.set_dir({ ball.get_dir().x, ball.collide.bounce().y });
+				if (ball.collide.get_bounce().y != 0) {
+					ball.set_dir(Dir(ball.get_dir().x, ball.collide.get_bounce().y));
 				}
-				if (ball.collide.bounce().x != 0) {
-					ball.set_dir({ ball.collide.bounce().x, ball.get_dir().y });
+				if (ball.collide.get_bounce().x != 0) {
+					ball.set_dir(Dir(ball.collide.get_bounce().x, ball.get_dir().y));
 				}
 			}
 			cmd.sleep(60);

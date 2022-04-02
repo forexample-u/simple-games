@@ -41,5 +41,20 @@
     <ClInclude Include="core.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="collider.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interface.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Breakout.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tetris.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PingPong.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

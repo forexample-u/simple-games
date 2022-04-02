@@ -142,12 +142,17 @@
     <ClCompile Include="simple-games.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Breakout.h" />
+    <ClInclude Include="collider.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="core.h" />
+    <ClInclude Include="interface.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="move_test.h" />
+    <ClInclude Include="PingPong.h" />
     <ClInclude Include="shape.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="Tetris.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,4 @@
 #pragma once
-#include "console.h"
 #include <iostream>
 #include <conio.h> //This is a test!
 
@@ -18,7 +17,6 @@ public:
 //move by detect keyboard
 class Move {
 private:
-	Console cmd;
 	Keyboard key;
 	class Time {
 	public:
@@ -64,8 +62,8 @@ public:
 	Time now;
 
 	void move() {
-		now.dir_y = 0;
 		now.dir_x = 0;
+		now.dir_y = 0;
 		now.space = 0;
 		now.enter = 0;
 		now.escape = 0;
