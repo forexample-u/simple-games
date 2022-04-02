@@ -53,7 +53,7 @@ public:
 	
 	//print
 	void print() const {
-		Coord padding = { border_padding.width, border_padding.height };
+		Coord padding = Coord(border_padding.width, border_padding.height);
 		std::string row_button(size.width - padding.x * 2, ' ');
 		std::string text_erase = text.substr(0, size.width);
 		int length = static_cast<int>(text_erase.size() * 0.5);
@@ -112,7 +112,7 @@ private:
 	Console cmd;
 };
 
-//list buttons with selected 1x3
+//menu
 class Menu {
 public:
 	void move(Move& move) {
