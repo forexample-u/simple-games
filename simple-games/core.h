@@ -3,9 +3,9 @@
 //color
 struct Color {
     Color() {}
-    Color(int font, int bg) {
-        this->font = font;
-        this->bg = bg;
+    explicit Color(int new_font, int new_bg) {
+        font = new_font;
+        bg = new_bg;
     }
     int get_font() const {
         return font;
@@ -18,24 +18,40 @@ private:
     int bg = 0;
 };
 
+//dir
+struct Dir {
+    Dir() {}
+    explicit Dir(int dir_x, int dir_y) {
+        x = dir_x;
+        y = dir_y;
+    }
+    bool is_zero() {
+        return (x == 0 && y == 0);
+    }
+    int x = 0;
+    int y = 0;
+};
+
 //coord
 struct Coord {
     Coord() {}
-    Coord(int new_x, int new_y) {
-        this->x = new_x;
-        this->y = new_y;
+    explicit Coord(int new_x, int new_y) {
+        x = new_x;
+        y = new_y;
     }
-
     Coord operator+=(const Coord& other) {
         this->x += other.x;
         this->y += other.y;
         return *this;
     }
-
-    bool operator==(const Coord& other) {
+    Coord operator-=(const Coord& other) {
+        this->x -= other.x;
+        this->y -= other.y;
+        return *this;
+    }
+    bool operator==(const Coord& other) const {
         return ((x == other.x) && (y == other.y));
     }
-
     int x = 0;
     int y = 0;
 };
@@ -43,21 +59,10 @@ struct Coord {
 //size
 struct Size {
     Size() {}
-    Size(int new_width, int new_height) {
-        this->width = new_width;
-        this->height = new_height;
+    explicit Size(int new_width, int new_height) {
+        width = new_width;
+        height = new_height;
     }
     int width = 0;
     int height = 0;
-};
-
-//dir
-struct Dir {
-    Dir() {}
-    Dir(int dir_x, int dir_y) {
-        x = dir_x;
-        y = dir_y;
-    }
-    int x = 0;
-    int y = 0;
 };
