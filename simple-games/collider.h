@@ -5,52 +5,31 @@
 
 class Collider {
 private:
-	struct Obj {
-		Obj() {}
-		Obj(Coord pos, Size size) {
-			x = pos.x, y = pos.y;
-			width = size.width, height = size.height;
-		}
-		Obj(Size size, Coord pos) {
-			x = pos.x, y = pos.y;
-			width = size.width, height = size.height;
-		}
-		int x;
-		int y;
-		int width;
-		int height;
-	};
-
 	class Collision {
 	public:
+		//create
 		void create(Size size_collision, Coord pos_collision, Size size_player, Coord pos_player) {
-			Obj player = { pos_player, size_player };
-			Obj collide = { pos_collision, size_collision };
 			Dir slice_inside;
 			Dir slice_outside;
 			Dir slice_border;
-			Dir slice_border_inside;
-			Dir slice_border_outside;
 			Dir bounce_inside;
 			Dir bounce_outside;
 			Dir bounce_border;
-			Dir bounce_border_inside;
-			Dir bounce_border_outside;
-			
-			int player_right = player.x + player.width - 1;
-			int player_left = player.x;
-			int player_down = player.y + player.height - 1;
-			int player_up = player.y;
 
-			int slice_right = collide.x + collide.width;
-			int slice_left = collide.x;
-			int slice_down = collide.y + collide.height;
-			int slice_up = collide.y;
+			int player_right = pos_player.x + size_player.width - 1;
+			int player_left = pos_player.x;
+			int player_down = pos_player.y + size_player.height - 1;
+			int player_up = pos_player.y;
+
+			int slice_right = pos_collision.x + size_collision.width;
+			int slice_left = pos_collision.x;
+			int slice_down = pos_collision.y + size_collision.height;
+			int slice_up = pos_collision.y;
 
 			//collide_inside
 			bool inside_x = (player_right >= slice_left) && (player_left < slice_right);
 			bool inside_y = (player_down >= slice_up) && (player_up < slice_down);
-			
+
 			//slice_outside
 			slice_outside.y += (player_down+1  == slice_up)    *  1; // up
 			slice_outside.y += (player_up      == slice_down)  * -1; // down
@@ -62,24 +41,11 @@ private:
 			slice_inside.y += (player_down+2  == slice_down)  * -1; // down
 			slice_inside.x += (player_left-1  == slice_left)  * -1; // left
 			slice_inside.x += (player_right+2 == slice_right) *  1; // right
-
 			//slice_border
-			slice_border.y += (player_down   == slice_up)    *  1; // up
-			slice_border.y += (player_up+1   == slice_down)  * -1; // down
-			slice_border.x += (player_right  == slice_left)  * -1; // left
-			slice_border.x += (player_left+1 == slice_right) *  1; // right
-
-			//slice_border_outside
-			slice_border_outside.y += (player_up      == slice_up)    * -1; // up
-			slice_border_outside.y += (player_down+1  == slice_down)  *  1; // down
-			slice_border_outside.x += (player_left    == slice_left)  *  1; // left
-			slice_border_outside.x += (player_right+1 == slice_right) * -1; // right
-			
-			//slice_border_inside
-			slice_border_inside.y += (player_up-1    == slice_up)    *  1; // up
-			slice_border_inside.y += (player_down+2  == slice_down)  * -1; // down
-			slice_border_inside.x += (player_left-1  == slice_left)  * -1; // left
-			slice_border_inside.x += (player_right+2 == slice_right) *  1; // right
+			slice_border.y += (player_down   == slice_up    || player_up      == slice_up)    *  1; // up
+			slice_border.y += (player_up+1   == slice_down  || player_down+1  == slice_down)  * -1; // down
+			slice_border.x += (player_right  == slice_left  || player_left    == slice_left)  * -1; // left
+			slice_border.x += (player_left+1 == slice_right || player_right+1 == slice_right) *  1; // right
 
 
 			//bounce_outside
@@ -100,24 +66,11 @@ private:
 			bounce_border.x += (inside_y && (slice_border.x == -1)) * -1; // left
 			bounce_border.x += (inside_y && (slice_border.x ==  1)) *  1; // right
 
-			//bounce_border_outside
-			bounce_border_outside.y += (inside_x && (slice_border_outside.y ==  1)) *  1; // up
-			bounce_border_outside.y += (inside_x && (slice_border_outside.y == -1)) * -1; // down
-			bounce_border_outside.x += (inside_y && (slice_border_outside.x == -1)) *  1; // left
-			bounce_border_outside.x += (inside_y && (slice_border_outside.x ==  1)) * -1; // right
-
-			//bounce_border_inside
-			bounce_border_inside.y += (inside_x && (slice_border_inside.y ==  1)) * -1; // up
-			bounce_border_inside.y += (inside_x && (slice_border_inside.y == -1)) *  1; // down
-			bounce_border_inside.x += (inside_y && (slice_border_inside.x == -1)) * -1; // left
-			bounce_border_inside.x += (inside_y && (slice_border_inside.x ==  1)) *  1; // right
-
-
 			//fix angle probleam collision
-			if (slice_outside.x == -1 && slice_outside.y == 1) { //left up
+			if (slice_outside.x == -1 && slice_outside.y == 1) { // left up
 				bounce_outside = Dir(-1, -1);
 			}
-			if (slice_outside.x == -1 && slice_outside.y == -1) { //left down
+			if (slice_outside.x == -1 && slice_outside.y == -1) { // left down
 				bounce_outside = Dir(-1, 1);
 			}
 			if (slice_outside.x == 1 && slice_outside.y == 1) { // right up
@@ -127,37 +80,37 @@ private:
 				bounce_outside = Dir(1, 1);
 			}
 
-
-			//bool collide and dir
-			border_inside = false;
-			border_outside = false;
-			border = false;
-			inside = false;
-			outside = false;
-			any = false;
-
+			//border
+			border = ((bounce_border.x != 0) || (bounce_border.y != 0));
 			dir_collide = bounce_border;
-			border = (bounce_border.x != 0 || bounce_border.y != 0); 
-			border_inside = (bounce_border_inside.x != 0 || bounce_border_inside.y != 0) && !border;
-			border_outside = (bounce_border_outside.x != 0 || bounce_border_outside.y != 0) && !border;
 
+			//inside
 			inside = (inside_x && inside_y) && !border;
-			outside = !inside;
-
 			if (inside) {
 				dir_bounce = bounce_inside;
-				border_inside = (bounce_inside.x != 0 || bounce_inside.y != 0);
-			}
-			if (outside) {
-				dir_bounce = bounce_outside;
-				border_outside = (bounce_outside.x != 0 || bounce_outside.y != 0);
 			}
 
-			any = inside || border_outside || border;
+			//outside
+			outside = !(inside_x && inside_y) || border;
+			if (outside) {
+				dir_bounce = bounce_outside;
+			}
+
+			//we calc outside for ignore border and currect logic
+			bool outside_y = !((player_up >= slice_up) && (player_down < slice_down));
+			bool outside_x = !((player_left >= slice_left) && (player_right < slice_right));
+			outside = outside_x || outside_y;
+
+			//any
+			any = ((dir_bounce.x != 0) || (dir_bounce.y != 0)) || inside;
 		}
 
 		void create(const IShape& shape, Size size_player, Coord pos_player) {
 			create(shape.get_size(), shape.get_pos(), size_player, pos_player);
+		}
+
+		void create(Coord pos_collision, Size size_collision, Coord pos_player, Size size_player) {
+			create(size_collision, pos_collision, size_player, pos_player);
 		}
 
 		//get 
@@ -177,14 +130,6 @@ private:
 			return border;
 		}
 
-		bool is_border_outside() const {
-			return border_outside;
-		}
-
-		bool is_border_inside() const {
-			return border_inside;
-		}
-
 		bool is_inside() const {
 			return inside;
 		}
@@ -194,14 +139,12 @@ private:
 		}
 
 	private:
-		bool border_inside = false;
-		bool border_outside = false;
-		bool border = false;
-		bool inside = false;
-		bool outside = false;
-		bool any = false;
-		Dir dir_collide;
-		Dir dir_bounce;
+		bool outside = false; //if obj outside
+		bool border = false;  //if obj collide border
+		bool inside = false;  //if obj inside
+		bool any = false;     //if obj collide border or inside
+		Dir dir_collide; //dir border collide
+		Dir dir_bounce; //dir bounce
 	};
 public:
 	Collision collide;
