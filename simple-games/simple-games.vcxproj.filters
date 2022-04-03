@@ -65,5 +65,14 @@
     <ClInclude Include="main_menu.h">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
+    <ClInclude Include="game_menu.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="settings_menu.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="test_menu.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
