@@ -16,6 +16,9 @@
     <Filter Include="Source Files\tests">
       <UniqueIdentifier>{e174dac4-60f8-48aa-a900-6500a64134a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\menu">
+      <UniqueIdentifier>{17829cde-20e2-4e1a-8c96-319ea3769ba4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple-games.cpp">
@@ -55,6 +58,12 @@
     </ClInclude>
     <ClInclude Include="PingPong.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyBird.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main_menu.h">
+      <Filter>Source Files\menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

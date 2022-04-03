@@ -3,12 +3,16 @@
 #include "move_test.h"
 #include "Snake.h"
 #include "Breakout.h"
-#include "Snake.h"
+#include "PingPong.h"
+#include "main_menu.h"
+
 
 int main(){
-	//start_snake();
+	main_menu();
+
+	ping_pong();
 	breakout();
-	
+
 	test::collide_test();
 	test::menu_test();
 	test::move_player();
