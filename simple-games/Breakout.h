@@ -29,6 +29,16 @@ public:
 		}
 	}
 
+	void detect_collision(Coord collision_pos, Size collision_size) {
+		collide.create(collision_size, collision_pos, size_ball, pos_ball);
+		if (collide.get_bounce().x != 0) {
+			set_dir(Dir(collide.get_bounce().x, get_dir().y));
+		}
+		if (collide.get_bounce().y != 0) {
+			set_dir(Dir(get_dir().x, collide.get_bounce().y));
+		}
+	}
+
 	//set
 	void set_pos(Coord new_pos) {
 		pos_ball = new_pos;
@@ -68,13 +78,14 @@ public:
 	}
 
 private:
-	Color color_ball;
+	Color color_ball = Color(0, 15);
 	Color color_bg;
 	Coord pos_ball;
 	Size size_ball = Size(1, 1);
 	Dir dir_ball = Dir(1, 1);
 	char trail_char = ' ';
 	Console cmd;
+	std::vector<Block> collisions;
 };
 
 class Board {
@@ -89,9 +100,24 @@ public:
 		pos_board.y -= dir_board.y * move_padding.y;
 	}
 
+	void border(Coord border_pos, Size border_size) {
+		int collision_left  = border_pos.x + 1;
+		int collision_right = border_pos.x + border_size.width - size_board.width - 1;
+		int collision_up    = border_pos.y + 1;
+		int collision_down  = border_pos.y + border_size.height - size_board.height - 1;
+		if (collision_left > pos_board.x) { pos_board.x = collision_left; }
+		if (collision_right < pos_board.x) { pos_board.x = collision_right; }
+		if (collision_down < pos_board.y) { pos_board.y = collision_down; }
+		if (collision_up > pos_board.y) { pos_board.y = collision_up; }
+	}
+
+	void border(IShape& shape) {
+		border(shape.get_pos(), shape.get_size());
+	}
+
 	//set
 	void set_pos(Coord new_pos) {
-		last_pos_board = Coord(pos_board.x + (move_padding.x * -dir_board.x), pos_board.y);
+		last_pos_board = pos_board;
 		pos_board = new_pos;
 	}
 
@@ -142,8 +168,8 @@ public:
 	}
 
 private:
-	Coord last_pos_board;
 	Coord pos_board;
+	Coord last_pos_board;
 	Size size_board = Size(10, 1);
 	Dir dir_board = Dir(1, 0);
 	Color color_board = Color(7, 7);
@@ -160,7 +186,7 @@ void breakout() {
 	Move move;
 	Console cmd;
 	Plane plane;
-	
+
 	Ball ball;
 	Block block;
 	Board player;
@@ -181,14 +207,14 @@ void breakout() {
 	plane.print();
 
 	//player
-	player.set_size(Size(15, 2));
-	player.set_pos(Coord(rand()%60, plane.get_size().height - player.get_size().height+2));
-	
+	player.set_size(Size(5, 2));
+	player.set_pos(Coord(rand() % 60, plane.get_size().height - player.get_size().height + 2));
+
 	//ball
 	ball.set_dir(Dir(1, -1));
 	ball.set_pos(Coord(player.get_pos().x, player.get_pos().y - player.get_size().height));
 	ball.set_size(Size(2, 1));
-	
+
 	//block
 	block.set_pos(Coord(12, 12));
 	block.set_size(Size(16, 3));
@@ -210,47 +236,27 @@ void breakout() {
 	for (const auto& block : blocks) {
 		block.print();
 	}
-	
-
 
 	while (true) {
+		ball.detect_collision(plane.get_pos(), plane.get_size());
 		for (size_t i = 0; i < blocks.size(); i++) {
-			ball.collide.create(blocks[i], ball.get_size(), ball.get_pos());
+			ball.detect_collision(blocks[i].get_pos(), blocks[i].get_size());
 			if (ball.collide.is_any()) {
-				if (ball.collide.get_bounce().x != 0) {
-					ball.set_dir(Dir(ball.collide.get_bounce().x, ball.get_dir().y));
-				}
-				if (ball.collide.get_bounce().y != 0) {
-					ball.set_dir(Dir(ball.get_dir().x, ball.collide.get_bounce().y));
-				}
 				blocks[i].set_color_block(Color(0, 0));
 				blocks[i].print();
 				blocks.erase(blocks.begin() + i);
 			}
 		}
-		ball.collide.create(plane, ball.get_size(), ball.get_pos());
-		if (ball.collide.get_bounce().x != 0) {
-			ball.set_dir(Dir(ball.collide.get_bounce().x, ball.get_dir().y));
-		}
-		if (ball.collide.get_bounce().y != 0) {
-			ball.set_dir(Dir(ball.get_dir().x, ball.collide.get_bounce().y));
-		}
-		ball.collide.create(player.get_size(), player.get_pos(), ball.get_size(), ball.get_pos());
-		if (ball.collide.get_bounce().x != 0) {
-			ball.set_dir(Dir(ball.collide.get_bounce().x, ball.get_dir().y));
-		}
-		if (ball.collide.get_bounce().y != 0) {
-			ball.set_dir(Dir(ball.get_dir().x, ball.collide.get_bounce().y));
-		}
+		ball.detect_collision(player.get_pos(), player.get_size());
+		
 
 		player.move(move);
+		//player.collision(plane.get_pos(), player.get_pos());
 		if (player.get_pos().x <= plane.get_pos().x + 1) {
-			Coord new_pos = Coord(plane.get_pos().x + 1, player.get_pos().y);
-			player.set_pos(new_pos);
+			player.set_pos(Coord(plane.get_pos().x + 1, player.get_pos().y));
 		}
 		if ((player.get_pos().x + player.get_size().width) > plane.get_pos().x + plane.get_size().width - 1) {
-			Coord new_pos = Coord(plane.get_pos().x + plane.get_size().width  - player.get_size().width - 1, player.get_pos().y);
-			player.set_pos(new_pos);
+			player.set_pos(Coord(plane.get_pos().x + plane.get_size().width - player.get_size().width - 1, player.get_pos().y));
 		}
 
 		ball.print();
