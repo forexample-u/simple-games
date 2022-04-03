@@ -59,20 +59,24 @@ public:
 		int length = static_cast<int>(text_erase.size() * 0.5);
 		Coord text_pos = Coord(pos.x + (size.width / 2) - length, pos.y + (size.height / 2) - ((size.height % 2) == 0));
 		
-		cmd.color(color_button);
-		for (int y = 0; y < size.height - padding.y * 2; y++) {
-			cmd.gotoxy(pos.x + padding.x, pos.y + padding.y + y);
-			std::cout << row_button;
-		}
-		
-		cmd.gotoxy(text_pos);
-		std::cout << text_erase;
 
 		cmd.color(color_bg);
 		for (int y = 0; y < size.height - padding.y * 2; y++) {
 			cmd.gotoxy(pos.x + padding.x + size.width, pos.y + padding.y + y);
 			std::cout << char_bg;
 		}
+
+		cmd.color(color_button);
+		for (int y = 0; y < size.height - padding.y * 2; y++) {
+			cmd.gotoxy(pos.x + padding.x, pos.y + padding.y + y);
+			std::cout << row_button;
+		}
+
+		cmd.color(color_button);
+		cmd.gotoxy(text_pos);
+		std::cout << text_erase;
+
+		cmd.color(color_bg);
 	}
 
 	//get
@@ -129,6 +133,10 @@ public:
 		buttons.push_back(button);
 	}
 
+	int get_selected_index() const {
+		return selected_index;
+	}
+
 	void set_selected_color(Color color_button) {
 		selected_color_button = color_button;
 	}
@@ -144,17 +152,16 @@ public:
 		button_selected.print();
 	}
 
-	int get_selected_index() const {
-		return selected_index;
+	Button& operator[](int index) {
+		return buttons[index];
 	}
 
-	Button operator[](int index) const {
-		return buttons[index];
+	size_t size() const {
+		return buttons.size();
 	}
 
 private:
 	Color selected_color_button = Color(0, 8);
-	std::vector<Button> buttons;
 	int selected_index = 0;
-	Console cmd;
+	std::vector<Button> buttons;
 };
