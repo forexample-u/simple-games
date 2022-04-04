@@ -3,13 +3,15 @@
 #include "Snake.h"
 #include "Breakout.h"
 #include "interface.h"
+#include "FlyBird.h"
 
 void game_menu() {
 	Console cmd;
 	std::vector<std::string> list_games {
 		"Snake",
 		"Ping-pong",
-		"Breakout"
+		"Breakout",
+		"Flappy-Bird"
 	};
 	std::string choice = MakeMenu::center_menu(list_games, Color(0, 0), Color(0, 11), Color(0, 12), 5, 3, 4, 0.375);
 	
@@ -23,5 +25,8 @@ void game_menu() {
 	}
 	if (choice == "Breakout") {
 		breakout();
+	}
+	if (choice == "Flappy-Bird") {
+		flyBird();
 	}
 }
