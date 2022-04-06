@@ -4,29 +4,41 @@
 #include "Breakout.h"
 #include "interface.h"
 #include "FlyBird.h"
+#include "2048.h"
 
-void game_menu() {
-	Console cmd;
-	std::vector<std::string> list_games {
-		"Snake",
-		"Ping-pong",
-		"Breakout",
-		"Flappy-Bird"
-	};
-	std::string choice = MakeMenu::center_menu(list_games, Color(0, 0), Color(0, 11), Color(0, 12), 5, 3, 4, 0.375);
-	
-	cmd.color_reset();
-	cmd.clear();
-	if (choice == "Snake") {
-		start_snake();
-	}
-	if (choice == "Ping-pong") {
-		ping_pong();
-	}
-	if (choice == "Breakout") {
-		breakout();
-	}
-	if (choice == "Flappy-Bird") {
-		flyBird();
+namespace ListMenu {
+	void main_menu();
+
+	void game_menu() {
+		Console cmd;
+		std::vector<std::string> list_games{
+			"Snake",
+			"Ping-pong",
+			"Breakout",
+			"Flappy-Bird",
+			"Back"
+		};
+		
+		
+		MakeMenu menu;
+		std::string choice = menu.center_menu(list_games);
+
+		cmd.color_reset();
+		cmd.clear();
+		if (choice == "Snake") {
+			start_snake();
+		}
+		if (choice == "Ping-pong") {
+			ping_pong();
+		}
+		if (choice == "Breakout") {
+			breakout();
+		}
+		if (choice == "Flappy-Bird") {
+			flyBird();
+		}
+		if (choice == "Back") {
+			ListMenu::main_menu();
+		}
 	}
 }

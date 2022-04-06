@@ -4,31 +4,34 @@
 #include "game_menu.h"
 #include "test_menu.h"
 
+namespace ListMenu {
+	void main_menu() {
+		Console cmd;
+		std::vector<std::string> list_menu{
+			"Start",
+			"Test",
+			"Settings",
+			"Quit"
+		};
 
-void main_menu() {
-	Console cmd;
-	std::vector<std::string> list_menu{
-		"Start",
-		"Test",
-		"Settings",
-		"Quit"
-	};
-	std::string choice = MakeMenu::center_menu(list_menu, Color(0, 0), Color(0, 11), Color(0, 12), 5, 3, 4, 0.375);
-	
-	cmd.color_reset();
-	cmd.clear();
-	if (choice == "Start") {
-		game_menu();
-	}
-	if (choice == "Test") {
-		test_menu();
-	}
-	if (choice == "Settings") {
-		settings_menu();
-	}
-	if (choice == "Quit") {
+		MakeMenu menu;
+		std::string choice = menu.center_menu(list_menu);
+
 		cmd.color_reset();
 		cmd.clear();
-		return;
+		if (choice == "Start") {
+			ListMenu::game_menu();
+		}
+		if (choice == "Test") {
+			ListMenu::test_menu();
+		}
+		if (choice == "Settings") {
+			ListMenu::settings_menu();
+		}
+		if (choice == "Quit") {
+			cmd.color_reset();
+			cmd.clear();
+			return;
+		}
 	}
 }

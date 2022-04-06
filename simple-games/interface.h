@@ -2,10 +2,10 @@
 #include <iostream>
 #include <vector>
 #include <deque>
-#include "console.h"
 #include "core.h"
 #include "move.h"
 #include "shape.h"
+#include "console.h"
 
 //button
 class Button {
@@ -25,7 +25,7 @@ public:
 
 	void set_pos_center(bool center_x = true, bool center_y = false) {
 		Size screen = cmd.get_size_screen();
-		if (center_x) { pos.x = (screen.width  * 0.5) - (size.width  * 0.5); }
+		if (center_x) { pos.x = (screen.width * 0.5) - (size.width * 0.5); }
 		if (center_y) { pos.y = (screen.height * 0.5) - (size.height * 0.5); }
 	}
 
@@ -52,20 +52,21 @@ public:
 	void set_symbol_bg(char ch) {
 		char_bg = ch;
 	}
-	
+
 	//print
-	void print() const {
+	void print(bool print_bg = true) const {
 		Coord padding = Coord(border_padding.width, border_padding.height);
 		std::string row_button(size.width - padding.x * 2, ' ');
 		std::string text_erase = text.substr(0, size.width);
 		int length = static_cast<int>(text_erase.size() * 0.5);
 		Coord text_pos = Coord(pos.x + (size.width / 2) - length, pos.y + (size.height / 2) - ((size.height % 2) == 0));
-		
 
-		cmd.color(color_bg);
-		for (int y = 0; y < size.height - padding.y * 2; y++) {
-			cmd.gotoxy(pos.x + padding.x + size.width, pos.y + padding.y + y);
-			std::cout << char_bg;
+		if (print_bg) {
+			cmd.color(color_bg);
+			for (int y = 0; y < size.height - padding.y * 2; y++) {
+				cmd.gotoxy(pos.x + padding.x + size.width, pos.y + padding.y + y);
+				std::cout << char_bg;
+			}
 		}
 
 		cmd.color(color_button);
@@ -231,10 +232,10 @@ public:
 	}
 
 	//print
-	void print() const {
+	void print(bool print_bg = true) const {
 		for (const std::deque<Button>& buttons_row : buttons) {
 			for (const Button& button : buttons_row) {
-				button.print();
+				button.print(print_bg);
 			}
 		}
 	}
@@ -265,11 +266,10 @@ protected:
 	std::deque<std::deque<Button>> buttons;
 };
 
-namespace MakeMenu {
+class MakeMenu {
+public:
 	//make_menu
-	std::string center_menu(std::vector<std::string> list_menu, Color color_bg = Color(0, 0), Color color_button = Color(0, 11),
-		Color color_selected = Color(0, 12), int pos_y = 5, int size_y = 3, int padding_y = 4, double scale_x = 0.375) {
-
+	std::string center_menu(std::vector<std::string> list_menu) {
 		Plane plane;
 		Move move;
 		Console cmd;
@@ -328,4 +328,32 @@ namespace MakeMenu {
 		int index_menu = menu.get_selected_index();
 		return list_menu[index_menu];
 	}
-}
+
+	void set_style(Color color_bg = Color(0, 0), Color color_button = Color(0, 11),
+		Color color_selected = Color(0, 12), int pos_y = 5, int size_y = 3, int padding_y = 4, double scale_x = 0.375) {
+		this->color_bg = color_bg;
+		this->color_button = color_button;
+		this->color_selected = color_selected;
+		this->pos_y = pos_y;
+		this->size_y = size_y;
+		this->padding_y = padding_y;
+		this->scale_x = scale_x;
+	}
+
+private:
+	static Color color_bg;
+	static Color color_button;
+	static Color color_selected;
+	static int pos_y;
+	static int size_y;
+	static int padding_y;
+	static double scale_x;
+};
+
+Color MakeMenu::color_bg = Color(0, 0);
+Color MakeMenu::color_button = Color(0, 11);
+Color MakeMenu::color_selected = Color(0, 12);
+int MakeMenu::pos_y = 5;
+int MakeMenu::size_y = 3;
+int MakeMenu::padding_y = 4;
+double MakeMenu::scale_x = 0.375;
