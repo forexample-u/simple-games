@@ -16,9 +16,9 @@ namespace ListMenu {
 			"Ping-pong",
 			"Breakout",
 			"Flappy-Bird",
+			"2048",
 			"Back"
 		};
-		
 		
 		MakeMenu menu;
 		std::string choice = menu.center_menu(list_games);
@@ -36,6 +36,9 @@ namespace ListMenu {
 		}
 		if (choice == "Flappy-Bird") {
 			flyBird();
+		}
+		if (choice == "2048") {
+			ListGame::_2048();
 		}
 		if (choice == "Back") {
 			ListMenu::main_menu();

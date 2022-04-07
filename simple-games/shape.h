@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "console.h"
 #include "core.h"
 
 //interface for shape
@@ -43,16 +44,16 @@ public:
         color_border = new_color;
     }
 
-    void set_symbol_plane(char ch) {
-        char_plane = ch;
+    void set_symbol_plane(char new_ch) {
+        char_plane = new_ch;
     }
 
-    void set_symbol_border(char ch) {
-        char_border = ch;
+    void set_symbol_border(char new_ch) {
+        char_border = new_ch;
     }
 
-    void set_symbol_bg(char ch) {
-        char_bg = ch;
+    void set_symbol_bg(char new_ch) {
+        char_bg = new_ch;
     }
 
     //print
@@ -225,12 +226,12 @@ public:
         color_border = new_color;
     }
 
-    void set_symbol_block(char ch) {
-        char_block = ch;
+    void set_symbol_block(char new_ch) {
+        char_block = new_ch;
     }
 
-    void set_symbol_border(char ch) {
-        char_border = ch;
+    void set_symbol_border(char new_ch) {
+        char_border = new_ch;
     }
 
     //print

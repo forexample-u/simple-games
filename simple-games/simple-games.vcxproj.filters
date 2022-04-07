@@ -74,5 +74,11 @@
     <ClInclude Include="test_menu.h">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
+    <ClInclude Include="2048.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Runer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

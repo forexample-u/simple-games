@@ -142,6 +142,7 @@
     <ClCompile Include="simple-games.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="2048.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="collider.h" />
     <ClInclude Include="console.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="main_menu.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="move_test.h" />
+    <ClInclude Include="Runer.h" />
     <ClInclude Include="PingPong.h" />
     <ClInclude Include="settings_menu.h" />
     <ClInclude Include="shape.h" />
