@@ -11,13 +11,13 @@
 class Ball : public Collider {
 public:
 	//print
-	void print() {
+	void print() const {
 		std::string row(size_ball.width, char_ball);
 
 		cmd.color(color_bg);
 		for (int y = 0; y < size_ball.height; y++) {
 			cmd.gotoxy(pos_ball.x, pos_ball.y + y);
-			std::cout << row;
+			std::cout << row << std::flush;
 		}
 
 		pos_ball.x += dir_ball.x;
@@ -26,8 +26,10 @@ public:
 		cmd.color(color_ball);
 		for (int y = 0; y < size_ball.height; y++) {
 			cmd.gotoxy(pos_ball.x, pos_ball.y + y);
-			std::cout << row;
+			std::cout << row << std::flush;
 		}
+		cmd.color(color_bg);
+		cmd.gotoxy(size_ball.width, pos_ball.y);
 	}
 
 	void detect_collision(Coord collision_pos, Size collision_size) {
@@ -79,7 +81,7 @@ public:
 	}
 
 private:
-	Coord pos_ball;
+	mutable Coord pos_ball;
 	Size size_ball = Size(1, 1);
 	Dir dir_ball = Dir(1, 1);
 	Color color_ball = Color(0, 15);
@@ -88,6 +90,8 @@ private:
 	Console cmd;
 	std::vector<Block> collisions;
 };
+
+
 
 class Board {
 public:
@@ -101,19 +105,19 @@ public:
 		pos_board.y -= dir_board.y * move_step_board.y;
 	}
 
-	void border(Coord border_pos, Size border_size) {
-		int collision_left  = border_pos.x + 1;
+	void set_border(Coord border_pos, Size border_size) {
+		int collision_left = border_pos.x + 1;
 		int collision_right = border_pos.x + border_size.width - size_board.width - 1;
-		int collision_up    = border_pos.y + 1;
-		int collision_down  = border_pos.y + border_size.height - size_board.height - 1;
+		int collision_up = border_pos.y + 1;
+		int collision_down = border_pos.y + border_size.height - size_board.height - 1;
 		if (collision_left > pos_board.x) { pos_board.x = collision_left; }
 		if (collision_right < pos_board.x) { pos_board.x = collision_right; }
 		if (collision_down < pos_board.y) { pos_board.y = collision_down; }
 		if (collision_up > pos_board.y) { pos_board.y = collision_up; }
 	}
 
-	void border(IShape& shape) {
-		border(shape.get_pos(), shape.get_size());
+	void set_border(IShape& shape) {
+		set_border(shape.get_pos(), shape.get_size());
 	}
 
 	//set
@@ -157,8 +161,9 @@ public:
 		cmd.color(color_board);
 		for (int y = 0; y < size_board.height; y++) {
 			cmd.gotoxy(pos_board.x, pos_board.y + y);
-			std::cout << row;
+			std::cout << row << std::flush;
 		}
+		cmd.gotoxy(pos_board);
 	}
 
 	//get
@@ -185,102 +190,117 @@ private:
 
 
 
-void breakout() {
-	Move move;
-	Console cmd;
-	Plane plane;
+namespace ListGame {
+	void breakout() {
+		Move move;
+		Console cmd;
+		Plane plane;
 
-	Ball ball;
-	Block block;
-	Board player;
-	cmd.resize_screen(Size(120, 30));
+		Ball ball;
+		Block block;
+		Board player;
+		cmd.resize_screen(Size(130, 40));
 
-	//color
-	plane.set_color_bg(Color(15, 15));
-	plane.set_color_border(Color(15, 15));
-	plane.set_color_plane(Color(0, 0));
-	ball.set_color_ball(Color(15, 15));
-	ball.set_color_bg(Color(0, 0));
-	block.set_color_block(Color(7, 7));
-	player.set_color_board(Color(12, 12));
+		//color
+		plane.set_color_bg(Color(15, 15));
+		plane.set_color_border(Color(15, 15));
+		plane.set_color_plane(Color(0, 0));
+		ball.set_color_ball(Color(15, 15));
+		ball.set_color_bg(Color(0, 0));
+		block.set_color_block(Color(7, 7));
+		player.set_color_board(Color(12, 12));
 
-	//settings:
-	Size player_size = Size(5, 1);
-	Coord plane_pos = Coord(0, 0);
-	Size plane_size = Size(118, 29);
-	Size block_count = Size(10, 3);
-	Size block_size = Size(8, 2);
-	Size block_padding = Size(2, 1);
-	Coord block_offset = Coord(10, 2);
+		//settings:
+		Size player_size = Size(38, 1);
+		Coord plane_pos = Coord(0, 0);
+		Size plane_size = Size(128, 39);
+		Size block_count = Size(11, 5);
+		Size block_size = Size(8, 2);
+		Size block_padding = Size(2, 1);
+		Coord player_step = Coord(3, 0);
+		Coord block_offset = Coord(10, 2);
 
-	//calc settings
-	block_padding.width += block_size.width;
-	block_padding.height += block_size.height;
+		//calc settings
+		block_padding.width += block_size.width;
+		block_padding.height += block_size.height;
 
-	//plane
-	plane.set_pos(plane_pos);
-	plane.set_size(plane_size);
+		//plane
+		plane.set_pos(plane_pos);
+		plane.set_size(plane_size);
 
-	//player
-	player.set_pos(Coord(plane_pos.x + (rand() % (plane_size.width - 1)) + 1, plane_size.height - player_size.height - 1));
-	player.set_size(player_size);
+		//player
+		player.set_pos(Coord(plane_pos.x + (rand() % (plane_size.width - player_size.width - 1)) + 1, plane_size.height - player_size.height - 1));
+		player.set_size(player_size);
+		player.set_step(player_step);
 
-	//ball
-	ball.set_pos(Coord(player.get_pos().x, player.get_pos().y - player_size.height - 2));
-	ball.set_size(Size(2, 1));
-	ball.set_dir(Dir(1, -1));
+		//ball
+		ball.set_pos(Coord(player.get_pos().x, player.get_pos().y - player_size.height - 2));
+		ball.set_size(Size(2, 1));
+		ball.set_dir(Dir(1 + (rand() % 2) * -2, -1));
 
-	//blocks
-	block.set_size(block_size);
-	std::vector<Block> blocks;
-	for (size_t y = 0; y < block_count.height; y++) {
-		block.set_pos(block_offset);
-		block.add_pos(Coord(0, block_padding.height * y));
-		for (size_t x = 0; x < block_count.width; x++) {
-			blocks.push_back(block);
-			block.add_pos(Coord(block_padding.width, 0));
-		}
-	}
-
-	plane.print();
-	for (const auto& block : blocks) {
-		block.print();
-	}
-
-	auto clock_start = std::clock();
-	int sleep_ball_ms = 1000;
-	while (true) {
-		for (size_t i = 0; i < blocks.size(); i++) {
-			ball.detect_collision(blocks[i].get_pos(), blocks[i].get_size());
-			if (ball.collide.is_any()) {
-				blocks[i].set_color_block(plane.get_color_plane());
-				blocks[i].print();
-				blocks.erase(blocks.begin() + i);
+		//blocks
+		block.set_size(block_size);
+		std::vector<Block> blocks;
+		for (int y = 0; y < block_count.height; y++) {
+			block.set_pos(block_offset);
+			block.add_pos(Coord(0, block_padding.height * y));
+			for (int x = 0; x < block_count.width; x++) {
+				blocks.push_back(block);
+				block.add_pos(Coord(block_padding.width, 0));
 			}
 		}
-		ball.detect_collision(player.get_pos(), player.get_size());
-		ball.detect_collision(plane.get_pos(), plane.get_size());
 
-		player.move(move);
-		player.border(plane);
-		player.print();
-
-		auto clock_now = std::clock();
-		if ((clock_now - clock_start) > sleep_ball_ms) {
-			ball.print();
+		plane.print();
+		for (const auto& block : blocks) {
+			block.print();
 		}
 
-		cmd.sleep(50);
-		if (ball.get_pos().y >= plane_size.height - 2) { // die
-			break;
+		clock_t clock_old = std::clock();
+		clock_t clock_now = std::clock();
+		clock_t clock_first = std::clock();
+		clock_t speed_add = 2;
+		clock_t sleep_ball_ms = ((block_count.width * block_count.height) * speed_add) - 20;
+		clock_t first_sleep_ms = 4000;
+		while (true) {
+			player.move(move);
+			player.set_border(plane);
+			player.print();
+
+			cmd.sleep(30);
+			clock_now = std::clock();
+			if ((clock_old + sleep_ball_ms < clock_now) && (clock_first + first_sleep_ms < clock_now)) {
+				for (size_t i = 0; i < blocks.size(); i++) {
+					ball.detect_collision(blocks[i].get_pos(), blocks[i].get_size());
+					if (ball.collide.is_any()) {
+						blocks[i].set_color_block(plane.get_color_plane());
+						blocks[i].print();
+						blocks.erase(blocks.begin() + i);
+						if (speed_add + 10 <= sleep_ball_ms) {
+							sleep_ball_ms -= speed_add;
+						}
+
+					}
+				}
+				ball.detect_collision(player.get_pos(), player.get_size());
+				ball.detect_collision(plane.get_pos(), plane.get_size());
+				ball.print();
+				clock_old = std::clock();
+			}
+			if (clock_first + first_sleep_ms > clock_now) {
+				cmd.sleep(100);
+			}
+
+			if (ball.get_pos().y >= plane_size.height - 2) { // die
+				break;
+			}
+			if (blocks.empty()) { // win
+				break;
+			}
+			if (move.now.get_escape()) {
+				break;
+			}
 		}
-		if (blocks.empty()) { // win
-			break;
-		}
-		if (move.now.get_escape()) {
-			break;
-		}
+		cmd.color_reset();
+		cmd.clear();
 	}
-	cmd.color_reset();
-	cmd.clear();
 }
