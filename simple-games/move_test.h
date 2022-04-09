@@ -17,15 +17,17 @@ namespace test {
 		Plane plane;
 		Move move;
 		cmd.resize_screen(Size(120, 30));
-		plane.set_size(Size(40, 10));
-		plane.set_pos(Coord(30, 10));
+		plane.set_size(Size(30, 10));
+		plane.set_pos(Coord(20, 10));
 		plane.set_border_padding(Size(2, 1));
+		plane.set_bg_padding(Size(3, 0));
 		plane.set_color_bg(Color(3, 3));
 		plane.set_color_plane(Color(12, 12));
 		plane.set_color_border(Color(15, 15));
 		plane.set_symbol_plane(' ');
 		plane.set_symbol_border('.');
-		std::cout << "\nPress any key...";
+		plane.print();
+		Size old_screen_size = cmd.get_size_screen();
 		while (true) {
 			move.move();
 			int dir_x = move.now.get_dir_x() * 2;
@@ -44,18 +46,23 @@ namespace test {
 			if (plane_pos.y < 0) {
 				plane.set_pos(Coord(plane_pos.x, 0));
 			}
-			if ((plane_pos.x + plane_size.width) > screen_size.width-1) {
-				plane.set_pos(Coord(screen_size.width - plane_size.width - 2, plane_pos.y));
+			if ((plane_pos.x + plane_size.width) > screen_size.width - 4) {
+				plane.set_pos(Coord(screen_size.width - plane_size.width - 4, plane_pos.y));
 			}
 			if ((plane_pos.y + plane_size.height) > screen_size.height-1) {
 				plane.set_pos(Coord(plane_pos.x, screen_size.height - plane_size.height - 1));
 			}
 
+			if (old_screen_size.width != screen_size.width || old_screen_size.height != screen_size.height) {
+				cmd.clear();
+				old_screen_size = screen_size;
+				plane.print();
+				cmd.sleep(1);
+			}
+
 			//print
 			if (move.now.get_button() != false) {
-				plane.print_border();
-				plane.print_plane();
-				plane.print_bg();
+				plane.print();
 			}
 			if (move.now.get_escape() == true) {
 				break;
@@ -77,12 +84,19 @@ namespace test {
 		if (rand() % 2) { 
 			ball.set_dir(Dir(-1,-1));
 		}
-		
 		ball.set_pos(Coord(1 + rand() % 50, 2 + rand() % 6));
-		ball.set_size(Size(1 + rand()%10, 1 + rand()%3));
+		ball.set_size(Size(1 + rand() % 10, 1 + rand() % 3));
 
 		std::vector<Plane> planes;
 		Plane plane;
+		plane.set_color_border(Color(15, 15));
+		plane.set_color_plane(Color(0, 0));
+		plane.set_size(Size(118, 29));
+		plane.set_pos(Coord(0, 0));
+		plane.print_border();
+		plane.print_plane();
+		planes.push_back(plane);
+
 		plane.set_color_border(Color(12, 12));
 		plane.set_size(Size(30, 10));
 		plane.set_pos(Coord(15, 11));
@@ -98,12 +112,6 @@ namespace test {
 		plane.set_color_border(Color(11, 11));
 		plane.set_size(Size(10, 5));
 		plane.set_pos(Coord(107, 1));
-		plane.print_border();
-		planes.push_back(plane);
-
-		plane.set_color_border(Color(15, 15));
-		plane.set_size(Size(118, 29));
-		plane.set_pos(Coord(0, 0));
 		plane.print_border();
 		planes.push_back(plane);
 
@@ -242,5 +250,16 @@ namespace test {
 		cmd.clear();
 		std::cout << "Test completed! Press any key...";
 		cmd.pause();
+	}
+}
+
+namespace test {
+	void move_to_point() {
+		Coord point_pos = Coord();
+
+		Block block;
+		block.set_pos(Coord());
+
+
 	}
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "interface.h"
 #include "move_test.h"
+#include "main_menu.h"
 
 namespace ListMenu {
 	void main_menu();

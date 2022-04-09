@@ -1,10 +1,14 @@
 #pragma once
 #include "interface.h"
-#include "settings_menu.h"
 #include "game_menu.h"
 #include "test_menu.h"
+#include "settings_menu.h"
 
 namespace ListMenu {
+	void game_menu();
+	void test_menu();
+	void settings_menu();
+	
 	void main_menu() {
 		Console cmd;
 		std::vector<std::string> list_menu{
@@ -20,13 +24,13 @@ namespace ListMenu {
 		cmd.color_reset();
 		cmd.clear();
 		if (choice == "Start") {
-			ListMenu::game_menu();
+			game_menu();
 		}
 		if (choice == "Test") {
-			ListMenu::test_menu();
+			test_menu();
 		}
 		if (choice == "Settings") {
-			ListMenu::settings_menu();
+			settings_menu();
 		}
 		if (choice == "Quit") {
 			cmd.color_reset();

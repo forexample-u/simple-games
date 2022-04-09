@@ -1,6 +1,6 @@
 #include <iostream>
-#include "main_menu.h"
+#include "move_test.h"
 
 int main(){
-	ListMenu::main_menu();
+	test::collide_test();
 }

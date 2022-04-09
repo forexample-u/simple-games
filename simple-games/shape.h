@@ -32,6 +32,10 @@ public:
         border_padding = new_padding;
     }
 
+    void set_bg_padding(Size new_padding) {
+        bg_padding = new_padding;
+    }
+
     void set_color_plane(Color new_color) {
         color_plane = new_color;
     }
@@ -63,71 +67,90 @@ public:
         cmd.color(color_plane);
         for (int y = 0; y < size.height - padding.y * 2; y++) {
             cmd.gotoxy(pos.x + padding.x, pos.y + padding.y + y);
-            std::cout << row_plane;
+            std::cout << row_plane << std::flush;
         }
         cmd.color(color_bg);
     }
 
     void print_bg(bool visulize_debug_info = false) const {
         cmd.color(color_bg);
-        Size console = cmd.get_size_screen();
-        std::string full(console.width - 1, ' ');
-        std::string right;
+        Size screen = cmd.get_size_screen();
+        std::string full;
         std::string left;
-
+        std::string right;
+        int full_size = screen.width - bg_padding.width;
         int left_size = pos.x;
-        if (left_size > 0) {
+        int right_size = (screen.width - (size.width + pos.x) - bg_padding.width);
+        bool print_full = full_size > 0;
+        bool print_left = left_size > 0;
+        bool print_right = right_size > 0;
+
+        if (print_full) {
+            full.assign(full_size, ' ');
+        }
+        
+        if (print_left) {
             left.assign(left_size, ' ');
         }
-
-        int right_size = (console.width - (size.width + pos.x) - 1);
-        if (right_size > 0) {
+        
+        if (print_right) {
             right.assign(right_size, ' ');
         }
 
         //left
-        for (int y = 0; y < size.height; y++) {
-            cmd.gotoxy(0, y + pos.y);
-            std::cout << left;
-        }
-
-        //top
-        for (int y = 0; y < pos.y; y++) {
-            cmd.gotoxy(0, y);
-            std::cout << full;
+        if (print_left) {
+            for (int y = 0; y < size.height; y++) {
+                cmd.gotoxy(0, y + pos.y);
+                std::cout << left << std::flush;
+            }
         }
 
         //right
-        for (int y = 0; y <= size.height; y++) {
-            cmd.gotoxy(pos.x + size.width, y + pos.y);
-            std::cout << right;
+        if (print_right) {
+            for (int y = 0; y <= size.height; y++) {
+                cmd.gotoxy(pos.x + size.width, y + pos.y);
+                std::cout << right << std::flush;
+            }
+        }
+
+        //top
+        if (print_full) {
+            for (int y = 0; y < pos.y; y++) {
+                cmd.gotoxy(0, y);
+                std::cout << full << std::flush;
+            }
         }
 
         //down
-        for (int y = 0; y < console.height - (pos.y + size.height); y++) {
-            cmd.gotoxy(0, y + pos.y + size.height);
-            std::cout << full;
+        if (print_full) {
+            for (int y = 0; y < screen.height - (pos.y + size.height) - bg_padding.height; y++) {
+                cmd.gotoxy(0, y + pos.y + size.height);
+                std::cout << full << std::flush;
+            }
         }
 
         //fix side right
-        cmd.color(color_bg);
         if (visulize_debug_info == true) {
             cmd.color(Color(15, 0));
         }
 
         for (int y = 0; y < pos.y; y++) {
             cmd.gotoxy(0, y);
-            std::cout << char_bg;
+            std::cout << char_bg << std::flush;
         }
 
-        for (int y = 0; y < console.height - (pos.y + size.height); y++) {
+        for (int y = 0; y < screen.height - (pos.y + size.height) - bg_padding.height; y++) {
             cmd.gotoxy(0, y + pos.y + size.height);
-            std::cout << char_bg;
+            std::cout << char_bg << std::flush;
         }
 
         for (int y = 0; y < size.height; y++) {
             cmd.gotoxy(pos.x + size.width, y + pos.y);
-            std::cout << char_bg;
+            std::cout << char_bg << std::flush;
+        }
+
+        if (visulize_debug_info == true) {
+            cmd.color(color_bg);
         }
     }
 
@@ -139,16 +162,16 @@ public:
 
         for (int y = 0; y < size.height; y++) {
             cmd.gotoxy(pos.x, y + pos.y);
-            std::cout << collum;
+            std::cout << collum << std::flush;
             cmd.gotoxy(size.width + pos.x - padding.x, y + pos.y);
-            std::cout << collum;
+            std::cout << collum << std::flush;
         }
 
         for (int y = 0; y < padding.y; y++) {
             cmd.gotoxy(pos.x, pos.y + y);
-            std::cout << line;
+            std::cout << line << std::flush;
             cmd.gotoxy(pos.x, pos.y + size.height - 1 - y);
-            std::cout << line;
+            std::cout << line << std::flush;
         }
         cmd.color(color_bg);
     }
@@ -184,6 +207,7 @@ protected:
     Coord pos = Coord(0, 0);
     Size size = Size(60, 18);
     Size border_padding = Size(1, 1);
+    Size bg_padding = Size(1, 0);
 
     Color color_plane;
     Color color_bg;
@@ -242,7 +266,7 @@ public:
         cmd.color(color_block);
         for (int y = 0; y < size.height - padding.y * 2; y++) {
             cmd.gotoxy(pos.x + padding.x, pos.y + padding.y + y);
-            std::cout << row_block;
+            std::cout << row_block << std::flush;
         }
 
         //border
@@ -251,15 +275,15 @@ public:
         cmd.color(color_border);
         for (int y = 0; y < size.height; y++) {
             cmd.gotoxy(pos.x, y + pos.y);
-            std::cout << collum;
+            std::cout << collum << std::flush;
             cmd.gotoxy(size.width + pos.x - padding.x, y + pos.y);
-            std::cout << collum;
+            std::cout << collum << std::flush;
         }
         for (int y = 0; y < padding.y; y++) {
             cmd.gotoxy(pos.x, pos.y + y);
-            std::cout << line;
+            std::cout << line << std::flush;
             cmd.gotoxy(pos.x, pos.y + size.height - 1 - y);
-            std::cout << line;
+            std::cout << line << std::flush;
         }
         cmd.color(color_bg);
     }

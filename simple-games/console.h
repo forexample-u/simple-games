@@ -3,13 +3,23 @@
 #include <string>
 #include <chrono>
 #include <thread>
-#include <Windows.h>
 #include "core.h"
 
-#define Ansi_test
+#ifdef _WIN32
+#include <Windows.h>
+#endif // Windows
+
+#ifdef __linux__
+#include <sys/ioctl.h>
+#include <unistd.h>
+#endif // Linux
 
 class Console {
 public:
+	~Console() {
+		std::cout.flush();
+	}
+
 	void sleep(int ms) const {
 		std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 	}
@@ -18,9 +28,9 @@ public:
 		gotoxy(pos.x, pos.y);
 	}
 
-#ifndef Ansi_test
+#ifdef _WIN32
 	void gotoxy(int x, int y) const {
-		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { short(x), short(y) });
+		SetConsoleCursorPosition(h, { short(x), short(y) });
 	}
 
 	void resize_screen(Size size) const {
@@ -39,11 +49,11 @@ public:
 	}
 
 	void color_font(int font_bit) const {
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (font_bit % 16));
+		color(Color(font_bit, 0));
 	}
 
 	void color(Color color) const {
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ((color.get_bg() % 16) * 16) + (color.get_font() % 16));
+		SetConsoleTextAttribute(h, ((color.get_bg() % 16) * 16) + (color.get_font() % 16));
 	}
 
 	void color_reset() const {
@@ -52,53 +62,51 @@ public:
 
 	Size get_size_screen() const {
 		CONSOLE_SCREEN_BUFFER_INFO screen_info;
-		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &screen_info);
+		GetConsoleScreenBufferInfo(h, &screen_info);
 		auto screen = screen_info.srWindow;
 		return Size(screen.Right - screen.Left + 1, screen.Bottom - screen.Top + 1);
 	}
-#endif
-#ifdef Ansi_test
+private:
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+#endif // Windows
+
+#ifdef __linux__
 	void gotoxy(int x, int y) const {
-		std::cout << "\033[" << (y + 1) << "d\033[" << (x + 1) << "G";
+		std::cout << "\033[" << (y + 1) << "d\033[" << (x + 1) << "G" << std::flush;
 	}
 
 	void resize_screen(Size size) const {
-		std::cout << "\033[8;" << size.height << ";" << size.width << "t";
+		std::cout << "\033[8;" << size.height << ";" << size.width << "t" << std::flush;
 	}
 
-	//TODO:
-	//1. pause()
-	//2. get_size_screen()
 	void pause() const {
-		system("pause > nul");
+		system("bash -c \'read -n 1 -s\'");
 	}
+
 	Size get_size_screen() const {
-		CONSOLE_SCREEN_BUFFER_INFO screen_info;
-		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &screen_info);
-		auto screen = screen_info.srWindow;
-		return Size(screen.Right - screen.Left + 1, screen.Bottom - screen.Top + 1);
+		struct winsize screen;
+		ioctl(STDOUT_FILENO, TIOCGWINSZ, &screen);
+		return Size(screen.ws_col, screen.ws_row);
 	}
 
 	void clear() const {
-		std::cout << "\033c";
+		std::cout << "\033c" << std::flush;
 	}
 
 	void color_font(int font_bit) const {
 		int font = ansi_color_to_windows_color(font_bit);
-		std::cout << "\033[38;5;" << font << "m";
+		std::cout << "\033[38;5;" << font << "m" << std::flush;
 	}
 
 	void color(Color color) const {
 		int font = ansi_color_to_windows_color(color.get_font());
 		int bg = ansi_color_to_windows_color(color.get_bg());
-		std::cout << "\033[38;5;" << font << "m";
-		std::cout << "\033[48;5;" << bg << "m";
+		std::cout << "\033[38;5;" << font << "m\033[48;5;" << bg << "m";
 	}
 
 	void color_reset() const {
-		std::cout << "\033[0m";
+		std::cout << "\033[0m" << std::flush;
 	}
-#endif
 private:
 	//ansi color convert to windows color
 	int ansi_color_to_windows_color(int color_bit) const {
@@ -113,4 +121,5 @@ private:
 		if (color_bit == 6 + 8) { color = 3 + 8; };
 		return color;
 	}
+#endif // Linux
 };
