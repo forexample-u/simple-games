@@ -49,8 +49,8 @@ public:
 		color_button = new_color;
 	}
 
-	void set_symbol_bg(char ch) {
-		char_bg = ch;
+	void set_symbol_bg(char new_ch) {
+		char_bg = new_ch;
 	}
 
 	//print
@@ -65,19 +65,20 @@ public:
 			cmd.color(color_bg);
 			for (int y = 0; y < size.height - padding.y * 2; y++) {
 				cmd.gotoxy(pos.x + padding.x + size.width, pos.y + padding.y + y);
-				std::cout << char_bg;
+				std::cout << char_bg << std::flush;
 			}
 		}
 
 		cmd.color(color_button);
 		for (int y = 0; y < size.height - padding.y * 2; y++) {
 			cmd.gotoxy(pos.x + padding.x, pos.y + padding.y + y);
-			std::cout << row_button;
+			std::cout << row_button << std::flush;
 		}
 
 		cmd.color(color_button);
 		cmd.gotoxy(text_pos);
-		std::cout << text_erase;
+		std::cout << text_erase << std::flush;
+		cmd.gotoxy(text_pos.x + length + 1, text_pos.y);
 
 		cmd.color(color_bg);
 	}
@@ -148,7 +149,7 @@ public:
 		Button button_selected = buttons[selected_index];
 		button_selected.set_color_button(selected_color_button);
 		for (size_t index = 0; index < buttons.size(); index++) {
-			if (selected_index != index) {
+			if (selected_index != static_cast<int>(index)) {
 				buttons[index].print();
 			}
 		}

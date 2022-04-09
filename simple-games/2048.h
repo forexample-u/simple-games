@@ -8,7 +8,6 @@
 #include "move.h"
 #include "core.h"
 #include "console.h"
-#include "main_menu.h"
 
 
 class Game_2048 {
@@ -16,7 +15,7 @@ private:
 	void die_condition() {
 		size_t row_len = nums[0].size();
 		size_t col_len = nums.size();
-		if (full_plane()) { 
+		if (full_plane()) {
 			return;
 		}
 
@@ -144,7 +143,6 @@ public:
 	Game_2048() {
 		nums.assign(count_button.height, std::vector<int>(count_button.width));
 		buttons.create(count_button, Size(10, 5), Coord(2, 1), Color(0, 7), Color(0, 0));
-		buttons.set_pos_center(true, 1);
 		create_rand_num();
 	}
 
@@ -154,7 +152,6 @@ public:
 		dir_move.y = move.now.get_dir_y();
 
 		int animaion_ms = 25;
-
 		auto tmp_nums = nums;
 
 		//move
@@ -181,14 +178,14 @@ public:
 			for (size_t i = 0; i < nums[0].size() / 2; i++) {
 				move_dir(dir_move);
 				print();
-				cmd.sleep(animaion_ms);
+				cmd.sleep(animaion_ms * 0.5);
 			}
 		}
 		if (dir_move.y != 0) { // up/down
 			for (size_t i = 0; i < nums.size() / 2; i++) {
 				move_dir(dir_move);
 				print();
-				cmd.sleep(animaion_ms);
+				cmd.sleep(animaion_ms * 0.5);
 			}
 		}
 
@@ -221,6 +218,10 @@ public:
 
 	void set_color_button(int num = 4, Color new_color = Color(7, 7)) {
 		color_num[num] = new_color;
+	}
+
+	void set_pos(Coord new_pos) {
+		buttons.set_pos(new_pos);
 	}
 
 	//print
@@ -264,7 +265,7 @@ private:
 		{1024, Color(0, 1)},
 		{2048, Color(0, 15)}
 	};
-	
+
 	Console cmd;
 };
 
@@ -276,12 +277,24 @@ namespace ListGame {
 		Move move;
 		cmd.resize_screen(Size(120, 30));
 		srand(time(0));
-		plane.set_pos(Coord(33, 1));
+
+		//settings:
+		Coord pos = Coord(33, 1);
+		Size padding = Size(2, 1);
+
+		//plane
+		plane.set_pos(pos);
 		plane.set_size(Size(55, 27));
-		plane.set_border_padding(Size(2, 1));
+		plane.set_border_padding(padding);
 		plane.set_color_plane(Color(15, 15));
 		plane.set_color_border(Color(7, 7));
 		plane.set_color_bg(Color(0, 0));
+
+		//2048
+		game.set_pos(Coord(pos.x + padding.width * 2, pos.y + padding.height * 2));
+
+		//print
+		cmd.sleep(50);
 		plane.print();
 
 		game.print();
@@ -298,6 +311,5 @@ namespace ListGame {
 			}
 		}
 		cmd.pause();
-		ListMenu::main_menu();
 	}
 }
