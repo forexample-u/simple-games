@@ -19,7 +19,7 @@ private:
         }
 
         //snake self
-        for(size_t i = 0; i < pos_all.size()-1; i++){
+        for (size_t i = 0; i < pos_all.size() - 1; i++) {
             if (pos_all[i] == pos_head) {
                 return true;
             }
@@ -49,7 +49,7 @@ private:
     }
 
     void win_condition(const IShape& shape) {
-        size_t win_size = (shape.get_size().width-2) * (shape.get_size().height-2);
+        int win_size = (shape.get_size().width - 2) * (shape.get_size().height - 2);
         win = size_snake >= win_size;
     }
 public:
@@ -80,8 +80,11 @@ public:
         //snake_tail print
         if ((size_snake >= static_cast<int>(pos_all.size())) || (size_snake == 0)) {
             cmd.color(color_bg);
-            cmd.gotoxy(pos_tail);
-            std::cout << ' ';
+            for (int y = 0; y < step_snake.y; y++) {
+                cmd.gotoxy(pos_tail.x * step_snake.x, pos_tail.y * step_snake.y + y);
+                std::cout << std::string(step_snake.x, ' ') << std::flush;
+                cmd.gotoxy(pos_tail.x * step_snake.x, pos_tail.y * step_snake.y + y);
+            }
         }
 
         //snake print
@@ -89,13 +92,17 @@ public:
         bool print_all = false;
         if (print_all) { //TODO: make print_all
             for (const auto& pos_snake : pos_all) {
-                cmd.gotoxy(pos_snake);
-                putchar(char_snake);
+                cmd.gotoxy(pos_snake.x * step_snake.x, pos_snake.y * step_snake.y);
+                std::cout << std::string(step_snake.x, char_snake);
             }
+            std::cout.flush();
         }
         else { //snake_head print
-            cmd.gotoxy(pos_head);
-            std::cout << char_snake;
+            for (int y = 0; y < step_snake.y; y++) {
+                cmd.gotoxy(pos_head.x * step_snake.x, pos_head.y * step_snake.y + y);
+                std::cout << std::string(step_snake.x, '.') << std::flush;
+                cmd.gotoxy(pos_head.x * step_snake.x, pos_head.y * step_snake.y + y);
+            }
         }
         cmd.color(color_bg);
     }
@@ -123,6 +130,10 @@ public:
         char_snake = new_ch;
     }
 
+    void set_step(Coord new_step) {
+        step_snake = new_step;
+    }
+
     //get
     bool is_die() const {
         return die;
@@ -132,11 +143,16 @@ public:
         return win;
     }
 
+    Coord get_step() {
+        return step_snake;
+    }
+
     std::deque<Coord> get_all_pos() const {
         return pos_all;
     }
 private:
     //inside parameter
+    Coord step_snake = Coord(2, 1);
     Coord pos_head;
     Coord pos_tail;
     Dir dir;
@@ -154,7 +170,7 @@ private:
     int size_snake = 1;
     int add_size = 1;
     int speed = 0;
-    int bounce = 0;
+    int bounce = 4;
     int skin = 0;
 
     //console
@@ -166,14 +182,6 @@ class Apple {
 public:
     ~Apple() {
         destroy();
-    }
-
-    void set_color_apple(Color new_color = Color(7, 4)) {
-        color_apple = new_color;
-    }
-
-    void set_symbol_apple(char new_ch = '$') {
-        char_apple = new_ch;
     }
 
     void create(Coord new_pos) {
@@ -198,36 +206,61 @@ public:
         create(pos_apple);
     }
 
+    //set
+    void set_color_apple(Color new_color) {
+        color_apple = new_color;
+    }
+
+    void set_color_bg(Color new_color) {
+        color_bg = new_color;
+    }
+
+    void set_symbol_apple(char new_ch = '$') {
+        char_apple = new_ch;
+    }
+
+    void set_step(Coord new_step) {
+        step_apple = new_step;
+    }
+
+    //print
+    void print() const {
+        cmd.color(color_apple);
+        for (int y = 0; y < step_apple.y; y++) {
+            cmd.gotoxy(pos_apple.x * step_apple.x, pos_apple.y * step_apple.y + y);
+            std::cout << std::string(step_apple.x, char_apple) << std::flush;
+            cmd.gotoxy(pos_apple.x * step_apple.x, pos_apple.y * step_apple.y + y);
+        }
+    }
+
     void destroy() {
         if (is_create()) {
             cmd.color(color_bg);
-            cmd.gotoxy(pos_apple);
-            std::cout << ' ';
+            for (int y = 0; y < step_apple.y; y++) {
+                cmd.gotoxy(pos_apple.x * step_apple.x, pos_apple.y * step_apple.y + y);
+                std::cout << std::string(step_apple.x, ' ') << std::flush;
+                cmd.gotoxy(pos_apple.x * step_apple.x, pos_apple.y * step_apple.y + y);
+            }
             exist_apple = false;
         }
     }
 
-    void print() const {
-        cmd.color(color_apple);
-        cmd.gotoxy(pos_apple);
-        std::cout << char_apple;
+    //get
+    Coord get_pos() const {
+        return pos_apple;
     }
 
     bool is_create() const {
         return exist_apple;
     }
 
-    Coord get_pos() const {
-        return pos_apple;
-    }
-
 private:
     Coord pos_apple;
+    Coord step_apple = Coord(2, 1);
     Color color_apple = Color(7, 4);
     Color color_bg;
     bool exist_apple = false;
     char char_apple = '$';
-
     Console cmd;
 };
 
@@ -240,58 +273,87 @@ void Snake::eat(Apple& apple) {
     }
 }
 
-void start_snake() {
-    Move move;
-    Console cmd;
-    Plane plane;
+namespace ListGame {
+    void snake() {
+        Move move;
+        Console cmd;
+        Plane plane;
+        Snake snake;
+        Apple apple;
+        cmd.resize_screen(Size(120, 30));
 
-    Snake snake;
-    Apple apple;
-   
-    int color_bg = 3;
-    int color_border = 4;
-    int color_plane = 0;
-    int color_snake = 15;
+        //settings:
+        Coord step_snake = Coord(2, 1);
+        Size size_plane = Size(90, 22);
+        Coord pos_plane = Coord(7, 4);
+        int add_sleep = 20;
+        int color_bg = 3;
+        int color_border = 4;
+        int color_plane = 0;
+        int color_snake = 15;
 
-    plane.set_pos(Coord(7, 5));
-    plane.set_size(Size(60, 18));
-    plane.set_color_bg(Color(color_bg, color_bg));
-    plane.set_color_plane(Color(color_plane, color_plane));
-    plane.set_color_border(Color(color_border, color_border));
-    plane.set_symbol_border('.');
-    plane.set_symbol_plane(' ');
-    plane.print();
-    
+        //plane
+        plane.set_pos(Coord(pos_plane.x / step_snake.x, pos_plane.y / step_snake.y));
+        plane.set_size(Size(size_plane.width / step_snake.x, size_plane.height / step_snake.y));
+        plane.set_color_bg(Color(color_bg, color_bg));
+        plane.set_color_border(Color(color_border, color_border));
+        plane.set_color_plane(Color(color_plane, color_plane));
+        plane.set_symbol_border('.');
+        plane.set_symbol_plane(' ');
 
-    snake.set_pos(Coord(plane.get_pos().x + 1, plane.get_pos().y + 1));
-    snake.set_color_snake(Color(color_snake, color_snake));
-    snake.set_symbol_snake('.');
-    int add_sleep = 0;
-    while (1) {
-        snake.move(move);
-        snake.set_plane(plane);
-        snake.eat(apple);
-        snake.print();
-        if (!apple.is_create()) {
-            apple.rand_create(plane, snake);
-            apple.print();
-        }
-        if (move.now.get_dir_y() != 0) {
-            add_sleep = 30;
-        }
-        cmd.sleep(30 + add_sleep);
+        //snake
+        snake.set_pos(Coord(plane.get_pos().x + 1, plane.get_pos().y + 1));
+        snake.set_step(step_snake);
+        snake.set_color_snake(Color(color_snake, color_snake));
+        snake.set_symbol_snake('.');
 
-        //end game
-        if (snake.is_die()) {
-            break;
+        //apple
+        apple.set_step(step_snake);
+        apple.set_symbol_apple(' ');
+        apple.set_color_apple(Color(4, 4));
+        apple.set_color_bg(Color(color_plane, color_plane));
+
+        //print scale plane
+        cmd.sleep(50);
+        Plane plane_scale = plane;
+        plane_scale.set_pos(Coord(plane.get_pos().x * step_snake.x, plane.get_pos().y * step_snake.y));
+        plane_scale.set_size(Size(plane.get_size().width * step_snake.x, plane.get_size().height * step_snake.y));
+        plane_scale.set_border_padding(Size(step_snake.x, step_snake.y));
+        plane_scale.print();
+
+        while (true) {
+            snake.move(move);
+            snake.set_plane(plane);
+            snake.eat(apple);
+            snake.print();
+            if (!apple.is_create()) {
+                int random_color = rand() % 3;
+                if (random_color == 0) { apple.set_color_apple(Color(6, 6)); }
+                if (random_color == 1) { apple.set_color_apple(Color(4, 4)); }
+                if (random_color == 2) { apple.set_color_apple(Color(2, 2)); }
+                apple.rand_create(plane, snake);
+                apple.print();
+            }
+            if (move.now.get_dir_x() != 0) {
+                add_sleep = 50;
+            }
+            if (move.now.get_dir_y() != 0) {
+                add_sleep = 50;
+            }
+            cmd.sleep(add_sleep + 10);
+
+            //end game
+            if (snake.is_die()) {
+                break;
+            }
+            if (snake.is_win()) {
+                break;
+            }
+            if (move.now.get_escape()) {
+                break;
+            }
         }
-        if (snake.is_win()) {
-            break;
-        }
-        if (move.now.get_escape()) {
-            break;
-        }
+        cmd.color_reset();
+        cmd.clear();
     }
-    cmd.color_reset();
-    cmd.clear();
 }

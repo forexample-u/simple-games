@@ -1,6 +1,8 @@
 #include <iostream>
 #include "move_test.h"
+#include "Snake.h"
 
 int main(){
-	test::collide_test();
+	test::move_player();
+	ListGame::snake();
 }
