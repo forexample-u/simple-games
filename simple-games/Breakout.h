@@ -10,6 +10,11 @@
 
 class Ball : public Collider {
 public:
+	void add_move() {
+		pos_ball.x += dir_ball.x;
+		pos_ball.y += dir_ball.y;
+	}
+
 	//print
 	void print() const {
 		std::string row(size_ball.width, char_ball);
@@ -29,7 +34,7 @@ public:
 			std::cout << row << std::flush;
 		}
 		cmd.color(color_bg);
-		cmd.gotoxy(size_ball.width, pos_ball.y);
+		cmd.gotoxy(pos_ball);
 	}
 
 	void detect_collision(Coord collision_pos, Size collision_size) {
@@ -163,6 +168,7 @@ public:
 			cmd.gotoxy(pos_board.x, pos_board.y + y);
 			std::cout << row << std::flush;
 		}
+		cmd.color(color_bg);
 		cmd.gotoxy(pos_board);
 	}
 

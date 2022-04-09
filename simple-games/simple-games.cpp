@@ -1,8 +1,10 @@
 #include <iostream>
 #include "move_test.h"
 #include "Snake.h"
+#include "2048.h"
 #include "Breakout.h"
+#include "PingPong.h"
 
 int main(){
-	ListGame::breakout();
+	ListGame::ping_pong();
 }
