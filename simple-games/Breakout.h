@@ -207,15 +207,6 @@ namespace ListGame {
 		Board player;
 		cmd.resize_screen(Size(130, 40));
 
-		//color
-		plane.set_color_bg(Color(15, 15));
-		plane.set_color_border(Color(15, 15));
-		plane.set_color_plane(Color(0, 0));
-		ball.set_color_ball(Color(15, 15));
-		ball.set_color_bg(Color(0, 0));
-		block.set_color_block(Color(7, 7));
-		player.set_color_board(Color(12, 12));
-
 		//settings:
 		Size player_size = Size(38, 1);
 		Coord plane_pos = Coord(0, 0);
@@ -225,6 +216,21 @@ namespace ListGame {
 		Size block_padding = Size(2, 1);
 		Coord player_step = Coord(3, 0);
 		Coord block_offset = Coord(10, 2);
+		int color_bg = 15;
+		int color_plane = 0;
+		int color_border = 15;
+		int color_ball = 15;
+		
+
+		//color
+		plane.set_color_bg(Color(color_bg, color_bg));
+		plane.set_color_border(Color(color_border, color_border));
+		plane.set_color_plane(Color(color_plane, color_plane));
+		ball.set_color_ball(Color(color_ball, color_ball));
+		ball.set_color_bg(Color(color_plane, color_plane));
+		block.set_color_block(Color(7, 7));
+		player.set_color_board(Color(12, 12));
+		player.set_color_bg(Color(color_plane, color_plane));
 
 		//calc settings
 		block_padding.width += block_size.width;
@@ -266,7 +272,7 @@ namespace ListGame {
 		clock_t clock_first = std::clock();
 		clock_t speed_add = 2;
 		clock_t sleep_ball_ms = ((block_count.width * block_count.height) * speed_add) - 20;
-		clock_t first_sleep_ms = 4000;
+		clock_t first_sleep_ms = 2500;
 		while (true) {
 			player.move(move);
 			player.set_border(plane);
