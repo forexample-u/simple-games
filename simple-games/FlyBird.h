@@ -21,7 +21,10 @@ public:
 		for (int i = 0; i < size_vec; i++) {
 			cmd.gotoxy(pos_collum.x, pos_collum.y + i);
 			std::cout << shape[i];
+			std::cout.flush();
 		}
+		cmd.color(color_bg);
+		cmd.gotoxy(pos_collum.x - 1, pos_collum.y);
 	}
 
 	void create(Size new_size, Coord new_pos) {
@@ -45,8 +48,12 @@ public:
 		pos_collum += add_pos;
 	}
 
-	void set_color(Color new_color) {
+	void set_color_collum(Color new_color) {
 		color_collum = new_color;
+	}
+
+	void set_color_bg(Color new_color) {
+		color_bg = new_color;
 	}
 
 	void set_border(Plane& plane) {
@@ -112,18 +119,20 @@ public:
 	void print(const Plane& plane) {
 		for (Collum& collum : collums) {
 			//print backround
-			collum.set_color(plane.get_color_plane());
+			collum.set_color_bg(plane.get_color_plane());
+			collum.set_color_collum(plane.get_color_plane());
 			collum.print();
 
 			//remove left
 			int delete_size = (collum.get_size().width - 2) + plane.get_pos().x + 1;
 			if (delete_size > (collum.get_pos().x)) {
 				collums.pop_front();
+				continue;
 			}
 
 			//print collum
 			collum.add_pos(Coord(-1, 0));
-			collum.set_color(color_collum);
+			collum.set_color_collum(color_collum);
 			collum.print();
 		}
 	}
@@ -188,27 +197,18 @@ public:
 		int dir = move.now.get_dir_y();
 		if (space || (dir == 1)) {
 			jump();
+			cmd.sleep(10);
 		}
-		pos_bird.y += 1;
+		if (count_step_fly > step_fly) {
+			pos_bird.y += 1;
+		}
+		count_step_fly += 1;
 	}
 
 	void jump() {
 		last_pos_bird = pos_bird;
 		pos_bird.y -= 7;
-	}
-
-	void print() const {
-		//backround
-		cmd.color(color_bg);
-		cmd.gotoxy(last_pos_bird);
-		std::cout << ' ';
-
-		//symbol color
-		cmd.color(color_bird);
-		cmd.gotoxy(pos_bird);
-		std::cout << char_bird;
-
-		cmd.color_reset();
+		count_step_fly = 0;
 	}
 
 	//set
@@ -237,6 +237,22 @@ public:
 		char_bird = new_ch;
 	}
 
+	//print
+	void print() const {
+		//backround
+		cmd.color(color_bg);
+		cmd.gotoxy(last_pos_bird);
+		std::cout << ' ' << std::flush;
+
+		//symbol color
+		cmd.color(color_bird);
+		cmd.gotoxy(pos_bird);
+		std::cout << char_bird << std::flush;
+
+		cmd.color(color_bg);
+	}
+
+	//get
 	bool is_die() const {
 		return die;
 	}
@@ -254,6 +270,9 @@ private:
 
 	std::deque<Collum> collums;
 
+	
+	int count_step_fly = 0;
+	int step_fly = 1;
 	int count_bounce = 0;
 	int bounce = 0;
 	bool die = false;
@@ -261,7 +280,6 @@ private:
 };
 
 void flyBird() {
-	srand(6);
 	Console cmd;
 	Move move;
 	Bird bird;
@@ -322,17 +340,16 @@ void flyBird() {
 	int padding_height = ((screen_size.height / 7) * 2);
 	plane.set_size(Size(screen_size.width - 2, screen_size.height - padding_height));
 	plane.set_pos(Coord(0, padding_height * 0.5));
-
 	plane.print();
 	Size size_plane = plane.get_size();
 	int max_width  = size_plane.width / 15;
-	int max_height = size_plane.height / 2;
+	int max_height = size_plane.height / 2 - 2;
 	int min_width  = size_plane.width / 30 + 1;
 	int min_height = size_plane.height / 10;
 	while(true) {
 		level.create_collum(plane, min_width, max_width, min_height, max_height);
 		level.print(plane);
-		cmd.sleep(((size_plane.width * 0.5) / (size_plane.width / 40 + size_plane.height / 30)) + 7);
+		cmd.sleep(((size_plane.width * 0.5) / (size_plane.width / 40 + size_plane.height / 30)) + 15);
 		if (bird.is_die()) {
 			bird.set_color_bird(Color(12, 12));
 			bird.print();
@@ -344,6 +361,7 @@ void flyBird() {
 		bird.print();
 	}
 	cmd.pause();
+	cmd.sleep(500);
 	cmd.color_reset();
 	cmd.clear();
 }
