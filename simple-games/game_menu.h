@@ -5,6 +5,7 @@
 #include "interface.h"
 #include "FlyBird.h"
 #include "2048.h"
+#include "main_menu.h"
 
 namespace ListMenu {
 	void main_menu();
@@ -26,13 +27,13 @@ namespace ListMenu {
 		cmd.color_reset();
 		cmd.clear();
 		if (choice == "Snake") {
-			start_snake();
+			ListGame::snake();
 		}
 		if (choice == "Ping-pong") {
-			ping_pong();
+			ListGame::ping_pong();
 		}
 		if (choice == "Breakout") {
-			breakout();
+			ListGame::breakout();
 		}
 		if (choice == "Flappy-Bird") {
 			flyBird();
