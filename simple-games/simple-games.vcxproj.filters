@@ -80,5 +80,8 @@
     <ClInclude Include="Runer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="start_menu.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

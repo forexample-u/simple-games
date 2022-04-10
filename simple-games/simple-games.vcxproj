@@ -158,6 +158,7 @@
     <ClInclude Include="settings_menu.h" />
     <ClInclude Include="shape.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="start_menu.h" />
     <ClInclude Include="test_menu.h" />
     <ClInclude Include="Tetris.h" />
   </ItemGroup>
