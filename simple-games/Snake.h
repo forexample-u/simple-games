@@ -104,7 +104,8 @@ public:
                 cmd.gotoxy(pos_head.x * step_snake.x, pos_head.y * step_snake.y + y);
             }
         }
-        cmd.color(color_bg);
+        cmd.color(Color(color_bg.get_bg(), color_bg.get_bg()));
+        cmd.gotoxy(pos_tail.x * step_snake.x, pos_tail.y * step_snake.y);
     }
 
     //set
@@ -280,12 +281,24 @@ namespace ListGame {
         Plane plane;
         Snake snake;
         Apple apple;
-        cmd.resize_screen(Size(120, 30));
+
+        //resize small resoltion
+        cmd.resize_small_screen(Size(120, 30));
+        cmd.sleep(100);
+        Size screen_now = cmd.get_size_screen();
 
         //settings:
         Coord step_snake = Coord(2, 1);
         Size size_plane = Size(90, 22);
-        Coord pos_plane = Coord(7, 4);
+        Coord pos_plane = Coord((screen_now.width - size_plane.width) / 2, (screen_now.height - size_plane.height) / 2);
+
+        if (screen_now.width >= (size_plane.width * 2 + 10) && screen_now.height >= (size_plane.height * 2 + 5)) {
+            step_snake = Coord(4, 2);
+            size_plane = Size(180, 42);
+            pos_plane = Coord((screen_now.width - size_plane.width) / 2, (screen_now.height - size_plane.height) / 2);
+
+        }
+
         int add_sleep = 20;
         int color_bg = 3;
         int color_border = 4;
@@ -326,6 +339,15 @@ namespace ListGame {
             snake.set_plane(plane);
             snake.eat(apple);
             snake.print();
+            if (move.now.get_dir_x() != 0) {
+                add_sleep = 65;
+            }
+            if (move.now.get_dir_y() != 0) {
+                add_sleep = 60;
+            }
+            cmd.color(Color(color_bg, color_bg));
+            cmd.gotoxy(Coord(0, 0));
+            cmd.sleep(add_sleep + 10);
             if (!apple.is_create()) {
                 int random_color = rand() % 3;
                 if (random_color == 0) { apple.set_color_apple(Color(6, 6)); }
@@ -334,13 +356,6 @@ namespace ListGame {
                 apple.rand_create(plane, snake);
                 apple.print();
             }
-            if (move.now.get_dir_x() != 0) {
-                add_sleep = 50;
-            }
-            if (move.now.get_dir_y() != 0) {
-                add_sleep = 50;
-            }
-            cmd.sleep(add_sleep + 10);
 
             //end game
             if (snake.is_die()) {

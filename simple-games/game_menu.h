@@ -12,6 +12,7 @@ namespace ListMenu {
 
 	void game_menu() {
 		Console cmd;
+		cmd.resize_small_screen(Size(10, 30));
 		std::vector<std::string> list_games{
 			"Snake",
 			"Ping-pong",

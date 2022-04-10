@@ -28,6 +28,17 @@ public:
 		gotoxy(pos.x, pos.y);
 	}
 
+	void resize_small_screen(Size min_size) {
+		Size screen = get_size_screen();
+		if (screen.width < min_size.width) {
+			screen.width = min_size.width;
+		}
+		if (screen.height < min_size.height) {
+			screen.height = min_size.height;
+		}
+		resize_screen(screen);
+	}
+
 #ifdef _WIN32
 	void gotoxy(int x, int y) const {
 		SetConsoleCursorPosition(h, { short(x), short(y) });

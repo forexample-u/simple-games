@@ -12,14 +12,18 @@ namespace ListGame {
 		Board enemy;
 		Ball ball;
 
-		Size screen_size = Size(119, 30);
 		Color color_bg = Color(0, 0);
 		Color color_ball = Color(15, 15);
-		cmd.resize_screen(screen_size);
+
+		//resize small resoltion
+		cmd.resize_small_screen(Size(120, 30));
+		cmd.sleep(100);
+		Size screen_size = cmd.get_size_screen();
+		
 
 		//plane
-		plane.set_pos(Coord(0, 2));
 		plane.set_size(Size(screen_size.width - 5, 25));
+		plane.set_pos(Coord(0, 2));
 		plane.set_symbol_bg(' ');
 		plane.set_color_bg(color_bg);
 		plane.set_color_border(color_bg);
@@ -69,7 +73,6 @@ namespace ListGame {
 		clock_t rand_move_ms = 1500;
 		clock_t clock_old = std::clock();
 		clock_t clock_now = std::clock();
-
 		while (true) {
 			//enemy move calc
 			double dist_ball_enemy = double(ball.get_pos().x) / double(enemy.get_pos().x);

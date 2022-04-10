@@ -275,11 +275,13 @@ namespace ListGame {
 		Console cmd;
 		Game_2048 game;
 		Move move;
-		cmd.resize_screen(Size(120, 30));
-		srand(time(0));
+		cmd.resize_small_screen(Size(120, 30));
 
+		srand(time(0));
+		cmd.sleep(100);
+		Size screen_size = cmd.get_size_screen();
 		//settings:
-		Coord pos = Coord(33, 1);
+		Coord pos = Coord((screen_size.width - 55) / 2, (screen_size.height - 28) / 2);
 		Size padding = Size(2, 1);
 
 		//plane

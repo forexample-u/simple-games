@@ -16,7 +16,7 @@ namespace test {
 		Console cmd;
 		Plane plane;
 		Move move;
-		cmd.resize_screen(Size(120, 30));
+		cmd.resize_small_screen(Size(120, 30));
 		plane.set_size(Size(30, 10));
 		plane.set_pos(Coord(20, 10));
 		plane.set_border_padding(Size(2, 1));
@@ -70,22 +70,20 @@ namespace test {
 		}
 		cmd.color_reset();
 		cmd.clear();
-		std::cout << "Test completed! Press any key...";
-		cmd.pause();
 	}
 
 	void collide_test() {
 		Console cmd;
 		Move move;
 		Ball ball;
-		cmd.resize_screen(Size(120, 30));
+		cmd.resize_small_screen(Size(120, 30));
 		ball.set_color_ball(Color(11, 11));
 		srand(time(0));
-		if (rand() % 2) { 
+		if (rand() % 2) {
 			ball.set_dir(Dir(-1,-1));
 		}
-		ball.set_pos(Coord(1 + rand() % 50, 2 + rand() % 6));
 		ball.set_size(Size(1 + rand() % 10, 1 + rand() % 3));
+		ball.set_pos(Coord(ball.get_size().width + 1 + rand() % 50, 2 + rand() % 6));
 
 		std::vector<Plane> planes;
 		Plane plane;
@@ -134,8 +132,6 @@ namespace test {
 		}
 		cmd.color_reset();
 		cmd.clear();
-		std::cout << "Test completed! Press any key...";
-		cmd.pause();
 	}
 
 	void button_auto_scale() {
@@ -154,7 +150,7 @@ namespace test {
 			std::cout << row_screen << '\n';
 		}
 
-		while (1) {
+		while (true) {
 			screen = cmd.get_size_screen();
 			if ((button.get_pos().x + button.get_size().width + 2 >= screen.width)) {
 				cmd.color(Color(button.get_color_bg()));
@@ -198,7 +194,6 @@ namespace test {
 		}
 		cmd.color_reset();
 		cmd.clear();
-		std::cout << "Test completed! Press any key...";
 		cmd.pause();
 	}
 
@@ -207,6 +202,8 @@ namespace test {
 		Button button;
 		Menu menu;
 		Move move;
+		Size start_screen = cmd.get_size_screen();
+
 		cmd.resize_screen(Size(50, 25));
 		button.set_size(Size(20, 3));
 		std::vector<std::string> menu_list{
@@ -226,7 +223,7 @@ namespace test {
 
 		menu.set_selected_color(Color(0, 15));
 
-		while (1) {
+		while (true) {
 			menu.move(move);
 			menu.print();
 			if (move.now.get_space() || move.now.get_enter()) {
@@ -246,10 +243,9 @@ namespace test {
 			cmd.sleep(100);
 		}
 
+		cmd.resize_screen(start_screen);
 		cmd.color_reset();
 		cmd.clear();
-		std::cout << "Test completed! Press any key...";
-		cmd.pause();
 	}
 }
 
@@ -259,7 +255,5 @@ namespace test {
 
 		Block block;
 		block.set_pos(Coord());
-
-
 	}
 }
