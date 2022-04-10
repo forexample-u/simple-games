@@ -112,6 +112,30 @@ public:
 
 		if (key.kbhit_()) {
 			unsigned char button = toupper(key.getch_());
+
+			//arrow detect:
+			#ifdef _WIN32
+			if (button == 0 || button == 224) {
+				unsigned char new_button = key.getch_();
+				if (new_button == 72) { button = 'W'; } // Up
+				if (new_button == 80) { button = 'S'; } // Down
+				if (new_button == 75) { button = 'A'; } // Left
+				if (new_button == 77) { button = 'D'; } // Right
+			}
+			#endif // Windows
+
+			#ifdef __linux__
+			if (button == '\033') {
+				unsigned char new_button = key.getch_();
+				new_button = key.getch_();
+				if (new_button == 'A') { button = 'W'; } // Up
+				if (new_button == 'B') { button = 'S'; } // Down
+				if (new_button == 'D') { button = 'A'; } // Left
+				if (new_button == 'C') { button = 'D'; } // Right
+			}
+			#endif // Linux
+
+
 			if (button == 'W') {
 				now.dir_y = Dir::up;
 			}
@@ -124,7 +148,7 @@ public:
 			if (button == 'D') {
 				now.dir_x = Dir::right;
 			}
-			if (button == '\r') {
+			if (button == '\r' || button == '\n') {
 				now.enter = true;
 			}
 			if (button == ' ') {
