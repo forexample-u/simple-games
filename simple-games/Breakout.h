@@ -156,10 +156,12 @@ public:
 		std::string row(size_board.width, char_board);
 
 		//backround
-		cmd.color(color_bg);
-		for (int y = 0; y < size_board.height; y++) {
-			cmd.gotoxy(last_pos_board.x, last_pos_board.y + y);
-			std::cout << row;
+		if (!(pos_board == last_pos_board)) {
+			cmd.color(color_bg);
+			for (int y = 0; y < size_board.height; y++) {
+				cmd.gotoxy(last_pos_board.x, last_pos_board.y + y);
+				std::cout << row;
+			}
 		}
 
 		//border
@@ -169,7 +171,7 @@ public:
 			std::cout << row << std::flush;
 		}
 		cmd.color(color_bg);
-		cmd.gotoxy(pos_board);
+		cmd.gotoxy(pos_board);		
 	}
 
 	//get
@@ -205,12 +207,14 @@ namespace ListGame {
 		Ball ball;
 		Block block;
 		Board player;
-		cmd.resize_screen(Size(130, 40));
+		cmd.resize_small_screen(Size(137, 41));
+		cmd.sleep(100);
+		Size screen = cmd.get_size_screen();
 
 		//settings:
 		Size player_size = Size(38, 1);
-		Coord plane_pos = Coord(0, 0);
 		Size plane_size = Size(128, 39);
+		Coord plane_pos = Coord((screen.width - plane_size.width)/2, (screen.height - plane_size.height)/2);
 		Size block_count = Size(11, 5);
 		Size block_size = Size(8, 2);
 		Size block_padding = Size(2, 1);
@@ -241,7 +245,7 @@ namespace ListGame {
 		plane.set_size(plane_size);
 
 		//player
-		player.set_pos(Coord(plane_pos.x + (rand() % (plane_size.width - player_size.width - 1)) + 1, plane_size.height - player_size.height - 1));
+		player.set_pos(Coord(plane_pos.x + (rand() % (plane_size.width - player_size.width - 1)) + 1, plane_pos.y + plane_size.height - player_size.height - 1));
 		player.set_size(player_size);
 		player.set_step(player_step);
 
@@ -256,6 +260,7 @@ namespace ListGame {
 		for (int y = 0; y < block_count.height; y++) {
 			block.set_pos(block_offset);
 			block.add_pos(Coord(0, block_padding.height * y));
+			block.add_pos(plane_pos);
 			for (int x = 0; x < block_count.width; x++) {
 				blocks.push_back(block);
 				block.add_pos(Coord(block_padding.width, 0));
@@ -302,7 +307,7 @@ namespace ListGame {
 				cmd.sleep(100);
 			}
 
-			if (ball.get_pos().y >= plane_size.height - 2) { // die
+			if (ball.get_pos().y >= plane_pos.y + plane_size.height - 2) { // die
 				break;
 			}
 			if (blocks.empty()) { // win
