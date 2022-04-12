@@ -37,7 +37,7 @@ namespace ListMenu {
 			ListGame::breakout();
 		}
 		if (choice == "Flappy-Bird") {
-			flyBird();
+			ListGame::flyBird();
 		}
 		if (choice == "2048") {
 			ListGame::_2048();

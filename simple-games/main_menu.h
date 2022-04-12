@@ -33,9 +33,7 @@ namespace ListMenu {
 			settings_menu();
 		}
 		if (choice == "Quit") {
-			cmd.color_reset();
-			cmd.clear();
-			return;
+			exit(0);
 		}
 	}
 }
