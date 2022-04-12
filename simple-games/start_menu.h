@@ -57,13 +57,14 @@ namespace ListMenu {
 		cmd.color(Color(color_text, 0));
 		cmd.gotoxy(center_text);
 		for (const auto& ch : label) {
-			std::cout << ch;
+			std::cout << ch << std::flush;
 			cmd.sleep(100);
 		}
 		std::cout << ' ' << std::flush;
 		cmd.sleep(2100);
 		plane.print_bg();
 		cmd.sleep(900);
+		cmd.resize_small_screen(Size(50, 30));
 		ListMenu::main_menu();
 	}
 }
