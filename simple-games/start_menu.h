@@ -65,6 +65,7 @@ namespace ListMenu {
 		plane.print_bg();
 		cmd.sleep(900);
 		cmd.resize_small_screen(Size(50, 30));
+		cmd.sleep(100);
 		ListMenu::main_menu();
 	}
 }
