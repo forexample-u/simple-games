@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\user\source\repos\simple-games\simple-games\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,28 +140,48 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="simple-games.cpp" />
+    <ClCompile Include="src\entity\ball.cpp" />
+    <ClCompile Include="src\entity\board.cpp" />
+    <ClCompile Include="src\games\flybird\bird.cpp" />
+    <ClCompile Include="src\games\flybird\birdlevel.cpp" />
+    <ClCompile Include="src\entity\collum.cpp" />
+    <ClCompile Include="src\games\2048\plane2048.cpp" />
+    <ClCompile Include="src\games\snake\apple.cpp" />
+    <ClCompile Include="src\games\snake\snake.cpp" />
+    <ClCompile Include="src\games\tetris\planetetris.cpp" />
+    <ClCompile Include="src\games\tetris\tetrisblock.cpp" />
+    <ClCompile Include="src\gui\button.cpp" />
+    <ClCompile Include="src\gui\menu.cpp" />
+    <ClCompile Include="src\gui\multibuttons.cpp" />
+    <ClCompile Include="src\utils\keyboard.cpp" />
+    <ClCompile Include="src\shape\ishape.cpp" />
+    <ClCompile Include="src\shape\plane.cpp" />
+    <ClCompile Include="src\simple-games.cpp" />
+    <ClCompile Include="src\tests\button_auto_scale_test.cpp" />
+    <ClCompile Include="src\tests\collide_test.cpp" />
+    <ClCompile Include="src\tests\menu_test.cpp" />
+    <ClCompile Include="src\tests\move_player_test.cpp" />
+    <ClCompile Include="src\tests\move_to_point_test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="2048.h" />
-    <ClInclude Include="Breakout.h" />
-    <ClInclude Include="collider.h" />
-    <ClInclude Include="console.h" />
-    <ClInclude Include="core.h" />
-    <ClInclude Include="FlyBird.h" />
-    <ClInclude Include="game_menu.h" />
-    <ClInclude Include="interface.h" />
-    <ClInclude Include="main_menu.h" />
-    <ClInclude Include="move.h" />
-    <ClInclude Include="move_test.h" />
-    <ClInclude Include="Runer.h" />
-    <ClInclude Include="PingPong.h" />
-    <ClInclude Include="settings_menu.h" />
-    <ClInclude Include="shape.h" />
-    <ClInclude Include="Snake.h" />
-    <ClInclude Include="start_menu.h" />
-    <ClInclude Include="test_menu.h" />
-    <ClInclude Include="Tetris.h" />
+    <ClInclude Include="src\games\2048\_2048.cpp" />
+    <ClInclude Include="src\games\breakout\breakout.cpp" />
+    <ClInclude Include="src\collider.cpp" />
+    <ClInclude Include="src\utils\console.cpp" />
+    <ClInclude Include="src\core.cpp" />
+    <ClInclude Include="src\games\flybird\flybird.cpp" />
+    <ClInclude Include="src\menu\games_menu.cpp" />
+    <ClInclude Include="src\gui\makemenu.cpp" />
+    <ClInclude Include="src\menu\main_menu.cpp" />
+    <ClInclude Include="src\move.cpp" />
+    <ClInclude Include="src\games\runer\runer.cpp" />
+    <ClInclude Include="src\games\pingpong\pingpong.cpp" />
+    <ClInclude Include="src\menu\settings_menu.cpp" />
+    <ClInclude Include="src\shape\block.cpp" />
+    <ClInclude Include="src\games\snake\_snake.cpp" />
+    <ClInclude Include="src\menu\start_menu.cpp" />
+    <ClInclude Include="src\menu\tests_menu.cpp" />
+    <ClInclude Include="src\games\tetris\tetris.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
