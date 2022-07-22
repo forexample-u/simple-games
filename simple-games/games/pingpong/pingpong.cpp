@@ -1,10 +1,13 @@
 #pragma once
-#include "Breakout.h"
 #include <cmath>
 #include <ctime>
+#include "entity/board.cpp"
+#include "entity/ball.cpp"
 
-namespace ListGame {
-	void ping_pong() {
+namespace ListGame
+{
+	void ping_pong()
+	{
 		Plane plane;
 		Console cmd;
 		Move move;
@@ -19,7 +22,7 @@ namespace ListGame {
 		cmd.resize_small_screen(Size(120, 30));
 		cmd.sleep(100);
 		Size screen_size = cmd.get_size_screen();
-		
+
 
 		//plane
 		plane.set_size(Size(screen_size.width - 5, 25));
@@ -73,36 +76,41 @@ namespace ListGame {
 		clock_t rand_move_ms = 1500;
 		clock_t clock_old = std::clock();
 		clock_t clock_now = std::clock();
-		while (true) {
+		while (true)
+		{
 			//enemy move calc
 			double dist_ball_enemy = double(ball.get_pos().x) / double(enemy.get_pos().x);
 			int pos_enemy = (ball.get_pos().y + (sin(double(clock_now) * 0.01) * rand_move_enemy)) * dist_ball_enemy;
-			if (dist_ball_enemy < 0.5) {
+			if (dist_ball_enemy < 0.5)
+			{
 				pos_enemy = enemy.get_pos().y;
 			}
-			if (ball.get_dir().x == -1) {
+			if (ball.get_dir().x == -1)
+			{
 				count_step_move_enemy += 1;
-				if (count_step_move_enemy > step_move_enemy) {
+				if (count_step_move_enemy > step_move_enemy)
+				{
 					pos_enemy = enemy.get_pos().y;
 				}
 			}
-			else { count_step_move_enemy = 0; }
+			else
+			{
+				count_step_move_enemy = 0;
+			}
 			clock_now = std::clock();
-			if (clock_now > (clock_old + rand_move_ms)) {
+			if (clock_now > (clock_old + rand_move_ms))
+			{
 				rand_move_enemy = (rand() % (ball.get_size().height + rand() % 8)) - (rand() % 3);
 				clock_old = clock_now;
 			}
 
-
-
 			enemy.set_pos(Coord(plane_right - 6, pos_enemy));
 			Size screen_size = cmd.get_size_screen();
-			if (screen_size.width-5 > enemy.get_pos().x) {
+			if (screen_size.width - 5 > enemy.get_pos().x)
+			{
 				enemy.set_border(plane);
 				enemy.print();
 			}
-			
-
 
 			player.move(move);
 			player.set_border(plane);
@@ -113,13 +121,16 @@ namespace ListGame {
 			ball.detect_collision(plane.get_pos(), plane.get_size());
 			ball.detect_collision(player.get_pos(), player.get_size());
 			ball.detect_collision(plane.get_pos(), plane.get_size());
-			if (screen_size.width - 4 > ball.get_pos().x) {
+			if (screen_size.width - 4 > ball.get_pos().x)
+			{
 				print_ball = true;
 				ball.set_color_ball(color_ball);
 				ball.print();
 			}
-			else {
-				if (print_ball == true) {
+			else
+			{
+				if (print_ball == true)
+				{
 					ball.set_color_ball(color_bg);
 					ball.print();
 					ball.set_color_ball(color_ball);
@@ -129,10 +140,16 @@ namespace ListGame {
 			}
 			cmd.sleep(30);
 
-			if (ball.get_pos().x >= plane_right - 2) { //win
-				break;
+			if (ball.get_pos().x >= plane_right - 2)
+			{
+				break; //win
 			}
-			if (ball.get_pos().x <= plane_left + 1) { //die
+			if (ball.get_pos().x <= plane_left + 1)
+			{
+				break; //die
+			}
+			if (move.now.get_escape())
+			{
 				break;
 			}
 		}

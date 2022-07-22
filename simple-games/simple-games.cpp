@@ -1,10 +1,11 @@
-#include <iostream>
-#include "main_menu.h"
-#include "start_menu.h"
+#include "menu/start_menu.cpp"
+#include "menu/main_menu.cpp"
 
-int main() {
+int main()
+{
 	ListMenu::start_menu();
-	while (true) {
+	while (true)
+	{
 		ListMenu::main_menu();
 	}
 }

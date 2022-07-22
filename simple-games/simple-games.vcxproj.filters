@@ -24,63 +24,111 @@
     <ClCompile Include="simple-games.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils\keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\multibuttons.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shape\ishape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shape\plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\ball.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\collum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="games\flybird\birdlevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="games\flybird\bird.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="games\tetris\tetrisblock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="games\2048\plane2048.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="games\tetris\planetetris.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="games\snake\apple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="games\snake\snake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\listtest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="console.h">
+    <ClInclude Include="utils\console.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="shape.h">
+    <ClInclude Include="shape\block.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="move.h">
+    <ClInclude Include="move.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="move_test.h">
-      <Filter>Source Files\tests</Filter>
-    </ClInclude>
-    <ClInclude Include="Snake.h">
+    <ClInclude Include="games\snake\_snake.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="core.h">
+    <ClInclude Include="core.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="collider.h">
+    <ClInclude Include="collider.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="interface.h">
+    <ClInclude Include="gui\makemenu.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Breakout.h">
+    <ClInclude Include="games\breakout\breakout.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tetris.h">
+    <ClInclude Include="games\tetris\tetris.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="PingPong.h">
+    <ClInclude Include="games\pingpong\pingpong.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="FlyBird.h">
+    <ClInclude Include="games\flybird\flybird.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="main_menu.h">
+    <ClInclude Include="menu\main_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
-    <ClInclude Include="game_menu.h">
+    <ClInclude Include="menu\games_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
-    <ClInclude Include="settings_menu.h">
+    <ClInclude Include="menu\settings_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
-    <ClInclude Include="test_menu.h">
+    <ClInclude Include="menu\tests_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
-    <ClInclude Include="2048.h">
+    <ClInclude Include="games\2048\_2048.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Runer.h">
+    <ClInclude Include="games\runer\runer.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="start_menu.h">
+    <ClInclude Include="menu\start_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
   </ItemGroup>

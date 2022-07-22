@@ -1,12 +1,15 @@
 #pragma once
 #include <string>
-#include "console.h"
-#include "shape.h"
-#include "main_menu.h"
+#include "utils/console.cpp"
+#include "shape/plane.cpp"
+#include "entity/ball.cpp"
 
-namespace ListMenu {
-	void start_menu() {
-		Move move;
+namespace ListMenu
+{
+	void main_menu();
+
+	void start_menu()
+	{
 		Console cmd;
 		Plane plane;
 
@@ -34,12 +37,16 @@ namespace ListMenu {
 		ball.set_pos(Coord(center_text.x - 31, 5));
 		ball.set_color_bg(color_bg);
 		ball.set_color_ball(color_ball);
-		while (true) {
-			if (ball.get_pos().y >= center_pos_y - 1) {
+		while (true)
+		{
+			if (ball.get_pos().y >= center_pos_y - 1)
+			{
 				ball.set_dir(Dir(1, -1));
 			}
-			if (ball.get_pos().y < center_pos_y / 2 + 2) {
-				if (ball.get_pos().x >= screen.width / 2 - length_label - 2) {
+			if (ball.get_pos().y < center_pos_y / 2 + 2)
+			{
+				if (ball.get_pos().x >= screen.width / 2 - length_label - 2)
+				{
 					ball.print();
 					cmd.sleep(100);
 					break;
@@ -56,7 +63,8 @@ namespace ListMenu {
 		cmd.sleep(1000);
 		cmd.color(Color(color_text, 0));
 		cmd.gotoxy(center_text);
-		for (const auto& ch : label) {
+		for (const auto& ch : label)
+		{
 			std::cout << ch << std::flush;
 			cmd.sleep(100);
 		}
@@ -66,6 +74,6 @@ namespace ListMenu {
 		cmd.sleep(900);
 		cmd.resize_small_screen(Size(50, 30));
 		cmd.sleep(100);
-		ListMenu::main_menu();
+		main_menu();
 	}
 }
