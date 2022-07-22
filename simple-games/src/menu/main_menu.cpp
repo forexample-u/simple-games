@@ -1,4 +1,5 @@
 #pragma once
+#include "gui/makemenu.cpp"
 #include "games_menu.cpp"
 #include "settings_menu.cpp"
 #include "tests_menu.cpp"

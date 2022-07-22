@@ -1,7 +1,9 @@
 #pragma once
 #include "core.cpp"
 #include "move.cpp"
+#include "utils/console.cpp"
 #include "entity/ball.cpp"
+#include "shape/plane.cpp"
 
 namespace ListTest
 {

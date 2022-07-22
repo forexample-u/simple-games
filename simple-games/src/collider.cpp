@@ -1,7 +1,5 @@
 #pragma once
-#include <iostream>
 #include "core.cpp"
-#include "utils/console.cpp"
 #include "shape/ishape.cpp"
 
 class Collider
@@ -10,7 +8,6 @@ private:
 	class Collision
 	{
 	public:
-		//create
 		void create(Size size_collision, Coord pos_collision, Size size_player, Coord pos_player)
 		{
 			Dir slice_inside;
@@ -72,20 +69,20 @@ private:
 
 			//fix angle probleam collision
 			if (slice_outside.x == -1 && slice_outside.y == 1)
-			{ // left up
-				bounce_outside = Dir(-1, -1);
+			{
+				bounce_outside = Dir(-1, -1); // left up
 			}
 			if (slice_outside.x == -1 && slice_outside.y == -1)
-			{ // left down
-				bounce_outside = Dir(-1, 1);
+			{
+				bounce_outside = Dir(-1, 1); // left down
 			}
 			if (slice_outside.x == 1 && slice_outside.y == 1)
-			{ // right up
-				bounce_outside = Dir(1, -1);
+			{
+				bounce_outside = Dir(1, -1); // right up
 			}
 			if (slice_outside.x == 1 && slice_outside.y == -1)
-			{ // right down
-				bounce_outside = Dir(1, 1);
+			{
+				bounce_outside = Dir(1, 1); // right down
 			}
 
 			//border

@@ -1,7 +1,9 @@
 #pragma once
+#include "core.cpp"
+#include "move.cpp"
 #include "utils/console.cpp"
 #include "gui/button.cpp"
-#include "gui/Menu.cpp"
+#include "gui/menu.cpp"
 
 namespace ListTest
 {

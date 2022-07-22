@@ -1,9 +1,7 @@
 #pragma once
 #include <deque>
 #include "shape/ishape.cpp"
-#include "move.cpp"
 #include "utils/console.cpp"
-#include "collider.cpp"
 #include "snake.cpp"
 
 class Apple

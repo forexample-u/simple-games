@@ -1,15 +1,8 @@
 #pragma once
-#include <iostream>
-#include <deque>
-#include <vector>
-#include <string>
 #include "utils/console.cpp"
 #include "move.cpp"
 #include "core.cpp"
 #include "shape/plane.cpp"
-#include "shape/block.cpp"
-#include "games/breakout/breakout.cpp"
-#include "entity/collum.cpp"
 #include "birdlevel.cpp"
 #include "bird.cpp"
 

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "menu/start_menu.cpp"
 #include "menu/main_menu.cpp"
 

@@ -2,7 +2,6 @@
 #include <string>
 #include "utils/console.cpp"
 #include "shape/plane.cpp"
-#include "shape/block.cpp"
 #include "games/breakout/breakout.cpp"
 
 namespace ListMenu
@@ -11,7 +10,6 @@ namespace ListMenu
 
 	void start_menu()
 	{
-		Move move;
 		Console cmd;
 		Plane plane;
 

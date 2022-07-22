@@ -1,12 +1,4 @@
-#include <deque>
-#include <vector>
-#include <string>
-#include <ctime>
-#include <map>
-#include "move.cpp"
-#include "core.cpp"
-#include "utils/console.cpp"
-#include "gui/multibuttons.cpp"
+#pragma once
 #include "games/2048/plane2048.cpp"
 
 namespace ListGame
@@ -22,6 +14,7 @@ namespace ListGame
 		srand(time(0));
 		cmd.sleep(100);
 		Size screen_size = cmd.get_size_screen();
+
 		//settings:
 		Coord pos = Coord((screen_size.width - 55) / 2, (screen_size.height - 28) / 2);
 		Size padding = Size(2, 1);
@@ -40,7 +33,6 @@ namespace ListGame
 		//print
 		cmd.sleep(50);
 		plane.print();
-
 		game.print();
 		while (1)
 		{

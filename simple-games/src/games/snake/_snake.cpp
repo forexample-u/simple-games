@@ -13,7 +13,6 @@ void eat(Snake& snake, Apple& apple)
 	}
 }
 
-
 namespace ListGame
 {
 	void _snake()

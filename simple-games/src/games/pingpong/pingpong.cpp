@@ -104,7 +104,6 @@ namespace ListGame
 				clock_old = clock_now;
 			}
 
-
 			enemy.set_pos(Coord(plane_right - 6, pos_enemy));
 			Size screen_size = cmd.get_size_screen();
 			if (screen_size.width - 5 > enemy.get_pos().x)
@@ -112,7 +111,6 @@ namespace ListGame
 				enemy.set_border(plane);
 				enemy.print();
 			}
-
 
 			player.move(move);
 			player.set_border(plane);

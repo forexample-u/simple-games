@@ -40,7 +40,6 @@ namespace ListGame
 		int color_border = 15;
 		int color_ball = 15;
 
-
 		//color
 		plane.set_color_bg(Color(color_bg, color_bg));
 		plane.set_color_border(Color(color_border, color_border));

@@ -5,7 +5,6 @@
 #include "utils/console.cpp"
 #include "core.cpp"
 #include "shape/plane.cpp"
-#include "shape/block.cpp"
 
 class Collum
 {

@@ -2,7 +2,6 @@
 #include <deque>
 #include <vector>
 #include <string>
-#include <ctime>
 #include <map>
 #include "move.cpp"
 #include "core.cpp"
@@ -124,8 +123,8 @@ private:
 		size_t row_len = nums[0].size();
 		size_t col_len = nums.size();
 
-		if (dir_.x == -1)
-		{ // left
+		if (dir_.x == -1) // left
+		{
 			for (size_t col = 0; col != col_len; col++)
 			{
 				for (size_t row = 0; row != row_len - 1; row++)
@@ -139,8 +138,8 @@ private:
 			}
 		}
 
-		if (dir_.x == 1)
-		{ //right
+		if (dir_.x == 1) //right
+		{
 			for (size_t col = 0; col != col_len; col++)
 			{
 				for (size_t row = row_len - 1; row != 0; row--)
@@ -154,8 +153,8 @@ private:
 			}
 		}
 
-		if (dir_.y == -1)
-		{ //up
+		if (dir_.y == -1) //up
+		{
 			for (size_t row = 0; row != row_len; row++)
 			{
 				for (size_t col = col_len - 1; col != 0; col--)
@@ -169,8 +168,8 @@ private:
 			}
 		}
 
-		if (dir_.y == 1)
-		{ //down
+		if (dir_.y == 1) //down
+		{
 			for (size_t row = 0; row != row_len; row++)
 			{
 				for (size_t col = 0; col != col_len - 1; col++)
@@ -200,11 +199,11 @@ public:
 		dir_move.y = move.now.get_dir_y();
 
 		int animaion_ms = 25;
-		auto tmp_nums = nums;
+		std::vector<std::vector<int>> tmp_nums = nums;
 
 		//move
-		if (dir_move.x != 0)
-		{ // left/right
+		if (dir_move.x != 0) // left/right
+		{
 			for (size_t i = 0; i < nums[0].size(); i++)
 			{
 				move_dir(dir_move);
@@ -212,8 +211,8 @@ public:
 				cmd.sleep(animaion_ms);
 			}
 		}
-		if (dir_move.y != 0)
-		{ // up/down
+		if (dir_move.y != 0) // up/down
+		{
 			for (size_t i = 0; i < nums.size(); i++)
 			{
 				move_dir(dir_move);
@@ -226,8 +225,8 @@ public:
 		cmd.sleep(animaion_ms * 2);
 
 		//move
-		if (dir_move.x != 0)
-		{ // left/right
+		if (dir_move.x != 0) // left/right
+		{
 			for (size_t i = 0; i < nums[0].size() / 2; i++)
 			{
 				move_dir(dir_move);
@@ -235,8 +234,8 @@ public:
 				cmd.sleep(animaion_ms * 0.5);
 			}
 		}
-		if (dir_move.y != 0)
-		{ // up/down
+		if (dir_move.y != 0) // up/down
+		{
 			for (size_t i = 0; i < nums.size() / 2; i++)
 			{
 				move_dir(dir_move);
@@ -246,10 +245,10 @@ public:
 		}
 
 		die_condition();
-		if (!dir_move.is_zero())
-		{ // dir not zero
-			if (tmp_nums != nums)
-			{ // not equals 
+		if (!dir_move.is_zero()) // dir not zero
+		{
+			if (tmp_nums != nums) // not equals
+			{ 
 				cmd.sleep(100);
 				create_rand_num();
 			}

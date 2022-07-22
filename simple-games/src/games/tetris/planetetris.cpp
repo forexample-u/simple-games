@@ -2,6 +2,7 @@
 #include "collider.cpp"
 #include "games/tetris/tetrisblock.cpp"
 #include "move.cpp"
+#include <utils/console.cpp>
 
 class PlaneTetris : protected Collider
 {
@@ -51,7 +52,6 @@ public:
 		cmd.sleep(100);
 		cmd.clear();
 	}
-
 private:
 	//collision
 	std::vector<std::string> plane;
@@ -60,7 +60,6 @@ private:
 	//move tetris block
 	TetrisBlock tetris_block;
 	Coord pos_tetris_block;
-
 
 	Console cmd;
 };

@@ -1,11 +1,9 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <deque>
 #include "core.cpp"
 #include "move.cpp"
 #include "shape/plane.cpp"
-#include "shape/block.cpp"
 #include "utils/console.cpp"
 #include "gui/button.cpp"
 #include "gui/menu.cpp"

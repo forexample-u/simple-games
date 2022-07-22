@@ -49,8 +49,7 @@ public:
 #ifdef _WIN32
 	void gotoxy(int x, int y) const
 	{
-		SetConsoleCursorPosition(h,
-	{ short(x), short(y) });
+		SetConsoleCursorPosition(h, { short(x), short(y) });
 	}
 
 	void resize_screen(Size size) const

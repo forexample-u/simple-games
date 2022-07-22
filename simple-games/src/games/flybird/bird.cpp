@@ -1,13 +1,10 @@
 #pragma once
 #include <iostream>
 #include <deque>
-#include <vector>
-#include <string>
 #include "utils/console.cpp"
 #include "move.cpp"
 #include "core.cpp"
 #include "shape/plane.cpp"
-#include "shape/block.cpp"
 #include "collider.cpp"
 #include "entity/collum.cpp"
 #include "birdlevel.cpp"
@@ -140,7 +137,6 @@ private:
 	char char_bird = 'o';
 
 	std::deque<Collum> collums;
-
 
 	int count_step_fly = 0;
 	int step_fly = 1;

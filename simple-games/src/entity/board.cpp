@@ -1,13 +1,9 @@
 #pragma once
 #include <iostream>
-#include <vector>
 #include "core.cpp"
 #include "utils/console.cpp"
 #include "move.cpp"
 #include "shape/plane.cpp"
-#include "shape/block.cpp"
-#include "collider.cpp"
-#include <ctime>
 
 class Board
 {
