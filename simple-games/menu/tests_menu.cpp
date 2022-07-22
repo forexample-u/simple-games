@@ -1,9 +1,6 @@
 #pragma once
 #include "gui/makemenu.cpp"
-#include "tests/collide_test.cpp"
-#include "tests/button_auto_scale_test.cpp"
-#include "tests/move_player_test.cpp"
-#include "tests/menu_test.cpp"
+#include "tests/listtest.cpp"
 
 namespace ListMenu
 {
@@ -24,21 +21,22 @@ namespace ListMenu
 
 		cmd.color_reset();
 		cmd.clear();
+		ListTest test;
 		if (choice == "Collide - test")
 		{
-			ListTest::collide_test();
+			test.collide_test();
 		}
 		if (choice == "Menu - test")
 		{
-			ListTest::menu_test();
+			test.menu_test();
 		}
 		if (choice == "Button - test")
 		{
-			ListTest::button_auto_scale_test();
+			test.button_auto_scale_test();
 		}
 		if (choice == "Move - test")
 		{
-			ListTest::move_player_test();
+			test.move_player();
 		}
 		if (choice == "Back")
 		{

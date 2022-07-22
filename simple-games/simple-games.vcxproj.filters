@@ -72,19 +72,7 @@
     <ClCompile Include="games\snake\snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\button_auto_scale_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\collide_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\menu_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\move_player_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\move_to_point_test.cpp">
+    <ClCompile Include="tests\listtest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

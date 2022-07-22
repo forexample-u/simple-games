@@ -157,11 +157,7 @@
     <ClCompile Include="shape\ishape.cpp" />
     <ClCompile Include="shape\plane.cpp" />
     <ClCompile Include="simple-games.cpp" />
-    <ClCompile Include="tests\button_auto_scale_test.cpp" />
-    <ClCompile Include="tests\collide_test.cpp" />
-    <ClCompile Include="tests\menu_test.cpp" />
-    <ClCompile Include="tests\move_player_test.cpp" />
-    <ClCompile Include="tests\move_to_point_test.cpp" />
+    <ClCompile Include="tests\listtest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="games\2048\_2048.cpp" />
