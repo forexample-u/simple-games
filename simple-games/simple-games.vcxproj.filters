@@ -21,126 +21,126 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\simple-games.cpp">
+    <ClCompile Include="simple-games.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\keyboard.cpp">
+    <ClCompile Include="utils\keyboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\button.cpp">
+    <ClCompile Include="gui\button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\menu.cpp">
+    <ClCompile Include="gui\menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\multibuttons.cpp">
+    <ClCompile Include="gui\multibuttons.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\shape\ishape.cpp">
+    <ClCompile Include="shape\ishape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\shape\plane.cpp">
+    <ClCompile Include="shape\plane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\ball.cpp">
+    <ClCompile Include="entity\ball.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\board.cpp">
+    <ClCompile Include="entity\board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity\collum.cpp">
+    <ClCompile Include="entity\collum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\games\flybird\birdlevel.cpp">
+    <ClCompile Include="games\flybird\birdlevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\games\flybird\bird.cpp">
+    <ClCompile Include="games\flybird\bird.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\games\tetris\tetrisblock.cpp">
+    <ClCompile Include="games\tetris\tetrisblock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\games\2048\plane2048.cpp">
+    <ClCompile Include="games\2048\plane2048.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\games\tetris\planetetris.cpp">
+    <ClCompile Include="games\tetris\planetetris.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\games\snake\apple.cpp">
+    <ClCompile Include="games\snake\apple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\games\snake\snake.cpp">
+    <ClCompile Include="games\snake\snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\button_auto_scale_test.cpp">
+    <ClCompile Include="tests\button_auto_scale_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\collide_test.cpp">
+    <ClCompile Include="tests\collide_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\menu_test.cpp">
+    <ClCompile Include="tests\menu_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\move_player_test.cpp">
+    <ClCompile Include="tests\move_player_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\move_to_point_test.cpp">
+    <ClCompile Include="tests\move_to_point_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\utils\console.cpp">
+    <ClInclude Include="utils\console.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\shape\block.cpp">
+    <ClInclude Include="shape\block.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\move.cpp">
+    <ClInclude Include="move.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\games\snake\_snake.cpp">
+    <ClInclude Include="games\snake\_snake.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core.cpp">
+    <ClInclude Include="core.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\collider.cpp">
+    <ClInclude Include="collider.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\makemenu.cpp">
+    <ClInclude Include="gui\makemenu.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\games\breakout\breakout.cpp">
+    <ClInclude Include="games\breakout\breakout.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\games\tetris\tetris.cpp">
+    <ClInclude Include="games\tetris\tetris.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\games\pingpong\pingpong.cpp">
+    <ClInclude Include="games\pingpong\pingpong.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\games\flybird\flybird.cpp">
+    <ClInclude Include="games\flybird\flybird.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\menu\main_menu.cpp">
+    <ClInclude Include="menu\main_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\menu\games_menu.cpp">
+    <ClInclude Include="menu\games_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\menu\settings_menu.cpp">
+    <ClInclude Include="menu\settings_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\menu\tests_menu.cpp">
+    <ClInclude Include="menu\tests_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\games\2048\_2048.cpp">
+    <ClInclude Include="games\2048\_2048.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\games\runer\runer.cpp">
+    <ClInclude Include="games\runer\runer.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\menu\start_menu.cpp">
+    <ClInclude Include="menu\start_menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
   </ItemGroup>

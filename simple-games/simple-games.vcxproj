@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\user\source\repos\simple-games\simple-games\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\user\source\repos\simple-games\simple-games;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,48 +140,48 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\entity\ball.cpp" />
-    <ClCompile Include="src\entity\board.cpp" />
-    <ClCompile Include="src\games\flybird\bird.cpp" />
-    <ClCompile Include="src\games\flybird\birdlevel.cpp" />
-    <ClCompile Include="src\entity\collum.cpp" />
-    <ClCompile Include="src\games\2048\plane2048.cpp" />
-    <ClCompile Include="src\games\snake\apple.cpp" />
-    <ClCompile Include="src\games\snake\snake.cpp" />
-    <ClCompile Include="src\games\tetris\planetetris.cpp" />
-    <ClCompile Include="src\games\tetris\tetrisblock.cpp" />
-    <ClCompile Include="src\gui\button.cpp" />
-    <ClCompile Include="src\gui\menu.cpp" />
-    <ClCompile Include="src\gui\multibuttons.cpp" />
-    <ClCompile Include="src\utils\keyboard.cpp" />
-    <ClCompile Include="src\shape\ishape.cpp" />
-    <ClCompile Include="src\shape\plane.cpp" />
-    <ClCompile Include="src\simple-games.cpp" />
-    <ClCompile Include="src\tests\button_auto_scale_test.cpp" />
-    <ClCompile Include="src\tests\collide_test.cpp" />
-    <ClCompile Include="src\tests\menu_test.cpp" />
-    <ClCompile Include="src\tests\move_player_test.cpp" />
-    <ClCompile Include="src\tests\move_to_point_test.cpp" />
+    <ClCompile Include="entity\ball.cpp" />
+    <ClCompile Include="entity\board.cpp" />
+    <ClCompile Include="games\flybird\bird.cpp" />
+    <ClCompile Include="games\flybird\birdlevel.cpp" />
+    <ClCompile Include="entity\collum.cpp" />
+    <ClCompile Include="games\2048\plane2048.cpp" />
+    <ClCompile Include="games\snake\apple.cpp" />
+    <ClCompile Include="games\snake\snake.cpp" />
+    <ClCompile Include="games\tetris\planetetris.cpp" />
+    <ClCompile Include="games\tetris\tetrisblock.cpp" />
+    <ClCompile Include="gui\button.cpp" />
+    <ClCompile Include="gui\menu.cpp" />
+    <ClCompile Include="gui\multibuttons.cpp" />
+    <ClCompile Include="utils\keyboard.cpp" />
+    <ClCompile Include="shape\ishape.cpp" />
+    <ClCompile Include="shape\plane.cpp" />
+    <ClCompile Include="simple-games.cpp" />
+    <ClCompile Include="tests\button_auto_scale_test.cpp" />
+    <ClCompile Include="tests\collide_test.cpp" />
+    <ClCompile Include="tests\menu_test.cpp" />
+    <ClCompile Include="tests\move_player_test.cpp" />
+    <ClCompile Include="tests\move_to_point_test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\games\2048\_2048.cpp" />
-    <ClInclude Include="src\games\breakout\breakout.cpp" />
-    <ClInclude Include="src\collider.cpp" />
-    <ClInclude Include="src\utils\console.cpp" />
-    <ClInclude Include="src\core.cpp" />
-    <ClInclude Include="src\games\flybird\flybird.cpp" />
-    <ClInclude Include="src\menu\games_menu.cpp" />
-    <ClInclude Include="src\gui\makemenu.cpp" />
-    <ClInclude Include="src\menu\main_menu.cpp" />
-    <ClInclude Include="src\move.cpp" />
-    <ClInclude Include="src\games\runer\runer.cpp" />
-    <ClInclude Include="src\games\pingpong\pingpong.cpp" />
-    <ClInclude Include="src\menu\settings_menu.cpp" />
-    <ClInclude Include="src\shape\block.cpp" />
-    <ClInclude Include="src\games\snake\_snake.cpp" />
-    <ClInclude Include="src\menu\start_menu.cpp" />
-    <ClInclude Include="src\menu\tests_menu.cpp" />
-    <ClInclude Include="src\games\tetris\tetris.cpp" />
+    <ClInclude Include="games\2048\_2048.cpp" />
+    <ClInclude Include="games\breakout\breakout.cpp" />
+    <ClInclude Include="collider.cpp" />
+    <ClInclude Include="utils\console.cpp" />
+    <ClInclude Include="core.cpp" />
+    <ClInclude Include="games\flybird\flybird.cpp" />
+    <ClInclude Include="menu\games_menu.cpp" />
+    <ClInclude Include="gui\makemenu.cpp" />
+    <ClInclude Include="menu\main_menu.cpp" />
+    <ClInclude Include="move.cpp" />
+    <ClInclude Include="games\runer\runer.cpp" />
+    <ClInclude Include="games\pingpong\pingpong.cpp" />
+    <ClInclude Include="menu\settings_menu.cpp" />
+    <ClInclude Include="shape\block.cpp" />
+    <ClInclude Include="games\snake\_snake.cpp" />
+    <ClInclude Include="menu\start_menu.cpp" />
+    <ClInclude Include="menu\tests_menu.cpp" />
+    <ClInclude Include="games\tetris\tetris.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
