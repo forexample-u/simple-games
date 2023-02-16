@@ -1,6 +1,6 @@
 #pragma once
 #include "utils/console.cpp"
-#include "move.cpp"
+#include "move/keyboardmove.cpp"
 #include "core.cpp"
 #include "shape/plane.cpp"
 #include "birdlevel.cpp"
@@ -11,23 +11,21 @@ namespace ListGame
 	void fly_bird()
 	{
 		Console cmd;
-		Move move;
+		KeyboardMove move;
 		Bird bird;
 		Plane plane;
 
-		Color color_plane = Color(11, 11);
-		Color color_bg = Color(0, 0);
-		Color color_collum = Color(0, 0);
-		Color color_bird = Color(15, 15);
+		Color color_plane = Color(ColorBit::Cyan, ColorBit::Cyan);
+		Color color_bg = Color(ColorBit::Black, ColorBit::Black);
+		Color color_collum = Color(ColorBit::Black, ColorBit::Black);
+		Color color_bird = Color(ColorBit::White, ColorBit::White);
 
-		//plane
 		plane.set_size(Size(100, 25));
 		plane.set_pos(Coord(0, 0));
 		plane.set_color_bg(color_bg);
 		plane.set_color_plane(color_plane);
 		plane.set_color_border(color_plane);
 
-		//bird
 		bird.set_color_bg(plane.get_color_plane());
 		bird.set_color_bird(color_bird);
 
@@ -35,7 +33,8 @@ namespace ListGame
 		level.set_color(color_collum);
 		while (true)
 		{
-			move.move();
+			move.detect_button();
+			auto key = move.get_button_toupper();
 			Size screen_size = cmd.get_size_screen();
 			if (screen_size.width < 50)
 			{
@@ -55,12 +54,12 @@ namespace ListGame
 			plane.print();
 
 			bird.set_start_pos(plane);
-			bird.set_color_bird(Color(15, 15));
+			bird.set_color_bird(Color(ColorBit::White, ColorBit::White));
 			bird.set_plane(plane);
 
 			bird.print();
 			cmd.sleep(100);
-			if (move.now.get_space() || (move.now.get_dir_y() == 1))
+			if (key == ' ' || key == 'W')
 			{
 				bird.set_plane(plane);
 				bird.print();
@@ -87,11 +86,12 @@ namespace ListGame
 			cmd.sleep(((size_plane.width * 0.5) / (size_plane.width / 40 + size_plane.height / 30)) + 15);
 			if (bird.is_die())
 			{
-				bird.set_color_bird(Color(12, 12));
+				bird.set_color_bird(Color(ColorBit::Red, ColorBit::Red));
 				bird.print();
 				break;
 			}
 			bird.get_collums(level);
+			move.detect_button();
 			bird.move(move);
 			bird.set_plane(plane);
 			bird.print();

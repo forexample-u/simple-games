@@ -2,17 +2,16 @@
 #include <iostream>
 #include <vector>
 #include "core.cpp"
-#include "move.cpp"
+#include "move/imove.cpp"
 #include "gui/button.cpp"
 
 class Menu
 {
 public:
-	void move(Move& move)
+	void move(const IMove& move)
 	{
-		move.move();
 		int size = static_cast<int>(buttons.size());
-		selected_index -= move.now.get_dir_y();
+		selected_index -= move.get_dir_y();
 		selected_index %= size;
 		if (selected_index < 0)
 		{
@@ -60,7 +59,7 @@ public:
 	}
 
 private:
-	Color selected_color_button = Color(0, 8);
+	Color selected_color_button = Color(ColorBit::Black, ColorBit::DarkGray);
 	int selected_index = 0;
 	std::vector<Button> buttons;
 };

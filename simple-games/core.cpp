@@ -1,24 +1,44 @@
 #pragma once
 
+enum ColorBit
+{
+	Black = 0,
+	DarkBlue = 1,
+	DarkGreen = 2,
+	DarkCyan = 3,
+	DarkRed = 4,
+	DarkMagenta = 5,
+	DarkYellow = 6,
+	Gray = 7,
+	DarkGray = 8,
+	Blue = 9,
+	Green = 10,
+	Cyan = 11,
+	Red = 12,
+	Magenta = 13,
+	Yellow = 14,
+	White = 15
+};
+
 struct Color
 {
 	Color() {}
-	explicit Color(int new_font, int new_bg)
+	explicit Color(ColorBit new_font, ColorBit new_bg)
 	{
 		font = new_font;
 		bg = new_bg;
 	}
-	int get_font() const
+	ColorBit get_font() const
 	{
 		return font;
 	}
-	int get_bg() const
+	ColorBit get_bg() const
 	{
 		return bg;
 	}
 private:
-	int font = 7;
-	int bg = 0;
+	ColorBit font = ColorBit::Gray;
+	ColorBit bg = ColorBit::Black;
 };
 
 struct Dir

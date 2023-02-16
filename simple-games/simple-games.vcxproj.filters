@@ -75,15 +75,18 @@
     <ClCompile Include="tests\listtest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="move\imove.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="move\keyboardmove.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\console.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="shape\block.cpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="move.cpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="games\snake\_snake.cpp">

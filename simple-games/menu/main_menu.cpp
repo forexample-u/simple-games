@@ -9,13 +9,12 @@ namespace ListMenu
 	void main_menu()
 	{
 		Console cmd;
-		std::vector<std::string> list_menu{
+		std::vector<std::string> list_menu {
 			"Start",
 			"Test",
 			"Settings",
 			"Quit"
 		};
-
 		MakeMenu menu;
 		std::string choice = menu.center_menu(list_menu);
 

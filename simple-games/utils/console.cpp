@@ -70,11 +70,6 @@ public:
 		system("cls");
 	}
 
-	void color_font(int font_bit) const
-	{
-		color(Color(font_bit, 0));
-	}
-
 	void color(Color color) const
 	{
 		SetConsoleTextAttribute(h, ((color.get_bg() % 16) * 16) + (color.get_font() % 16));
@@ -82,7 +77,7 @@ public:
 
 	void color_reset() const
 	{
-		color_font(7);
+		color(Color(ColorBit::Gray, ColorBit::Black));
 	}
 
 	Size get_size_screen() const
@@ -122,12 +117,6 @@ private:
 	void clear() const
 	{
 		std::cout << "\033c" << std::flush;
-	}
-
-	void color_font(int font_bit) const
-	{
-		int font = ansi_color_to_windows_color(font_bit);
-		std::cout << "\033[38;5;" << font << "m" << std::flush;
 	}
 
 	void color(Color color) const

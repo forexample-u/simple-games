@@ -14,12 +14,11 @@ namespace ListMenu
 		Plane plane;
 
 		//settings
-		int color_text = 15;
-		Color color_ball = Color(0, 0);
-		Color color_bg = Color(15, 15);
+		ColorBit color_text = ColorBit::White;
+		Color color_ball = Color(ColorBit::Black, ColorBit::Black);
+		Color color_bg = Color(ColorBit::White, ColorBit::White);
 		int center_pos_y = 24;
 
-		//print bg
 		cmd.resize_small_screen(Size(80, 24));
 		cmd.sleep(100);
 		plane.set_size(Size(0, 0));
@@ -27,12 +26,10 @@ namespace ListMenu
 		plane.print_bg();
 		Size screen = cmd.get_size_screen();
 
-		//text
 		std::string label = "by @for_example";
 		int length_label = static_cast<int>(label.length());
 		Coord center_text = Coord(screen.width / 2 - length_label / 2 - 2, center_pos_y / 2);
 
-		//bounce ball
 		Ball ball;
 		ball.set_pos(Coord(center_text.x - 31, 5));
 		ball.set_color_bg(color_bg);
@@ -61,7 +58,7 @@ namespace ListMenu
 		ball.print();
 		cmd.gotoxy(ball.get_pos().x - 1, ball.get_pos().y + 1);
 		cmd.sleep(1000);
-		cmd.color(Color(color_text, 0));
+		cmd.color(Color(color_text, ColorBit::Black));
 		cmd.gotoxy(center_text);
 		for (const auto& ch : label)
 		{

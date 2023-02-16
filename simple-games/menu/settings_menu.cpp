@@ -8,7 +8,7 @@ namespace ListMenu
 	void settings_menu()
 	{
 		Console cmd;
-		std::vector<std::string> list_settings{
+		std::vector<std::string> list_settings {
 			"Team",
 			"Back",
 		};
@@ -20,9 +20,9 @@ namespace ListMenu
 
 		if (choice == "Team")
 		{
-			int color_bg = rand() % 16;
-			Color color_button = Color(rand() % 16, rand() % 16);
-			Color color_selected = Color(rand() % 16, rand() % 16);
+			ColorBit color_bg = static_cast<ColorBit>(rand() % 16);
+			Color color_button = Color(static_cast<ColorBit>(rand() % 16), static_cast<ColorBit>(rand() % 16));
+			Color color_selected = Color(static_cast<ColorBit>(rand() % 16), static_cast<ColorBit>(rand() % 16));
 
 			menu.set_style(Color(color_bg, color_bg), color_button, color_selected);
 			settings_menu();

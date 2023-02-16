@@ -1,7 +1,7 @@
 #pragma once
 #include "collider.cpp"
 #include "games/tetris/tetrisblock.cpp"
-#include "move.cpp"
+#include "move/imove.cpp"
 #include <utils/console.cpp>
 
 class PlaneTetris : protected Collider
@@ -12,20 +12,16 @@ public:
 		plane.assign(20, std::string(30, '.'));
 	}
 
-	void move(Move& move)
+	void move(const IMove& move)
 	{
-		move.move();
-		char button = toupper(move.now.get_button());
+		char button = move.get_button_toupper();
 		int move_angle = (button == 'E') - (button == 'Q');
-		int move_dir_x = move.now.get_dir_x();
-		int move_dir_y = move.now.get_dir_y();
-		pos_tetris_block.x += move_dir_x;
-		pos_tetris_block.y -= move_dir_y;
+		pos_tetris_block.x += move.get_dir_x();
+		pos_tetris_block.y -= move.get_dir_y();
 	}
 
 	void print()
 	{
-		//tetris block
 		std::vector<std::string> tetris_blocks = tetris_block.get_blocks();
 		Coord pos = tetris_block.get_pos();
 
@@ -53,11 +49,9 @@ public:
 		cmd.clear();
 	}
 private:
-	//collision
 	std::vector<std::string> plane;
 	std::vector<TetrisBlock> collision_block;
 
-	//move tetris block
 	TetrisBlock tetris_block;
 	Coord pos_tetris_block;
 

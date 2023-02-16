@@ -42,6 +42,7 @@ private:
 			slice_inside.y += (player_down + 2 == slice_down) * -1; // down
 			slice_inside.x += (player_left - 1 == slice_left) * -1; // left
 			slice_inside.x += (player_right + 2 == slice_right) * 1; // right
+
 			//slice_border
 			slice_border.y += (player_down == slice_up || player_up == slice_up) * 1; // up
 			slice_border.y += (player_up + 1 == slice_down || player_down + 1 == slice_down) * -1; // down
@@ -122,7 +123,6 @@ private:
 			create(size_collision, pos_collision, size_player, pos_player);
 		}
 
-		//get 
 		Dir get_bounce() const
 		{
 			return dir_bounce;

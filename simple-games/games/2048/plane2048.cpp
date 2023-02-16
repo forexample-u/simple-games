@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "move.cpp"
+#include "move/imove.cpp"
 #include "core.cpp"
 #include "utils/console.cpp"
 #include "gui/multibuttons.cpp"
@@ -188,20 +188,18 @@ public:
 	Plane2048()
 	{
 		nums.assign(count_button.height, std::vector<int>(count_button.width));
-		buttons.create(count_button, Size(10, 5), Coord(2, 1), Color(0, 7), Color(0, 0));
+		buttons.create(count_button, Size(10, 5), Coord(2, 1), Color(ColorBit::Black , ColorBit::Gray), Color(ColorBit::Black, ColorBit::Black));
 		create_rand_num();
 	}
 
-	void move(Move& move)
+	void move(const IMove& move)
 	{
-		move.move();
-		dir_move.x = move.now.get_dir_x();
-		dir_move.y = move.now.get_dir_y();
-
+		auto key = move.get_button_toupper();
+		
+		dir_move = Dir(move.get_dir_x(), move.get_dir_y());
 		int animaion_ms = 25;
 		std::vector<std::vector<int>> tmp_nums = nums;
 
-		//move
 		if (dir_move.x != 0) // left/right
 		{
 			for (size_t i = 0; i < nums[0].size(); i++)
@@ -224,7 +222,6 @@ public:
 		concatenate_dir(dir_move, animaion_ms);
 		cmd.sleep(animaion_ms * 2);
 
-		//move
 		if (dir_move.x != 0) // left/right
 		{
 			for (size_t i = 0; i < nums[0].size() / 2; i++)
@@ -272,13 +269,12 @@ public:
 		}
 	}
 
-	//set
 	void set_color_bg(Color new_color)
 	{
 		color_bg = new_color;
 	}
 
-	void set_color_button(int num = 4, Color new_color = Color(7, 7))
+	void set_color_button(int num = 4, Color new_color = Color(ColorBit::Gray, ColorBit::Gray))
 	{
 		color_num[num] = new_color;
 	}
@@ -288,7 +284,6 @@ public:
 		buttons.set_pos(new_pos);
 	}
 
-	//print
 	void print()
 	{
 		for (size_t i = 0; i < buttons.size(); i++)
@@ -315,24 +310,22 @@ private:
 	bool die = false;
 	MultiButtons buttons;
 	Size count_button = Size(4, 4);
-	Color color_bg = Color(0, 0);
+	Color color_bg = Color(ColorBit::Black, ColorBit::Black);
 	Dir dir_move;
 
-	//color button
-	std::map<int, Color> color_num{
-		{0,  Color(7, 7)},
-		{2,  Color(0, 11)},
-		{4,  Color(0, 12)},
-		{8,  Color(15, 8)},
-		{16, Color(15, 9)},
-		{32, Color(15, 2)},
-		{64, Color(15, 13)},
-		{128, Color(0, 6)},
-		{256, Color(0, 14)},
-		{512, Color(0, 3)},
-		{1024, Color(0, 1)},
-		{2048, Color(0, 15)}
+	std::map<int, Color> color_num {
+		{0,  Color(ColorBit::Gray, ColorBit::Gray)},
+		{2,  Color(ColorBit::Black, ColorBit::Cyan)},
+		{4,  Color(ColorBit::Black, ColorBit::Red)},
+		{8,  Color(ColorBit::White , ColorBit::DarkGray)},
+		{16, Color(ColorBit::White, ColorBit::Blue)},
+		{32, Color(ColorBit::White, ColorBit::DarkGreen)},
+		{64, Color(ColorBit::White, ColorBit::Magenta)},
+		{128, Color(ColorBit::Black, ColorBit::DarkYellow)},
+		{256, Color(ColorBit::Black, ColorBit::Yellow)},
+		{512, Color(ColorBit::Black, ColorBit::DarkCyan)},
+		{1024, Color(ColorBit::Black, ColorBit::DarkBlue)},
+		{2048, Color(ColorBit::Black, ColorBit::White)}
 	};
-
 	Console cmd;
 };

@@ -39,7 +39,6 @@ public:
 		create(pos_apple);
 	}
 	
-	//set
 	void set_color_apple(Color new_color)
 	{
 		color_apple = new_color;
@@ -60,7 +59,6 @@ public:
 		step_apple = new_step;
 	}
 
-	//print
 	void print() const
 	{
 		cmd.color(color_apple);
@@ -87,7 +85,6 @@ public:
 		}
 	}
 
-	//get
 	Coord get_pos() const
 	{
 		return pos_apple;
@@ -101,7 +98,7 @@ public:
 private:
 	Coord pos_apple;
 	Coord step_apple = Coord(2, 1);
-	Color color_apple = Color(7, 4);
+	Color color_apple = Color(ColorBit::Gray, ColorBit::DarkRed);
 	Color color_bg;
 	bool exist_apple = false;
 	char char_apple = '$';

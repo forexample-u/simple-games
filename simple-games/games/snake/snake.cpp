@@ -1,7 +1,7 @@
 #pragma once
 #include <deque>
 #include "shape/ishape.cpp"
-#include "move.cpp"
+#include "move/imove.cpp"
 #include "utils/console.cpp"
 #include "collider.cpp"
 
@@ -15,7 +15,6 @@ private:
 			return false;
 		}
 
-		//snake self
 		for (size_t i = 0; i < pos_all.size() - 1; i++)
 		{
 			if (pos_all[i] == pos_head)
@@ -24,20 +23,14 @@ private:
 			}
 		}
 
-		//wall collide
 		Snake::collide.create(plane, Size(1, 1), pos_head);
-		if (Snake::collide.is_border())
-		{
-			return true;
-		}
-
-		return false;
+		return Snake::collide.is_border();
 	}
 
 	void die_condition(const IShape& shape)
 	{
 		if (detect_damage(shape))
-		{ //if detect damage snake go back
+		{
 			pos_head.x -= dir.x;
 			pos_head.y += dir.y;
 			pos_all.push_front(pos_tail);
@@ -57,10 +50,9 @@ private:
 		win = size_snake >= win_size;
 	}
 public:
-	void move(Move& move)
+	void move(const IMove& move)
 	{
-		move.move();
-		Dir move_dir = Dir(move.now.get_dir_x(), move.now.get_dir_y());
+		Dir move_dir = Dir(move.get_dir_x(), move.get_dir_y());
 		if (!move_dir.is_zero())
 		{
 			if (move_dir.x != 0 && dir.x == 0)
@@ -82,10 +74,8 @@ public:
 		}
 	}
 
-	//print
 	void print() const
 	{
-		//snake_tail print
 		if ((size_snake >= static_cast<int>(pos_all.size())) || (size_snake == 0))
 		{
 			cmd.color(color_bg);
@@ -97,32 +87,17 @@ public:
 			}
 		}
 
-		//snake print
 		cmd.color(color_snake);
-		bool print_all = false;
-		if (print_all) //TODO: make print_all
+		for (int y = 0; y < step_snake.y; y++)
 		{
-			for (const auto& pos_snake : pos_all)
-			{
-				cmd.gotoxy(pos_snake.x * step_snake.x, pos_snake.y * step_snake.y);
-				std::cout << std::string(step_snake.x, char_snake);
-			}
-			std::cout.flush();
-		}
-		else //snake_head print
-		{
-			for (int y = 0; y < step_snake.y; y++)
-			{
-				cmd.gotoxy(pos_head.x * step_snake.x, pos_head.y * step_snake.y + y);
-				std::cout << std::string(step_snake.x, '.') << std::flush;
-				cmd.gotoxy(pos_head.x * step_snake.x, pos_head.y * step_snake.y + y);
-			}
+			cmd.gotoxy(pos_head.x * step_snake.x, pos_head.y * step_snake.y + y);
+			std::cout << std::string(step_snake.x, '.') << std::flush;
+			cmd.gotoxy(pos_head.x * step_snake.x, pos_head.y * step_snake.y + y);
 		}
 		cmd.color(Color(color_bg.get_bg(), color_bg.get_bg()));
 		cmd.gotoxy(pos_tail.x * step_snake.x, pos_tail.y * step_snake.y);
 	}
 
-	//set
 	void set_pos(Coord new_pos)
 	{
 		pos_head = new_pos;
@@ -160,7 +135,6 @@ public:
 		size_snake += add_size;
 	}
 
-	//get
 	bool is_die() const
 	{
 		return die;
@@ -194,20 +168,17 @@ private:
 	Color color_snake;
 	Color color_bg;
 
-	//inside parameter
 	std::deque<Coord> pos_all{ Coord(0, 0) };
 	int count_bounce = 0;
 	char char_snake = ' ';
 	bool die = false;
 	bool win = false;
 
-	//shop parameter
 	int size_snake = 1;
 	int add_size = 1;
 	int speed = 0;
 	int bounce = 4;
 	int skin = 0;
 
-	//console
 	Console cmd;
 };

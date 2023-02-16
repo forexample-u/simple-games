@@ -6,7 +6,6 @@
 class Plane : public IShape
 {
 public:
-	//set
 	void set_pos(Coord new_pos)
 	{
 		pos = new_pos;
@@ -62,7 +61,6 @@ public:
 		char_bg = new_ch;
 	}
 
-	//print
 	void print_plane() const
 	{
 		Coord padding = Coord(border_padding.width, border_padding.height);
@@ -105,7 +103,6 @@ public:
 			right.assign(right_size, ' ');
 		}
 
-		//left
 		if (print_left)
 		{
 			for (int y = 0; y < size.height; y++)
@@ -114,8 +111,6 @@ public:
 				std::cout << left << std::flush;
 			}
 		}
-
-		//right
 		if (print_right)
 		{
 			for (int y = 0; y <= size.height; y++)
@@ -124,8 +119,6 @@ public:
 				std::cout << right << std::flush;
 			}
 		}
-
-		//top
 		if (print_full)
 		{
 			for (int y = 0; y < pos.y; y++)
@@ -134,8 +127,6 @@ public:
 				std::cout << full << std::flush;
 			}
 		}
-
-		//down
 		if (print_full)
 		{
 			for (int y = 0; y < screen.height - (pos.y + size.height) - bg_padding.height; y++)
@@ -148,7 +139,7 @@ public:
 		//fix side right
 		if (visulize_debug_info == true)
 		{
-			cmd.color(Color(15, 0));
+			cmd.color(Color(ColorBit::White, ColorBit::Black));
 		}
 
 		for (int y = 0; y < pos.y; y++)
@@ -210,7 +201,6 @@ public:
 		print_plane();
 	}
 
-	//get
 	Coord get_pos() const
 	{
 		return pos;

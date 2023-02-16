@@ -17,7 +17,7 @@ namespace ListGame
 {
 	void _snake()
 	{
-		Move move;
+		KeyboardMove move;
 		Console cmd;
 		Plane plane;
 		Snake snake;
@@ -28,7 +28,7 @@ namespace ListGame
 		cmd.sleep(100);
 		Size screen_now = cmd.get_size_screen();
 
-		//settings:
+		int add_sleep = 20;
 		Coord step_snake = Coord(2, 1);
 		Size size_plane = Size(90, 22);
 		Coord pos_plane = Coord((screen_now.width - size_plane.width) / 2, (screen_now.height - size_plane.height) / 2);
@@ -40,13 +40,11 @@ namespace ListGame
 			pos_plane = Coord((screen_now.width - size_plane.width) / 2, (screen_now.height - size_plane.height) / 2);
 		}
 
-		int add_sleep = 20;
-		int color_bg = 3;
-		int color_border = 4;
-		int color_plane = 0;
-		int color_snake = 15;
+		ColorBit color_bg = ColorBit::DarkCyan;
+		ColorBit color_border = ColorBit::DarkRed;
+		ColorBit color_plane = ColorBit::Black;
+		ColorBit color_snake = ColorBit::White;
 
-		//plane
 		plane.set_pos(Coord(pos_plane.x / step_snake.x, pos_plane.y / step_snake.y));
 		plane.set_size(Size(size_plane.width / step_snake.x, size_plane.height / step_snake.y));
 		plane.set_color_bg(Color(color_bg, color_bg));
@@ -55,19 +53,16 @@ namespace ListGame
 		plane.set_symbol_border('.');
 		plane.set_symbol_plane(' ');
 
-		//snake
 		snake.set_pos(Coord(plane.get_pos().x + 1, plane.get_pos().y + 1));
 		snake.set_step(step_snake);
 		snake.set_color_snake(Color(color_snake, color_snake));
 		snake.set_symbol_snake('.');
 
-		//apple
 		apple.set_step(step_snake);
 		apple.set_symbol_apple(' ');
-		apple.set_color_apple(Color(4, 4));
+		apple.set_color_apple(Color(ColorBit::DarkRed, ColorBit::DarkRed));
 		apple.set_color_bg(Color(color_plane, color_plane));
 
-		//print scale plane
 		cmd.sleep(50);
 		Plane plane_scale = plane;
 		plane_scale.set_pos(Coord(plane.get_pos().x * step_snake.x, plane.get_pos().y * step_snake.y));
@@ -77,15 +72,16 @@ namespace ListGame
 
 		while (true)
 		{
+			move.detect_button();
 			snake.move(move);
 			snake.set_plane(plane);
 			eat(snake, apple);
 			snake.print();
-			if (move.now.get_dir_x() != 0)
+			if (move.get_dir_x() != 0)
 			{
 				add_sleep = 65;
 			}
-			if (move.now.get_dir_y() != 0)
+			if (move.get_dir_y() != 0)
 			{
 				add_sleep = 60;
 			}
@@ -97,15 +93,15 @@ namespace ListGame
 				int random_color = rand() % 3;
 				if (random_color == 0)
 				{
-					apple.set_color_apple(Color(6, 6));
+					apple.set_color_apple(Color(ColorBit::DarkYellow, ColorBit::DarkYellow));
 				}
 				if (random_color == 1)
 				{
-					apple.set_color_apple(Color(4, 4));
+					apple.set_color_apple(Color(ColorBit::DarkRed, ColorBit::DarkRed));
 				}
 				if (random_color == 2)
 				{
-					apple.set_color_apple(Color(2, 2));
+					apple.set_color_apple(Color(ColorBit::DarkGreen, ColorBit::DarkGreen));
 				}
 				apple.rand_create(plane, snake);
 				apple.print();
@@ -119,7 +115,7 @@ namespace ListGame
 			{
 				break;
 			}
-			if (move.now.get_escape())
+			if (move.get_button_toupper() == 27)
 			{
 				break;
 			}

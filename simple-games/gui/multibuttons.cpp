@@ -18,7 +18,6 @@ public:
 		buttons.push_front(buttons_row);
 	}
 
-	//set
 	void set_pos(Coord new_pos)
 	{
 		Coord start_pos = buttons[0][0].get_pos();
@@ -68,7 +67,8 @@ public:
 		}
 	}
 
-	void create(Size count_button, Size size_button, Coord padding = Coord(2, 1), Color button_color = Color(7, 0), Color bg_color = Color(0, 0))
+	void create(Size count_button, Size size_button, Coord padding = Coord(2, 1),
+		Color button_color = Color(ColorBit::Gray, ColorBit::Black), Color bg_color = Color(ColorBit::Black, ColorBit::Black))
 	{
 		Button button;
 		button.set_color_bg(bg_color);
@@ -86,7 +86,6 @@ public:
 		}
 	}
 
-	//print
 	void print(bool print_bg = true) const
 	{
 		for (const std::deque<Button>& buttons_row : buttons)
@@ -98,7 +97,6 @@ public:
 		}
 	}
 
-	//get
 	Size get_size_buttons() const
 	{
 		Coord pos_start = buttons[0][0].get_pos();

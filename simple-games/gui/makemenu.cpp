@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "core.cpp"
-#include "move.cpp"
+#include "move/keyboardmove.cpp"
 #include "shape/plane.cpp"
 #include "utils/console.cpp"
 #include "gui/button.cpp"
@@ -14,7 +14,7 @@ public:
 	std::string center_menu(std::vector<std::string> list_menu)
 	{
 		Plane plane;
-		Move move;
+		KeyboardMove move;
 		Console cmd;
 		Menu menu;
 		Button button;
@@ -65,14 +65,15 @@ public:
 				cmd.sleep(20);
 				screen_size = cmd.get_size_screen();
 			}
-
+			move.detect_button();
 			menu.move(move);
+			auto key = move.get_button_toupper();
 			cmd.sleep(60);
-			if (move.now.get_button() != false)
+			if (key != false)
 			{
 				menu.print();
 			}
-			if (move.now.get_enter() || move.now.get_space())
+			if (key == ' ' || key == '\n' || key == '\r')
 			{
 				menu.print();
 				break;
@@ -82,8 +83,8 @@ public:
 		return list_menu[index_menu];
 	}
 
-	void set_style(Color color_bg = Color(0, 0), Color color_button = Color(0, 11),
-		Color color_selected = Color(0, 12), int pos_y = 5, int size_y = 3, int padding_y = 4, double scale_x = 0.375)
+	void set_style(Color color_bg = Color(Black, Black), Color color_button = Color(Black, Cyan),
+		Color color_selected = Color(Black, Red), int pos_y = 5, int size_y = 3, int padding_y = 4, double scale_x = 0.375)
 	{
 		this->color_bg = color_bg;
 		this->color_button = color_button;
@@ -104,9 +105,9 @@ private:
 	static double scale_x;
 };
 
-Color MakeMenu::color_bg = Color(0, 0);
-Color MakeMenu::color_button = Color(0, 11);
-Color MakeMenu::color_selected = Color(0, 12);
+Color MakeMenu::color_bg = Color(ColorBit::Black, ColorBit::Black);
+Color MakeMenu::color_button = Color(ColorBit::Black, ColorBit::Cyan);
+Color MakeMenu::color_selected = Color(ColorBit::Black, ColorBit::Red);
 int MakeMenu::pos_y = 5;
 int MakeMenu::size_y = 3;
 int MakeMenu::padding_y = 4;

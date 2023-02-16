@@ -10,21 +10,19 @@ namespace ListGame
 	{
 		Plane plane;
 		Console cmd;
-		Move move;
+		KeyboardMove move;
 		Board player;
 		Board enemy;
 		Ball ball;
 
-		Color color_bg = Color(0, 0);
-		Color color_ball = Color(15, 15);
+		Color color_bg = Color(ColorBit::Black, ColorBit::Black);
+		Color color_ball = Color(ColorBit::White, ColorBit::White);
 
 		//resize small resoltion
 		cmd.resize_small_screen(Size(120, 30));
 		cmd.sleep(100);
 		Size screen_size = cmd.get_size_screen();
 
-
-		//plane
 		plane.set_size(Size(screen_size.width - 5, 25));
 		plane.set_pos(Coord(0, 2));
 		plane.set_symbol_bg(' ');
@@ -37,21 +35,18 @@ namespace ListGame
 		int plane_left = plane.get_pos().x;
 		int plane_right = plane.get_pos().x + plane.get_size().width - 1;
 
-		//player
 		player.set_pos(Coord(plane_left + 3, plane_down - player.get_size().height - 6));
 		player.set_size(Size(2, 7));
 		player.set_step(Coord(0, 3));
-		player.set_color_board(Color(11, 11));
+		player.set_color_board(Color(ColorBit::Cyan, ColorBit::Cyan));
 		player.set_color_bg(color_bg);
 
-		//enemy
 		enemy.set_pos(Coord(plane_right, plane_down - player.get_size().height - 6));
 		enemy.set_size(Size(2, 6));
 		enemy.set_step(Coord(0, 1));
-		enemy.set_color_board(Color(12, 12));
+		enemy.set_color_board(Color(ColorBit::Red, ColorBit::Red));
 		enemy.set_color_bg(color_bg);
 
-		//ball
 		bool print_ball = true;
 		ball.set_color_bg(plane.get_color_plane());
 		ball.set_dir(Dir(1, -1));
@@ -59,10 +54,9 @@ namespace ListGame
 		ball.set_color_ball(color_ball);
 		ball.set_size(Size(2, 1));
 
-		//print plane
 		cmd.sleep(200);
 		plane.print();
-		cmd.color(Color(15, 15));
+		cmd.color(Color(ColorBit::White, ColorBit::White));
 		std::string row(plane.get_size().width, ' ');
 		cmd.gotoxy(plane_left, plane_up);
 		std::cout << '.' << row << std::flush;
@@ -111,7 +105,7 @@ namespace ListGame
 				enemy.set_border(plane);
 				enemy.print();
 			}
-
+			move.detect_button();
 			player.move(move);
 			player.set_border(plane);
 			player.print();
@@ -148,7 +142,7 @@ namespace ListGame
 			{
 				break; //die
 			}
-			if (move.now.get_escape())
+			if (move.get_button_toupper() == 27)
 			{
 				break;
 			}

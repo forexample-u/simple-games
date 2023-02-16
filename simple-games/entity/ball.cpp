@@ -15,11 +15,9 @@ public:
 		pos_ball.y += dir_ball.y;
 	}
 
-	//print
 	void print() const
 	{
 		std::string row(size_ball.width, char_ball);
-
 		cmd.color(color_bg);
 		for (int y = 0; y < size_ball.height; y++)
 		{
@@ -53,7 +51,6 @@ public:
 		}
 	}
 
-	//set
 	void set_pos(Coord new_pos)
 	{
 		pos_ball = new_pos;
@@ -84,7 +81,6 @@ public:
 		char_ball = new_ch;
 	}
 
-	//get
 	Coord get_pos() const
 	{
 		return pos_ball;
@@ -104,7 +100,7 @@ private:
 	mutable Coord pos_ball;
 	Size size_ball = Size(1, 1);
 	Dir dir_ball = Dir(1, 1);
-	Color color_ball = Color(0, 15);
+	Color color_ball = Color(ColorBit::Black, ColorBit::White);
 	Color color_bg;
 	char char_ball = ' ';
 	Console cmd;

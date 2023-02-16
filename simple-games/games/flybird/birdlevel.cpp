@@ -34,7 +34,6 @@ public:
 				collums.push_back(collum);
 				pause_seconds += width;
 			}
-
 			pause_seconds += width * 2;
 		}
 	}
@@ -43,7 +42,6 @@ public:
 	{
 		for (Collum& collum : collums)
 		{
-			//print backround
 			collum.set_color_bg(plane.get_color_plane());
 			collum.set_color_collum(plane.get_color_plane());
 			collum.print();
@@ -56,7 +54,6 @@ public:
 				continue;
 			}
 
-			//print collum
 			collum.add_pos(Coord(-1, 0));
 			collum.set_color_collum(color_collum);
 			collum.print();
@@ -73,7 +70,6 @@ public:
 		color_collum = new_color;
 	}
 
-	//get
 	Collum get_front() const
 	{
 		return collums.front();

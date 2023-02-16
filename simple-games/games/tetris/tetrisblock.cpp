@@ -3,8 +3,7 @@
 #include <string>
 #include "core.cpp"
 
-class TetrisBlock
-{
+class TetrisBlock {
 public:
 	TetrisBlock()
 	{
@@ -16,7 +15,6 @@ public:
 		create_shape(id_shape, id_rotate);
 	}
 
-	//set
 	void set_pos(Coord new_pos)
 	{
 		pos_tetris_block = new_pos;
@@ -51,7 +49,6 @@ public:
 		create_shape(id_shape, id_rotate);
 	}
 
-	//get
 	std::vector<std::string>& get_blocks()
 	{
 		return tetris_block;

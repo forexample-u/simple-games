@@ -6,7 +6,6 @@
 class Button
 {
 public:
-	//set
 	void set_pos(Coord new_pos)
 	{
 		pos = new_pos;
@@ -65,7 +64,6 @@ public:
 		char_bg = new_ch;
 	}
 
-	//print
 	void print(bool print_bg = true) const
 	{
 		Coord padding = Coord(border_padding.width, border_padding.height);
@@ -99,7 +97,6 @@ public:
 		cmd.color(color_bg);
 	}
 
-	//get
 	Coord get_pos() const
 	{
 		return pos;
@@ -134,8 +131,8 @@ private:
 	Size border_padding;
 	Coord pos = Coord(0, 0);
 	Size size = Size(20, 3);
-	Color color_button = Color(0, 15);
-	Color color_bg = Color(0, 0);
+	Color color_button = Color(ColorBit::Black, ColorBit::White);
+	Color color_bg = Color(ColorBit::Black, ColorBit::Black);
 	Color color_border;
 	char char_bg = '.';
 	std::string text;

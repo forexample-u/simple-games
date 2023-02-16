@@ -153,6 +153,8 @@
     <ClCompile Include="gui\button.cpp" />
     <ClCompile Include="gui\menu.cpp" />
     <ClCompile Include="gui\multibuttons.cpp" />
+    <ClCompile Include="move\imove.cpp" />
+    <ClCompile Include="move\keyboardmove.cpp" />
     <ClCompile Include="utils\keyboard.cpp" />
     <ClCompile Include="shape\ishape.cpp" />
     <ClCompile Include="shape\plane.cpp" />
@@ -169,7 +171,6 @@
     <ClInclude Include="menu\games_menu.cpp" />
     <ClInclude Include="gui\makemenu.cpp" />
     <ClInclude Include="menu\main_menu.cpp" />
-    <ClInclude Include="move.cpp" />
     <ClInclude Include="games\runer\runer.cpp" />
     <ClInclude Include="games\pingpong\pingpong.cpp" />
     <ClInclude Include="menu\settings_menu.cpp" />

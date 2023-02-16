@@ -37,7 +37,6 @@ public:
 		pos_collum.y = border_plane.height - new_size.height + new_pos.y;
 	}
 
-	//set
 	void set_pos(Coord new_pos)
 	{
 		pos_collum = new_pos;
@@ -63,7 +62,6 @@ public:
 		border_plane = plane.get_size();
 	}
 
-	//get
 	Coord get_pos() const
 	{
 		return pos_collum;

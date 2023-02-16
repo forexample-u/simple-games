@@ -3,7 +3,7 @@
 #include <vector>
 #include "core.cpp"
 #include "utils/console.cpp"
-#include "move.cpp"
+#include "move/keyboardmove.cpp"
 #include "shape/plane.cpp"
 #include "shape/block.cpp"
 #include "collider.cpp"
@@ -15,7 +15,7 @@ namespace ListGame
 {
 	void breakout()
 	{
-		Move move;
+		KeyboardMove move;
 		Console cmd;
 		Plane plane;
 
@@ -35,35 +35,31 @@ namespace ListGame
 		Size block_padding = Size(2, 1);
 		Coord player_step = Coord(3, 0);
 		Coord block_offset = Coord(10, 2);
-		int color_bg = 15;
-		int color_plane = 0;
-		int color_border = 15;
-		int color_ball = 15;
+		ColorBit color_bg = ColorBit::White;
+		ColorBit color_plane = ColorBit::Black;
+		ColorBit color_border = ColorBit::White;
+		ColorBit color_ball = ColorBit::White;
 
-		//color
 		plane.set_color_bg(Color(color_bg, color_bg));
 		plane.set_color_border(Color(color_border, color_border));
 		plane.set_color_plane(Color(color_plane, color_plane));
 		ball.set_color_ball(Color(color_ball, color_ball));
 		ball.set_color_bg(Color(color_plane, color_plane));
-		block.set_color_block(Color(7, 7));
-		player.set_color_board(Color(12, 12));
+		block.set_color_block(Color(ColorBit::Gray, ColorBit::Gray));
+		player.set_color_board(Color(ColorBit::Red, ColorBit::Red));
 		player.set_color_bg(Color(color_plane, color_plane));
 
 		//calc settings
 		block_padding.width += block_size.width;
 		block_padding.height += block_size.height;
 
-		//plane
 		plane.set_pos(plane_pos);
 		plane.set_size(plane_size);
 
-		//player
 		player.set_pos(Coord(plane_pos.x + (rand() % (plane_size.width - player_size.width - 1)) + 1, plane_pos.y + plane_size.height - player_size.height - 1));
 		player.set_size(player_size);
 		player.set_step(player_step);
 
-		//ball
 		ball.set_pos(Coord(player.get_pos().x, player.get_pos().y - player_size.height - 2));
 		ball.set_size(Size(2, 1));
 		ball.set_dir(Dir(1 + (rand() % 2) * -2, -1));
@@ -97,6 +93,7 @@ namespace ListGame
 		clock_t first_sleep_ms = 2500;
 		while (true)
 		{
+			move.detect_button();
 			player.move(move);
 			player.set_border(plane);
 			player.print();
@@ -138,9 +135,9 @@ namespace ListGame
 			{
 				break; // win
 			}
-			if (move.now.get_escape())
+			if (move.get_button_toupper() == 27)
 			{
-				break;
+				break; // esc
 			}
 		}
 		cmd.color_reset();

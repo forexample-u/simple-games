@@ -2,7 +2,7 @@
 #include <iostream>
 #include <deque>
 #include "utils/console.cpp"
-#include "move.cpp"
+#include "move/imove.cpp"
 #include "core.cpp"
 #include "shape/plane.cpp"
 #include "collider.cpp"
@@ -45,13 +45,11 @@ private:
 		}
 	}
 public:
-	void move(Move& move)
+	void move(const IMove& move)
 	{
 		last_pos_bird = pos_bird;
-		move.move();
-		int space = move.now.get_space();
-		int dir = move.now.get_dir_y();
-		if (space || (dir == 1))
+		auto key = move.get_button_toupper();
+		if (key == ' ' || (move.get_dir_y() == 1))
 		{
 			jump();
 			cmd.sleep(10);
@@ -70,7 +68,6 @@ public:
 		count_step_fly = 0;
 	}
 
-	//set
 	void set_pos(Coord new_pos)
 	{
 		pos_bird = new_pos;
@@ -102,15 +99,12 @@ public:
 		char_bird = new_ch;
 	}
 
-	//print
 	void print() const
 	{
-		//backround
 		cmd.color(color_bg);
 		cmd.gotoxy(last_pos_bird);
 		std::cout << ' ' << std::flush;
 
-		//symbol color
 		cmd.color(color_bird);
 		cmd.gotoxy(pos_bird);
 		std::cout << char_bird << std::flush;
@@ -118,7 +112,6 @@ public:
 		cmd.color(color_bg);
 	}
 
-	//get
 	bool is_die() const
 	{
 		return die;

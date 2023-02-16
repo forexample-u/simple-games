@@ -2,19 +2,16 @@
 #include <iostream>
 #include "core.cpp"
 #include "utils/console.cpp"
-#include "move.cpp"
+#include "move/keyboardmove.cpp"
 #include "shape/plane.cpp"
 
 class Board
 {
 public:
-	void move(Move& move)
+	void move(const IMove& move)
 	{
-		move.move();
-		last_pos_board = pos_board; //save_pos
-		dir_board = Dir(0, 0);
-		dir_board.x = move.now.get_dir_x();
-		dir_board.y = move.now.get_dir_y();
+		last_pos_board = pos_board;
+		dir_board = Dir(move.get_dir_x(), move.get_dir_y());
 		pos_board.x += dir_board.x * move_step_board.x;
 		pos_board.y -= dir_board.y * move_step_board.y;
 	}
@@ -48,7 +45,6 @@ public:
 		set_border(shape.get_pos(), shape.get_size());
 	}
 
-	//set
 	void set_pos(Coord new_pos)
 	{
 		last_pos_board = pos_board;
@@ -80,12 +76,10 @@ public:
 		color_bg = new_color;
 	}
 
-	//print
 	void print() const
 	{
 		std::string row(size_board.width, char_board);
 
-		//backround
 		if (!(pos_board == last_pos_board))
 		{
 			cmd.color(color_bg);
@@ -96,7 +90,6 @@ public:
 			}
 		}
 
-		//border
 		cmd.color(color_board);
 		for (int y = 0; y < size_board.height; y++)
 		{
@@ -107,7 +100,6 @@ public:
 		cmd.gotoxy(pos_board);
 	}
 
-	//get
 	Coord get_pos() const
 	{
 		return pos_board;
@@ -121,12 +113,11 @@ public:
 private:
 	Coord pos_board;
 	Coord last_pos_board;
-	Size size_board = Size(10, 1);
-	Dir dir_board = Dir(1, 0);
-	Color color_board = Color(7, 7);
-	Coord move_step_board = Coord(3, 0);
+	Size size_board = Size(ColorBit::Green, ColorBit::DarkBlue);
+	Dir dir_board = Dir(ColorBit::DarkBlue, ColorBit::Black);
+	Color color_board = Color(ColorBit::Gray, ColorBit::Gray);
+	Coord move_step_board = Coord(ColorBit::DarkCyan, ColorBit::Black);
 	char char_board = ' ';
-
 	Color color_bg;
 	Console cmd;
 };

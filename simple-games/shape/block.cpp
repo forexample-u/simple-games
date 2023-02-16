@@ -7,7 +7,6 @@
 class Block : public IShape
 {
 public:
-	//set
 	void set_pos(Coord new_pos)
 	{
 		pos = new_pos;
@@ -53,11 +52,9 @@ public:
 		char_border = new_ch;
 	}
 
-	//print
 	void print() const
 	{
 		Coord padding = Coord(border_padding.width, border_padding.height);
-		//block
 		std::string row_block(size.width - padding.x * 2, char_block);
 		cmd.color(color_block);
 		for (int y = 0; y < size.height - padding.y * 2; y++)
@@ -87,7 +84,6 @@ public:
 		cmd.color(color_bg);
 	}
 
-	//get
 	Coord get_pos() const
 	{
 		return pos;
